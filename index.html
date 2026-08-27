@@ -6,16 +6,18 @@
   <title>CAUP - Growth Operating System</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter & Outfit for a modern tech feel -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Inter & Barlow Condensed (fiel aos panfletos) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:ital,wght@1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background-color: #02040a;
       color: #f3f4f6;
     }
-    h1, h2, h3, h4, h5, .font-display {
-      font-family: 'Outfit', sans-serif;
+    .font-condensed {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-style: italic;
+      text-transform: uppercase;
     }
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
@@ -48,10 +50,10 @@
     }
     
     .glass-morphism {
-      background: rgba(10, 15, 30, 0.4);
+      background: rgba(8, 12, 24, 0.55);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.04);
     }
     
     .tab-content {
@@ -78,7 +80,7 @@
 </head>
 <body class="overflow-x-hidden relative min-h-screen flex flex-col">
 
-  <!-- BACKGROUND STARS & GLOWS (Mockup style) -->
+  <!-- BACKGROUND WATERMARK, STARS & LASERS (Mockup matching branding) -->
   <div class="absolute inset-0 overflow-hidden pointer-events-none -z-20">
     <!-- Starry Dots -->
     <div class="absolute top-12 left-10 w-[2px] h-[2px] bg-white rounded-full opacity-20"></div>
@@ -86,22 +88,30 @@
     <div class="absolute top-96 left-12 w-[2px] h-[2px] bg-white rounded-full opacity-20"></div>
     <div class="absolute top-24 right-20 w-[2px] h-[2px] bg-white rounded-full opacity-25"></div>
     <div class="absolute top-80 right-1/4 w-[3px] h-[3px] bg-white rounded-full opacity-40"></div>
-    <div class="absolute bottom-40 left-1/4 w-[2px] h-[2px] bg-white rounded-full opacity-15"></div>
-    <div class="absolute bottom-20 right-12 w-[3px] h-[3px] bg-white rounded-full opacity-20"></div>
     
+    <!-- Neon green laser arcs (Top-Left and Bottom-Right like visual reference) -->
+    <div class="absolute -top-32 -left-32 w-[450px] h-[450px] border-t-2 border-r-2 border-[#52c47c]/20 rounded-full blur-[2px]"></div>
+    <div class="absolute -bottom-32 -right-32 w-[450px] h-[450px] border-b-2 border-l-2 border-[#52c47c]/20 rounded-full blur-[2px]"></div>
+    
+    <!-- Giant watermarked CAUP Logo in the background (Mockup style watermark) -->
+    <div class="absolute top-1/4 right-[-10%] w-[650px] h-[650px] text-[#52c47c]/3 opacity-[0.04] flex items-center justify-center">
+      <svg viewBox="0 0 120 120" fill="none" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 54 18 A 42 42 0 1 0 102 66" stroke="currentColor" stroke-width="12" stroke-linecap="round"/>
+        <path d="M 68 18 L 102 18 L 102 52" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M 56 38 A 22 22 0 1 0 76 45" stroke="currentColor" stroke-width="12" stroke-linecap="round"/>
+      </svg>
+    </div>
+
     <!-- Sweeping Ambient Lighting (CAUP Brand Glow) -->
-    <div class="absolute top-0 left-[-10%] w-[120%] h-[400px] bg-gradient-to-b from-[#52c47c]/10 via-[#52c47c]/5 to-transparent blur-[130px] rounded-full"></div>
-    <div class="absolute bottom-0 right-[-10%] w-[60%] h-[400px] bg-[#52c47c]/5 rounded-full blur-[150px]"></div>
-    
-    <!-- Curved planetary line at the bottom -->
-    <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#52c47c]/30 to-transparent shadow-[0_0_15px_rgba(82,196,124,0.3)]"></div>
+    <div class="absolute top-0 left-[-10%] w-[120%] h-[350px] bg-gradient-to-b from-[#52c47c]/8 via-transparent to-transparent blur-[120px] rounded-full"></div>
+    <div class="absolute bottom-0 right-[-10%] w-[60%] h-[350px] bg-[#52c47c]/3 rounded-full blur-[140px]"></div>
   </div>
 
   <div class="flex-grow flex flex-col w-full">
     
     <!-- LOGO CAUP TOP-CENTER (SVG Replica) -->
     <div class="flex flex-col items-center pt-8 pb-3">
-      <svg class="w-16 h-16 text-[#52c47c] animate-pulse" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="w-14 h-14 text-[#52c47c] animate-pulse" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
         <!-- Outer ring C-shape -->
         <path d="M 54 18 A 42 42 0 1 0 102 66" stroke="#52c47c" stroke-width="12" stroke-linecap="round"/>
         <!-- Top-Right arrow bracket -->
@@ -109,8 +119,8 @@
         <!-- Inner ring C-shape -->
         <path d="M 56 38 A 22 22 0 1 0 76 45" stroke="#52c47c" stroke-width="12" stroke-linecap="round"/>
       </svg>
-      <h2 class="text-white text-3xl font-black italic tracking-tight mt-3">CAUP</h2>
-      <p class="text-[#52c47c] text-[10px] tracking-[0.3em] font-extrabold uppercase mt-1">CAMPINAS</p>
+      <h2 class="text-white text-3xl font-black italic tracking-tight mt-2 font-condensed">CAUP</h2>
+      <p class="text-[#52c47c] text-[10px] tracking-[0.3em] font-extrabold uppercase mt-0.5">CAMPINAS</p>
     </div>
 
     <!-- MAIN HEADER -->
@@ -123,7 +133,7 @@
 
       <!-- CAPSULE TAB NAVIGATION -->
       <div class="flex justify-center pt-1">
-        <div class="bg-slate-900/30 border border-white/5 p-1 rounded-full flex flex-wrap justify-center gap-0.5 backdrop-blur-xl max-w-4xl shadow-2xl">
+        <div class="bg-slate-900/30 border border-white/5 p-1.5 rounded-full flex flex-wrap justify-center gap-0.5 backdrop-blur-xl max-w-4xl shadow-2xl">
           <button id="btn-jornada" onclick="switchTab('jornada')" class="px-4 py-2 text-xs font-semibold rounded-full card-transition bg-white text-black shadow-lg">
             🗺️ Jornada Completa
           </button>
@@ -156,8 +166,8 @@
         <button onclick="toggleStageHighlight('diagnostico', this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-950/40 border border-white/5 rounded-full card-transition text-slate-400 hover:border-yellow-500/50">
           <span class="w-2 h-2 rounded-full bg-yellow-500"></span> Diagnóstico
         </button>
-        <button onclick="toggleStageHighlight('gi', this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-950/40 border border-white/5 rounded-full card-transition text-slate-400 hover:border-emerald-500/50">
-          <span class="w-2 h-2 rounded-full bg-emerald-500"></span> G.I.
+        <button onclick="toggleStageHighlight('gi', this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-950/40 border border-white/5 rounded-full card-transition text-slate-400 hover:border-[#52c47c]/50">
+          <span class="w-2 h-2 rounded-full bg-[#52c47c]"></span> G.I.
         </button>
         <button onclick="toggleStageHighlight('gc', this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-950/40 border border-white/5 rounded-full card-transition text-slate-400 hover:border-blue-500/50">
           <span class="w-2 h-2 rounded-full bg-blue-500"></span> G.C.
@@ -183,11 +193,11 @@
         <!-- Welcome Callout -->
         <div class="glass-morphism p-6 rounded-[24px] border border-white/5 text-center max-w-4xl mx-auto space-y-3 relative overflow-hidden shadow-2xl">
           <div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#52c47c]/20 to-transparent"></div>
-          <h2 class="text-xl md:text-3xl font-extrabold tracking-tight text-white font-display">
+          <h2 class="text-3xl md:text-5xl font-condensed tracking-tight text-white">
             Seu próximo grande <span class="text-[#52c47c]">diagnóstico</span> merece uma resposta <span class="text-[#52c47c]">estratégica</span>.
           </h2>
-          <p class="text-xs text-slate-400 max-w-2xl mx-auto">
-            A jornada prescritiva do ecossistema CAUP garante a ascensão do empresário focando diretamente na mitigação de gargalos de marketing, vendas, entrega e margem.
+          <p class="text-xs text-slate-450 max-w-2xl mx-auto">
+            A jornada prescritiva do ecossistema CAUP garante a ascensão do empresário focando diretamente na mitigação de gargalos de vendas, operações, finanças e pessoas.
           </p>
         </div>
 
@@ -207,8 +217,8 @@
                 <!-- Summit -->
                 <div class="p-4 bg-slate-950/60 border border-white/5 rounded-[18px] hover:border-orange-500/30 card-transition">
                   <div class="flex justify-between items-start">
-                    <span class="text-xs font-bold text-white">Summit Capital</span>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#52c47c]/15 text-[#52c47c] border border-[#52c47c]/20 tracking-wider">● DECISÃO</span>
+                    <span class="text-xs font-bold text-white font-mono uppercase">Summit Capital</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#52c47c]/15 text-[#52c47c] border border-[#52c47c]/20 tracking-wider font-mono">● DECISÃO</span>
                   </div>
                   <p class="text-[11px] text-slate-400 mt-1.5 leading-relaxed">1 dia | ~300 pessoas. Geração de autoridade e escala de qualificação. Sem pitch de MGA.</p>
                   <div class="mt-3 text-[9px] text-orange-400 font-bold bg-orange-950/15 p-1 rounded-lg text-center font-mono">
@@ -219,18 +229,18 @@
                 <!-- Palestra -->
                 <div class="p-4 bg-slate-950/60 border border-white/5 rounded-[18px] hover:border-orange-500/30 card-transition">
                   <div class="flex justify-between items-start">
-                    <span class="text-xs font-bold text-white">Palestra / Evento 1D</span>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#52c47c]/15 text-[#52c47c] border border-[#52c47c]/20 tracking-wider">● DECISÃO</span>
+                    <span class="text-xs font-bold text-white font-mono uppercase">Palestra / Evento 1D</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#52c47c]/15 text-[#52c47c] border border-[#52c47c]/20 tracking-wider font-mono">● DECISÃO</span>
                   </div>
                   <p class="text-[11px] text-slate-400 mt-1.5 leading-relaxed">Ticket baixo. Presencial + Online. Coortes tratadas separadamente.</p>
-                  <div class="mt-3 text-[9px] text-slate-500 text-center font-mono">CTA: Continuar no G.I. ou G.C.</div>
+                  <div class="mt-3 text-[9px] text-slate-500 text-center font-mono font-bold">CTA: Continuar no G.I. ou G.C.</div>
                 </div>
 
                 <!-- Parcerias -->
                 <div class="p-4 bg-slate-950/60 border border-white/5 rounded-[18px] hover:border-orange-500/30 card-transition">
                   <div class="flex justify-between items-start">
-                    <span class="text-xs font-bold text-white">Canais / Parcerias</span>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#52c47c]/15 text-[#52c47c] border border-[#52c47c]/20 tracking-wider">● DECISÃO</span>
+                    <span class="text-xs font-bold text-white font-mono uppercase">Canais / Parcerias</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#52c47c]/15 text-[#52c47c] border border-[#52c47c]/20 tracking-wider font-mono font-mono">● DECISÃO</span>
                   </div>
                   <p class="text-[11px] text-slate-400 mt-1.5 leading-relaxed">Referral de alta confiança. Pode encaminhar direto ao G.I./G.C.</p>
                 </div>
@@ -250,7 +260,7 @@
 
             <!-- STAGE 2: QUALIFICAÇÃO / DIAGNÓSTICO -->
             <div data-stage="diagnostico" class="w-80 flex-shrink-0 bg-slate-950/30 p-5 border border-white/5 rounded-[24px] backdrop-blur-md relative flex flex-col justify-between card-transition">
-              <div class="absolute -top-3.5 left-5 px-3.5 py-1 bg-yellow-600/95 text-black rounded-full text-[8px] tracking-[0.15em] uppercase font-bold shadow-lg">
+              <div class="absolute -top-3.5 left-5 px-3.5 py-1 bg-yellow-600/95 text-black rounded-full text-[8px] tracking-[0.15em] uppercase font-bold shadow-lg font-mono">
                 2. Qualificar & Diagnosticar
               </div>
               
@@ -274,7 +284,7 @@
                 <div class="p-4 bg-slate-950/60 border border-white/5 rounded-[18px]">
                   <div class="flex justify-between items-start">
                     <span class="text-xs font-bold text-white">Prescrição de Rota</span>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold bg-amber-950/80 text-amber-400 border border-amber-500/20 tracking-wider">▲ HIPÓTESE</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold bg-amber-950/80 text-amber-400 border border-amber-500/20 tracking-wider font-mono">▲ HIPÓTESE</span>
                   </div>
                   <p class="text-[11px] text-slate-400 mt-1.5 leading-relaxed">Prescrição do próximo passo ideal baseado em gargalos operacionais (sem cardápio).</p>
                 </div>
@@ -294,19 +304,19 @@
 
             <!-- STAGE 3: TRANSFORMAÇÃO (G.I. & G.C.) -->
             <div data-stage="gi" class="w-[400px] flex-shrink-0 bg-slate-950/30 p-5 border border-white/5 rounded-[24px] backdrop-blur-md relative flex flex-col justify-between card-transition">
-              <div class="absolute -top-3.5 left-5 px-3.5 py-1 bg-emerald-600/90 text-white rounded-full text-[8px] tracking-[0.15em] uppercase font-bold shadow-lg">
+              <div class="absolute -top-3.5 left-5 px-3.5 py-1 bg-emerald-600/90 text-white rounded-full text-[8px] tracking-[0.15em] uppercase font-bold shadow-lg font-mono">
                 3. Transformar (Imersões 2 Dias)
               </div>
               
               <div class="grid grid-cols-2 gap-3 mt-3">
                 <div class="p-4 bg-slate-950/60 border-t-4 border-[#52c47c] rounded-[18px] space-y-2 shadow-md">
-                  <span class="text-xs font-extrabold text-[#52c47c] block">G.I. Gestão Inteligente</span>
+                  <span class="text-xs font-extrabold text-[#52c47c] block font-condensed text-base">G.I. Gestão Inteligente</span>
                   <p class="text-[10px] text-slate-400 leading-relaxed">Maturidade de Gestão, organização e delegação de processos.</p>
                   <div class="bg-emerald-950/40 p-1 text-[8px] text-[#52c47c] rounded-md text-center font-bold tracking-wider font-mono">PITCH DE VENDAS ATIVO</div>
                 </div>
 
                 <div data-stage="gc" class="p-4 bg-slate-950/60 border-t-4 border-blue-500 rounded-[18px] space-y-2 shadow-md">
-                  <span class="text-xs font-extrabold text-blue-400 block">G.C. Gestão Crescimento</span>
+                  <span class="text-xs font-extrabold text-blue-400 block font-condensed text-base">G.C. Gestão Crescimento</span>
                   <p class="text-[10px] text-slate-400 leading-relaxed">Escalar lucro com governança e Roadmap de Ação.</p>
                   <div class="bg-blue-950/40 p-1 text-[8px] text-blue-400 rounded-md text-center font-bold tracking-wider font-mono">PITCH DE VENDAS ATIVO</div>
                 </div>
@@ -321,7 +331,7 @@
                 <div class="text-[11px] text-slate-400">🔵 <strong>Rota B:</strong> Entrada direta no G.C. (Empresa madura)</div>
               </div>
 
-              <div class="mt-3 p-2 bg-emerald-950/10 border border-emerald-500/20 rounded-xl text-[9px] text-emerald-200/80 text-center font-mono">
+              <div class="mt-3 p-2 bg-emerald-950/10 border border-[#52c47c]/20 rounded-xl text-[9px] text-[#52c47c] text-center font-mono">
                 Capacidade para ~100 empresários em ambas as imersões.
               </div>
             </div>
@@ -335,7 +345,7 @@
 
             <!-- STAGE 4: CLOSING ENVIRONMENT & MONETIZAÇÃO -->
             <div data-stage="monetizacao" class="w-[360px] flex-shrink-0 bg-slate-950/30 p-5 border border-white/5 rounded-[24px] backdrop-blur-md relative flex flex-col justify-between card-transition">
-              <div class="absolute -top-3.5 left-5 px-3.5 py-1 bg-amber-500/90 text-black rounded-full text-[8px] tracking-[0.15em] uppercase font-bold shadow-lg">
+              <div class="absolute -top-3.5 left-5 px-3.5 py-1 bg-amber-500/90 text-black rounded-full text-[8px] tracking-[0.15em] uppercase font-bold shadow-lg font-mono">
                 4. Monetizar / Fechamento
               </div>
               
@@ -343,7 +353,7 @@
                 <!-- Sala Secreta -->
                 <div data-stage="secreta" class="p-4 bg-purple-950/15 border border-purple-500/30 rounded-[18px] relative shadow-lg">
                   <div class="flex justify-between items-center">
-                    <span class="text-xs font-bold text-purple-400 flex items-center gap-1">🤫 Sala Secreta</span>
+                    <span class="text-xs font-bold text-purple-400 flex items-center gap-1 font-condensed text-sm">🤫 Sala Secreta</span>
                     <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold bg-amber-950/80 text-amber-400 border border-amber-500/20 tracking-wider">▲ HIPÓTESE</span>
                   </div>
                   <p class="text-[10px] text-slate-300 mt-1 leading-relaxed">~20 empresários. Conversão histórica observada de 20% (4 vendas).</p>
@@ -361,11 +371,11 @@
                   
                   <div class="grid grid-cols-2 gap-2 text-[10px] font-mono">
                     <div class="bg-slate-950 p-2 text-center rounded-lg border border-slate-900">
-                      <span class="block text-[8px] text-slate-550">MGA</span>
+                      <span class="block text-[8px] text-slate-550 uppercase">MGA</span>
                       <strong class="text-white text-xs block mt-0.5">R$ 50k</strong>
                     </div>
                     <div class="bg-slate-950 p-2 text-center rounded-lg border border-slate-900">
-                      <span class="block text-[8px] text-slate-550">Ambição</span>
+                      <span class="block text-[8px] text-slate-555 uppercase">Ambição</span>
                       <strong class="text-white text-xs block mt-0.5">R$ 130k</strong>
                     </div>
                   </div>
@@ -378,7 +388,7 @@
               </div>
 
               <div class="mt-4 p-2.5 bg-red-950/20 border border-red-500/20 rounded-xl text-[9px] text-red-200/90 leading-relaxed font-mono">
-                ⚠️ <strong>ANOMALIA H9:</strong> O combo completo custa R$ 85,2k a menos do que a soma, e é mais barato que o Ambição sozinho. Margem e canibalização sob análise.
+                ⚠️ <strong>ANOMALIA H9:</strong> Combo Ascension custa R$ 85,2k a menos do que a soma, e é mais barato que o Ambição. Canibalização sob análise.
               </div>
             </div>
 
@@ -391,7 +401,7 @@
 
             <!-- STAGE 5: RECUPERAÇÃO -->
             <div data-stage="recovery" class="w-80 flex-shrink-0 bg-slate-950/30 p-5 border border-white/5 rounded-[24px] backdrop-blur-md relative flex flex-col justify-between card-transition">
-              <div class="absolute -top-3.5 left-5 px-3.5 py-1 bg-gray-600 text-white rounded-full text-[8px] tracking-[0.15em] uppercase font-bold shadow-lg">
+              <div class="absolute -top-3.5 left-5 px-3.5 py-1 bg-gray-600 text-white rounded-full text-[8px] tracking-[0.15em] uppercase font-bold shadow-lg font-mono">
                 5. Recuperar & Reascender
               </div>
               
@@ -428,7 +438,7 @@
               </div>
 
               <div class="mt-4 p-2 bg-slate-950 border border-slate-850 rounded-lg text-[9px] text-slate-500 leading-relaxed font-mono">
-                🚫 <strong>Regra:</strong> Não é downsell automático. Prescrição focada no gargalo detectado.
+                🚫 <strong>Regra:</strong> Não é downsell automático. Prescrição baseada no gargalo.
               </div>
             </div>
 
@@ -460,7 +470,7 @@
                   <div class="absolute right-0 top-1/4 translate-x-1/2 bg-slate-950 border border-yellow-500/20 text-[9px] px-3 py-1 rounded-full font-bold text-yellow-400">
                     2. GERAÇÃO DE CASE
                   </div>
-                  <div class="absolute right-0 bottom-1/4 translate-x-1/2 bg-slate-950 border border-emerald-500/20 text-[9px] px-3 py-1 rounded-full font-bold text-[#52c47c]">
+                  <div class="absolute right-0 bottom-1/4 translate-x-1/2 bg-slate-950 border border-[#52c47c]/20 text-[9px] px-3 py-1 rounded-full font-bold text-[#52c47c]">
                     3. EMBAIXADOR
                   </div>
                   <div class="absolute bottom-0 bg-slate-950 border border-purple-500/20 text-[9px] px-3 py-1 rounded-full font-bold text-purple-400 translate-y-1/2">
@@ -481,7 +491,7 @@
                 <span class="w-2.5 h-2.5 bg-[#52c47c] rounded-full"></span>
                 Auto-alimentação do Ecossistema
               </div>
-              <p class="text-slate-400 leading-relaxed">À medida que o faturamento do cliente cresce devido à imersão (G.I. / G.C.), ele gera depoimentos e atua como embaixador, reduzindo o CAC de novas aquisições de altíssimo ICP.</p>
+              <p class="text-slate-400 leading-relaxed font-sans text-xs">À medida que o faturamento do cliente cresce devido à imersão (G.I. / G.C.), ele gera depoimentos e atua como embaixador, reduzindo o CAC de novas aquisições de altíssimo ICP.</p>
             </div>
           </div>
 
@@ -492,23 +502,23 @@
                 <span class="text-orange-400">👥</span>
                 Gestão Científica de Coortes e Canais
               </h3>
-              <p class="text-xs text-slate-400 mt-1">Ações estratégicas para mitigar atritos e isolar métricas de canais.</p>
+              <p class="text-xs text-slate-400 mt-1 font-sans">Ações estratégicas para mitigar atritos e isolar métricas de canais.</p>
 
-              <div class="space-y-4 mt-6">
+              <div class="space-y-4 mt-6 font-sans">
                 <div class="p-4.5 bg-slate-950/40 border border-white/5 rounded-xl">
-                  <span class="text-xs font-bold text-orange-400 block mb-1">Coorte Presencial vs Online (Palestra 1 Dia)</span>
-                  <p class="text-[11px] text-slate-400 leading-relaxed">A taxa de presença e nível de confiança do público presencial é amplamente superior. Os leads da transmissão online devem ser nutridos via fluxos de email e SDR, enquanto o presencial recebe diagnóstico direto no evento.</p>
+                  <span class="text-xs font-bold text-orange-400 block mb-1 font-mono uppercase">Coorte Presencial vs Online (Palestra)</span>
+                  <p class="text-[11px] text-slate-400 leading-relaxed font-sans">A taxa de presença e nível de confiança do público presencial é superior. Os leads do online devem ser nutridos via SDR, enquanto o presencial recebe diagnóstico direto no evento.</p>
                 </div>
 
                 <div class="p-4.5 bg-slate-950/40 border border-white/5 rounded-xl">
-                  <span class="text-xs font-bold text-yellow-400 block mb-1">Tráfego Pago vs Referral (Parcerias)</span>
-                  <p class="text-[11px] text-slate-400 leading-relaxed">Referrals trazem faturamentos maiores e ciclo de vendas 40% menor. Misturar estes dados mascara os custos do tráfego pago. A diretoria exige relatórios paralelos de CAC e LTV.</p>
+                  <span class="text-xs font-bold text-yellow-400 block mb-1 font-mono uppercase">Tráfego Pago vs Referral (Parcerias)</span>
+                  <p class="text-[11px] text-slate-400 leading-relaxed font-sans">Referrals trazem faturamentos maiores e ciclo de vendas 40% menor. Misturar estes dados mascara os custos do tráfego pago. A diretoria exige relatórios paralelos de CAC e LTV.</p>
                 </div>
               </div>
             </div>
 
-            <div class="p-3 bg-yellow-950/15 border border-yellow-500/20 rounded-xl text-xs text-yellow-350 mt-4 leading-relaxed font-mono">
-              📈 <strong>North Star:</strong> Otimize a aquisição com foco no <strong>Custo por ICP Presente</strong>. Focar apenas em CPL oculta o desperdício de caixa na atração de não decisores.
+            <div class="p-3 bg-yellow-950/15 border border-yellow-500/20 rounded-xl text-xs text-yellow-355 mt-4 leading-relaxed font-mono">
+              📈 <strong>North Star:</strong> Custo por ICP Presente substitui o CPL comum para alinhar a equipe de marketing à atração de clientes qualificados.
             </div>
           </div>
         </div>
@@ -532,7 +542,7 @@
               <span class="px-2 py-0.5 bg-orange-950/50 text-orange-400 rounded text-[9px] font-bold tracking-wider font-mono">CANAL A</span>
               <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#52c47c]/15 text-[#52c47c] border border-[#52c47c]/20 tracking-wider font-mono">● DECISÃO</span>
             </div>
-            <h3 class="text-lg font-bold text-white">Summit Capital Upgrade</h3>
+            <h3 class="text-xl font-bold text-white font-condensed tracking-wide text-2xl">Summit Capital Upgrade</h3>
             <p class="text-xs text-slate-400 leading-relaxed">1 dia presencial | ~300 pessoas. Grande autoridade em escala para geração de ICP.</p>
             
             <ul class="space-y-2 text-xs text-slate-300 bg-slate-950/80 p-3.5 rounded-xl border border-white/5">
@@ -553,7 +563,7 @@
               <span class="px-2 py-0.5 bg-orange-950/50 text-orange-400 rounded text-[9px] font-bold tracking-wider font-mono">CANAL B</span>
               <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#52c47c]/15 text-[#52c47c] border border-[#52c47c]/20 tracking-wider font-mono">● DECISÃO</span>
             </div>
-            <h3 class="text-lg font-bold text-white">Palestra / Evento 1 Dia</h3>
+            <h3 class="text-xl font-bold text-white font-condensed tracking-wide text-2xl">Palestra / Evento 1 Dia</h3>
             <p class="text-xs text-slate-400 leading-relaxed">Baixo ticket. Porta de entrada de altíssima escala e baixa fricção.</p>
             
             <ul class="space-y-2 text-xs text-slate-300 bg-slate-950/80 p-3.5 rounded-xl border border-white/5">
@@ -563,7 +573,7 @@
             </ul>
 
             <div class="p-3 bg-blue-950/15 border border-blue-500/20 rounded-xl text-xs">
-              <span class="font-bold text-blue-400 block mb-1">Tratamento de Coortes:</span>
+              <span class="font-bold text-blue-400 block mb-1 font-mono uppercase">Tratamento de Coortes:</span>
               O engajamento de leads da transmissão online difere do presencial. É recomendável isolar ambas as coortes para análise de conversão.
             </div>
           </div>
@@ -572,19 +582,19 @@
           <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-5 space-y-4 hover:border-orange-500/30 card-transition shadow-2xl backdrop-blur-md">
             <div class="flex justify-between items-center">
               <span class="px-2 py-0.5 bg-orange-950/50 text-orange-400 rounded text-[9px] font-bold tracking-wider font-mono">CANAL C</span>
-              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#52c47c]/15 text-[#52c47c] border border-[#52c47c]/20 tracking-wider font-mono">● DECISÃO</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold bg-[#52c47c]/15 text-[#52c47c] border border-[#52c47c]/20 tracking-wider font-mono font-mono">● DECISÃO</span>
             </div>
-            <h3 class="text-lg font-bold text-white">Parcerias & Embaixadores</h3>
+            <h3 class="text-xl font-bold text-white font-condensed tracking-wide text-2xl">Parcerias & Embaixadores</h3>
             <p class="text-xs text-slate-400 leading-relaxed">Referrals, comunidades, influenciadores B2B e associações corporativas comerciais.</p>
             
-            <ul class="space-y-2 text-xs text-slate-300 bg-slate-950/80 p-3.5 rounded-xl border border-white/5">
+            <ul class="space-y-2 text-xs text-slate-300 bg-slate-950/80 p-3.5 rounded-xl border border-white/5 font-sans">
               <li>⚡ <strong>Formato:</strong> Entrada orgânica com alta confiança prévia.</li>
               <li>🎯 <strong>Destinos:</strong> Enviar para o Summit, Palestras ou direto ao G.I./G.C.</li>
               <li class="text-amber-400 font-bold">⚠️ Regra: Medir Referral separadamente de mídia paga.</li>
             </ul>
 
             <div class="p-3 bg-emerald-950/15 border border-emerald-500/20 rounded-xl text-xs">
-              <span class="font-bold text-emerald-400 block mb-1">Densidade de Perfil:</span>
+              <span class="font-bold text-[#52c47c] block mb-1">Densidade de Perfil:</span>
               Canal de altíssimo faturamento médio devido à transferência de autoridade gerada pelo parceiro/embaixador.
             </div>
           </div>
@@ -593,103 +603,144 @@
 
       <!-- ================= TAB 3: G.I. VS G.C. ================= -->
       <div id="tab-gigc" class="tab-content space-y-6">
-        <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4 font-sans">
-          <div>
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">
-              <span class="p-1 rounded bg-emerald-600/20 text-emerald-400">📊</span>
-              Imersões de 2 Dias: G.I. vs G.C.
-            </h2>
-            <p class="text-xs text-slate-400 mt-1">Conheça o posicionamento, pilares e perfis das duas imersões presenciais que geram caixa.</p>
-          </div>
-          <div class="text-xs text-[#52c47c] bg-emerald-950/50 px-3 py-1.5 border border-emerald-500/20 rounded-lg font-mono">
-            Capacidade: ~100 pessoas por edição
-          </div>
-        </div>
-
+        
+        <!-- TWO COLUMN LAYOUT MATCHING BRAND PILARS -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
+          
           <!-- GI CARD -->
-          <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-6 space-y-4 shadow-2xl backdrop-blur-md">
-            <span class="text-xs font-bold text-[#52c47c] uppercase tracking-widest block font-mono">Imersão de Estruturação</span>
-            <h3 class="text-xl font-bold text-white font-display">G.I. — Gestão Inteligente</h3>
-            <p class="text-xs text-slate-400 leading-relaxed">Destinada a empresários que cresceram rápido demais e perderam o controle sobre a estrutura interna da empresa, gerando gargalos.</p>
-
-            <div class="bg-slate-950/80 p-4 rounded-xl border border-white/5 space-y-2 shadow-inner">
-              <span class="text-xs font-bold text-slate-350 block">Perfil de Entrada (Gargalos)</span>
-              <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400">
-                <div>• Dono centraliza as decisões</div>
-                <div>• Falta de processos claros</div>
-                <div>• Sem previsibilidade operacional</div>
-                <div>• Gargalos rotineiros diários</div>
-              </div>
+          <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-6 space-y-5 shadow-2xl backdrop-blur-md">
+            <span class="text-xs font-bold text-[#52c47c] uppercase tracking-widest block font-mono">Imersão de Estruturação (2 Dias)</span>
+            
+            <div class="flex justify-between items-start">
+              <h3 class="text-3xl font-condensed text-white">G.I. <span class="text-[#52c47c]">Gestão Inteligente</span></h3>
+              <span class="text-[10px] px-2 py-1 bg-emerald-950/50 border border-[#52c47c]/30 rounded-md text-[#52c47c] font-mono">CAPACIDADE: ~100</span>
             </div>
+            
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Destinada a empresários que cresceram rápido demais e perderam o controle sobre a estrutura interna da empresa, gerando gargalos.
+            </p>
 
-            <div class="space-y-3">
-              <span class="text-xs font-bold text-[#52c47c] uppercase tracking-wider block">Os 4 Pilares da Gestão Inteligente</span>
-              <div class="grid grid-cols-4 gap-2 text-center text-[10px]">
-                <div class="p-2.5 bg-slate-900/60 border border-white/5 rounded-xl">
-                  <span class="block text-[#52c47c] font-extrabold mb-1">Marketing</span>
-                  <span class="text-[9px] text-slate-500">Demanda</span>
+            <!-- 4 PILARS OF GI (Aligned with Brand Flyer 4 & 5) -->
+            <div class="space-y-4 pt-2">
+              <span class="text-xs font-bold text-[#52c47c] uppercase tracking-widest block font-mono">Os 4 Pilares do Método CAUP</span>
+              
+              <div class="grid grid-cols-2 gap-4">
+                <!-- Vendas -->
+                <div class="p-4 bg-slate-950/60 border border-white/5 rounded-[18px] space-y-2">
+                  <div class="flex items-center gap-2">
+                    <div class="p-2 bg-[#52c47c]/10 text-[#52c47c] rounded-lg">
+                      <!-- Bar Chart SVG -->
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    </div>
+                    <span class="text-xs font-bold text-white uppercase tracking-wider">VENDAS</span>
+                  </div>
+                  <p class="text-[10px] text-slate-400 leading-normal">Indicadores e previsibilidade comercial.</p>
                 </div>
-                <div class="p-2.5 bg-slate-900/60 border border-white/5 rounded-xl">
-                  <span class="block text-[#52c47c] font-extrabold mb-1">Vendas</span>
-                  <span class="text-[9px] text-slate-500">Receita</span>
+
+                <!-- Operações -->
+                <div class="p-4 bg-slate-950/60 border border-white/5 rounded-[18px] space-y-2">
+                  <div class="flex items-center gap-2">
+                    <div class="p-2 bg-[#52c47c]/10 text-[#52c47c] rounded-lg">
+                      <!-- Cog SVG -->
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <span class="text-xs font-bold text-white uppercase tracking-wider">OPERAÇÕES</span>
+                  </div>
+                  <p class="text-[10px] text-slate-400 leading-normal">Organização e eficiência de processos.</p>
                 </div>
-                <div class="p-2.5 bg-slate-900/60 border border-white/5 rounded-xl">
-                  <span class="block text-[#52c47c] font-extrabold mb-1">Operações</span>
-                  <span class="text-[9px] text-slate-500">Entrega</span>
+
+                <!-- Finanças -->
+                <div class="p-4 bg-slate-950/60 border border-white/5 rounded-[18px] space-y-2">
+                  <div class="flex items-center gap-2">
+                    <div class="p-2 bg-[#52c47c]/10 text-[#52c47c] rounded-lg">
+                      <!-- Dollar Circle SVG -->
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <span class="text-xs font-bold text-white uppercase tracking-wider">FINANÇAS</span>
+                  </div>
+                  <p class="text-[10px] text-slate-400 leading-normal">Clareza para tomar decisões lucrativas.</p>
                 </div>
-                <div class="p-2.5 bg-slate-900/60 border border-white/5 rounded-xl">
-                  <span class="block text-[#52c47c] font-extrabold mb-1">Finanças</span>
-                  <span class="text-[9px] text-slate-500">Margem/Lucro</span>
+
+                <!-- Pessoas -->
+                <div class="p-4 bg-slate-950/60 border border-white/5 rounded-[18px] space-y-2">
+                  <div class="flex items-center gap-2">
+                    <div class="p-2 bg-[#52c47c]/10 text-[#52c47c] rounded-lg">
+                      <!-- Users group SVG -->
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 005.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    </div>
+                    <span class="text-xs font-bold text-white uppercase tracking-wider">PESSOAS</span>
+                  </div>
+                  <p class="text-[10px] text-slate-400 leading-normal">Responsabilidade, organograma e execução.</p>
                 </div>
-              </div>
-              <div class="text-[10px] text-slate-400 font-semibold text-center mt-2 italic bg-slate-950 p-3 rounded-xl border border-white/5">
-                Fluxo Lógico: DEMANDA ➔ RECEITA ➔ ENTREGA ➔ MARGEM/LUCRO
               </div>
             </div>
           </div>
 
           <!-- GC CARD -->
-          <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-6 space-y-4 shadow-2xl backdrop-blur-md">
-            <span class="text-xs font-bold text-blue-400 uppercase tracking-widest block font-mono">Imersão de Escala</span>
-            <h3 class="text-xl font-bold text-white font-display">G.C. — Gestão do Crescimento</h3>
-            <p class="text-xs text-slate-400 leading-relaxed">"Transformar potencial em crescimento consistente". Desenvolvido para empresários com a base pronta que desejam crescer com governança.</p>
-
-            <div class="bg-slate-950/80 p-4 rounded-xl border border-white/5 space-y-2 shadow-inner">
-              <span class="text-xs font-bold text-slate-350 block">Perfil de Entrada (Desafios)</span>
-              <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400">
-                <div>• Escalar lucros de forma segura</div>
-                <div>• Otimizar CMV e margem</div>
-                <div>• Identificar e priorizar alavancas</div>
-                <div>• Onde investir tempo e pessoas</div>
-              </div>
+          <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-6 space-y-5 shadow-2xl backdrop-blur-md">
+            <span class="text-xs font-bold text-blue-400 uppercase tracking-widest block font-mono">Imersão de Escala (2 Dias)</span>
+            
+            <div class="flex justify-between items-start">
+              <h3 class="text-3xl font-condensed text-white">G.C. <span class="text-blue-400">Gestão Crescimento</span></h3>
+              <span class="text-[10px] px-2 py-1 bg-blue-950/50 border border-blue-500/30 rounded-md text-blue-400 font-mono">CAPACIDADE: ~100</span>
             </div>
 
-            <div class="space-y-3">
-              <span class="text-xs font-bold text-blue-400 uppercase tracking-wider block">As 4 Áreas de Governança do G.C.</span>
-              <div class="grid grid-cols-4 gap-2 text-center text-[10px]">
-                <div class="p-2.5 bg-slate-900/60 border border-white/5 rounded-xl">
-                  <span class="block text-blue-400 font-extrabold mb-1">Marketing</span>
-                  <span class="text-[9px] text-slate-550">Ticket & Retenção</span>
+            <p class="text-xs text-slate-400 leading-relaxed font-sans">
+              "Transformar potencial em crescimento consistente". Desenvolvido para empresários com a base pronta que desejam crescer com governança corporativa.
+            </p>
+
+            <!-- 4 AREAS OF GC (Aligned with brand pillars) -->
+            <div class="space-y-4 pt-2">
+              <span class="text-xs font-bold text-blue-400 uppercase tracking-widest block font-mono">As 4 Áreas de Aceleração do G.C.</span>
+              
+              <div class="grid grid-cols-2 gap-4">
+                <!-- Vendas (GC) -->
+                <div class="p-4 bg-slate-950/60 border border-white/5 rounded-[18px] space-y-2">
+                  <div class="flex items-center gap-2">
+                    <div class="p-2 bg-blue-500/10 text-blue-450 rounded-lg">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    </div>
+                    <span class="text-xs font-bold text-white uppercase tracking-wider">VENDAS</span>
+                  </div>
+                  <p class="text-[10px] text-slate-400 leading-normal">Funil de recompra, escalabilidade e comissão.</p>
                 </div>
-                <div class="p-2.5 bg-slate-900/60 border border-white/5 rounded-xl">
-                  <span class="block text-blue-400 font-extrabold mb-1">Vendas</span>
-                  <span class="text-[9px] text-slate-555 font-mono">Funil de Recompra</span>
+
+                <!-- Operações (GC) -->
+                <div class="p-4 bg-slate-950/60 border border-white/5 rounded-[18px] space-y-2">
+                  <div class="flex items-center gap-2">
+                    <div class="p-2 bg-blue-500/10 text-blue-450 rounded-lg">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <span class="text-xs font-bold text-white uppercase tracking-wider">OPERAÇÕES</span>
+                  </div>
+                  <p class="text-[10px] text-slate-400 leading-normal">Eficiência produtiva, CMV e governança de processos.</p>
                 </div>
-                <div class="p-2.5 bg-slate-900/60 border border-white/5 rounded-xl">
-                  <span class="block text-blue-400 font-extrabold mb-1">Operações</span>
-                  <span class="text-[9px] text-slate-555 font-mono">Eficiência & CMV</span>
+
+                <!-- Finanças (GC) -->
+                <div class="p-4 bg-slate-950/60 border border-white/5 rounded-[18px] space-y-2">
+                  <div class="flex items-center gap-2">
+                    <div class="p-2 bg-blue-500/10 text-blue-450 rounded-lg">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <span class="text-xs font-bold text-white uppercase tracking-wider">FINANÇAS</span>
+                  </div>
+                  <p class="text-[10px] text-slate-400 leading-normal">Fluxo de caixa de longo prazo e captação.</p>
                 </div>
-                <div class="p-2.5 bg-slate-900/60 border border-white/5 rounded-xl">
-                  <span class="block text-blue-400 font-extrabold mb-1">Finanças</span>
-                  <span class="text-[9px] text-slate-550 font-mono">Fluxo de Caixa</span>
+
+                <!-- Pessoas (GC) -->
+                <div class="p-4 bg-slate-950/60 border border-white/5 rounded-[18px] space-y-2">
+                  <div class="flex items-center gap-2">
+                    <div class="p-2 bg-blue-500/10 text-blue-450 rounded-lg">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 005.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    </div>
+                    <span class="text-xs font-bold text-white uppercase tracking-wider">PESSOAS</span>
+                  </div>
+                  <p class="text-[10px] text-slate-400 leading-normal">Cultura, Liderança descentralizada e Partnership.</p>
                 </div>
-              </div>
-              <div class="text-[10px] text-slate-400 font-semibold text-center mt-2 italic bg-slate-950 p-3 rounded-xl border border-white/5 font-mono">
-                Resultado: ROADMAP ESTRATÉGICO DE CRESCIMENTO (saber onde agir primeiro)
               </div>
             </div>
           </div>
+          
         </div>
       </div>
 
@@ -706,14 +757,14 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-sans">
           <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-5 space-y-4 hover:border-amber-500/30 card-transition shadow-2xl backdrop-blur-md">
             <span class="text-xs text-slate-500 font-bold block uppercase tracking-wider font-mono">GRUPO DE NEGÓCIOS</span>
-            <h3 class="text-xl font-extrabold text-white">MGA</h3>
-            <div class="text-3xl font-bold text-white font-mono font-mono">R$ 50.000</div>
+            <h3 class="text-3xl font-condensed text-white">MGA</h3>
+            <div class="text-3xl font-bold text-white font-mono">R$ 50.000</div>
             <p class="text-xs text-slate-400 leading-relaxed font-sans">Programa estratégico de networking e mentoria corporativa executiva.</p>
           </div>
 
           <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-5 space-y-4 hover:border-amber-500/30 card-transition shadow-2xl backdrop-blur-md">
             <span class="text-xs text-slate-500 font-bold block uppercase tracking-wider font-mono">MASTERMIND EXECUTIVE</span>
-            <h3 class="text-xl font-extrabold text-white font-mono">Ambição</h3>
+            <h3 class="text-3xl font-condensed text-white font-mono">Ambição</h3>
             <div class="text-3xl font-bold text-white font-mono">R$ 130.000</div>
             <p class="text-xs text-slate-400 leading-relaxed font-sans">Grupo premium de alta proximidade, direcionado para empresários de grande porte.</p>
           </div>
@@ -723,7 +774,7 @@
               OFERTA DE EVENTO
             </div>
             <span class="text-xs text-amber-400 font-bold block uppercase tracking-wider">MGA + AMBIÇÃO (BUNDLE)</span>
-            <h3 class="text-xl font-extrabold text-white font-sans">Combo Ascension</h3>
+            <h3 class="text-3xl font-condensed text-white font-sans">Combo Ascension</h3>
             <div class="text-3xl font-bold text-white">
               12x R$ 7.900
               <span class="block text-xs text-slate-400 mt-1 font-semibold font-sans">Total: R$ 94.800</span>
@@ -754,7 +805,7 @@
             </div>
             <div class="p-3 bg-slate-950 border border-slate-800 rounded-lg">
               <span class="text-slate-550 font-sans">Status da Hipótese</span>
-              <div class="text-base font-bold text-yellow-400 mt-1 font-sans">Em Validação Ativa</div>
+              <div class="text-base font-bold text-yellow-400 mt-1 font-sans font-bold">Em Validação Ativa</div>
             </div>
           </div>
         </div>
@@ -764,48 +815,48 @@
       <div id="tab-recovery" class="tab-content space-y-6">
         <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 font-sans">
           <h2 class="text-lg font-bold text-white flex items-center gap-2">
-            <span class="p-1 rounded bg-gray-600/20 text-slate-400">🔄</span>
+            <span class="p-1 rounded bg-gray-600/20 text-slate-400 font-sans font-bold">🔄</span>
             Estratégia de Recuperação (Recovery) e Reascensão
           </h2>
           <p class="text-xs text-slate-400 mt-1">Mapeamos as razões de perda e estruturamos as Mentorias-Ponte como ferramenta técnica de reascensão do cliente.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
-          <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-5 space-y-4 shadow-2xl backdrop-blur-md">
+          <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-5 space-y-4 shadow-2xl backdrop-blur-md font-sans">
             <h3 class="text-sm font-bold text-white uppercase tracking-wider font-mono">Causas de Não Compra (Segmentação)</h3>
-            <div class="space-y-2 text-xs">
+            <div class="space-y-2 text-xs font-sans">
               <div class="p-3 bg-slate-950 border border-white/5 rounded-xl flex justify-between">
                 <span>💳 Caixa / Fluxo financeiro restrito</span>
                 <strong class="text-red-400 font-mono font-bold">Downsell ou Pontes</strong>
               </div>
               <div class="p-3 bg-slate-950 border border-white/5 rounded-xl flex justify-between">
                 <span>⏳ Timing / Outros projetos imediatos</span>
-                <strong class="text-orange-400 font-mono font-bold">Nutrição SDR (60 dias)</strong>
+                <strong class="text-orange-400 font-mono font-bold font-sans">Nutrição SDR (60 dias)</strong>
               </div>
               <div class="p-3 bg-slate-950 border border-white/5 rounded-xl flex justify-between">
                 <span>⚙️ Solução inadequada para o momento</span>
-                <strong class="text-[#52c47c] font-mono font-bold">Encaminhar para Pontes</strong>
+                <strong class="text-[#52c47c] font-mono font-bold font-sans">Encaminhar para Pontes</strong>
               </div>
             </div>
           </div>
 
           <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-5 space-y-4 shadow-2xl backdrop-blur-md">
             <h3 class="text-sm font-bold text-white uppercase tracking-wider font-mono">Mentorias-Ponte Estruturadas</h3>
-            <div class="space-y-3">
+            <div class="space-y-3 font-sans">
               <div class="p-3 bg-slate-950 border border-white/5 rounded-xl">
                 <div class="flex justify-between">
-                  <span class="text-xs font-bold text-white">Mentoria de Vendas</span>
+                  <span class="text-xs font-bold text-white font-mono uppercase">Mentoria de Vendas</span>
                   <strong class="text-[#52c47c] font-mono text-xs">R$ 20.000</strong>
                 </div>
-                <p class="text-[11px] text-slate-400 mt-1 leading-relaxed font-sans">Focada em estruturação de processos comerciais e previsibilidade de funil de vendas.</p>
+                <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">Focada em estruturação de processos comerciais e previsibilidade de funil de vendas.</p>
               </div>
 
               <div class="p-3 bg-slate-950 border border-white/5 rounded-xl">
                 <div class="flex justify-between">
-                  <span class="text-xs font-bold text-white">Estruturação de Growth</span>
+                  <span class="text-xs font-bold text-white font-mono uppercase">Estruturação de Growth</span>
                   <strong class="text-[#52c47c] font-mono text-xs">R$ 25.000</strong>
                 </div>
-                <p class="text-[11px] text-slate-400 mt-1 leading-relaxed font-sans">Focada em marketing de aquisição, estrutura de growth e geração de leads.</p>
+                <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">Focada em marketing de aquisição, estrutura de growth e geração de leads.</p>
               </div>
             </div>
           </div>
@@ -814,13 +865,13 @@
 
       <!-- ================= TAB 6: KPIS & SIMULADOR ================= -->
       <div id="tab-kpis" class="tab-content space-y-6">
-        <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4 font-sans">
+        <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4 font-sans font-bold">
           <div>
             <h2 class="text-lg font-bold text-white flex items-center gap-2">
               <span class="p-1 rounded bg-[#52c47c]/20 text-[#52c47c]">📈</span>
               Modelagem de KPIs, Baselines e Funil de Projeção
             </h2>
-            <p class="text-xs text-slate-400 mt-1">Ajuste os controles deslizantes abaixo para simular as receitas potenciais com base nos baselines da Capital Upgrade.</p>
+            <p class="text-xs text-slate-400 mt-1 font-sans">Ajuste os controles deslizantes abaixo para simular as receitas potenciais com base nos baselines da Capital Upgrade.</p>
           </div>
         </div>
 
@@ -832,7 +883,7 @@
             <div class="space-y-2">
               <div class="flex justify-between text-xs font-mono">
                 <span class="text-slate-400">Inscritos (Summit/Palestra):</span>
-                <strong id="val-subscribers" class="text-white">1000 leads</strong>
+                <strong id="val-subscribers" class="text-white font-mono">1000 leads</strong>
               </div>
               <input 
                 type="range" 
@@ -847,9 +898,9 @@
             </div>
 
             <div class="space-y-2">
-              <div class="flex justify-between text-xs font-mono">
-                <span class="text-slate-400">Taxa de Ascensão para G.I. / G.C.:</span>
-                <strong id="val-ascension" class="text-yellow-400 font-bold">30%</strong>
+              <div class="flex justify-between text-xs font-mono font-bold">
+                <span class="text-slate-400 font-mono">Taxa de Ascensão para G.I. / G.C.:</span>
+                <strong id="val-ascension" class="text-yellow-400 font-mono font-bold">30%</strong>
               </div>
               <input 
                 type="range" 
@@ -864,9 +915,9 @@
             </div>
 
             <div class="space-y-2">
-              <div class="flex justify-between text-xs font-mono">
-                <span class="text-slate-400">Conversão de ICP no G.I./G.C.:</span>
-                <strong id="val-conversion" class="text-[#52c47c] font-bold">20%</strong>
+              <div class="flex justify-between text-xs font-mono font-bold">
+                <span class="text-slate-400 font-mono font-bold">Conversão de ICP no G.I./G.C.:</span>
+                <strong id="val-conversion" class="text-[#52c47c] font-mono font-bold">20%</strong>
               </div>
               <input 
                 type="range" 
@@ -880,61 +931,61 @@
               />
             </div>
 
-            <div class="space-y-2">
+            <div class="space-y-2 font-sans">
               <span class="text-xs text-slate-400 block font-mono">Produto High-Ticket Selecionado:</span>
-              <select id="sim-product" onchange="runSimulation()" class="w-full bg-slate-950 border border-white/5 text-xs text-slate-350 p-2.5 rounded-xl focus:outline-none font-sans">
-                <option value="94800">Combo (R$ 94,8k)</option>
-                <option value="50000">MGA (R$ 50k)</option>
-                <option value="130000">Ambição (R$ 130k)</option>
+              <select id="sim-product" onchange="runSimulation()" class="w-full bg-slate-950 border border-white/5 text-xs text-slate-350 p-2.5 rounded-xl focus:outline-none">
+                <option value="94800 font-mono">Combo (R$ 94,8k)</option>
+                <option value="50000 font-mono">MGA (R$ 50k)</option>
+                <option value="130000 font-mono">Ambição (R$ 130k)</option>
               </select>
             </div>
           </div>
 
           <!-- RESULTADOS -->
-          <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-5 space-y-4 shadow-2xl backdrop-blur-md flex flex-col justify-between">
+          <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-5 space-y-4 shadow-2xl backdrop-blur-md flex flex-col justify-between font-sans">
             <div>
-              <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-3 font-sans">Resultados da Simulação</h3>
-              <div class="space-y-2 text-xs">
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-3 font-mono">Resultados da Simulação</h3>
+              <div class="space-y-2 text-xs font-mono">
                 <div class="p-2.5 bg-slate-950 border border-white/5 rounded-xl flex justify-between items-center">
-                  <span class="text-slate-405 font-sans">Presentes (50% Show Rate)</span>
-                  <strong id="out-present" class="text-white">500 pax</strong>
+                  <span class="text-slate-405 font-sans font-bold">Presentes (50% Show Rate)</span>
+                  <strong id="out-present" class="font-mono">500 pax</strong>
                 </div>
                 <div class="p-2.5 bg-slate-950 border border-white/5 rounded-xl flex justify-between items-center">
-                  <span class="text-slate-405 font-sans">ICPs Presentes (45% Densidade)</span>
-                  <strong id="out-icp" class="text-white">225 pax</strong>
+                  <span class="text-slate-405 font-sans font-bold">ICPs Presentes (45% Densidade)</span>
+                  <strong id="out-icp" class="font-mono">225 pax</strong>
                 </div>
-                <div class="p-2.5 bg-slate-950 border border-white/5 rounded-xl flex justify-between items-center">
+                <div class="p-2.5 bg-slate-950 border border-white/5 rounded-xl flex justify-between items-center font-bold">
                   <span class="text-slate-405 font-sans">Ascendidos para G.I./G.C.</span>
-                  <strong id="out-gigc" class="text-yellow-400 font-bold">68 pax</strong>
+                  <strong id="out-gigc" class="text-yellow-400 font-mono">68 pax</strong>
                 </div>
-                <div class="p-2.5 bg-slate-950 border border-white/5 rounded-xl flex justify-between items-center">
+                <div class="p-2.5 bg-slate-950 border border-white/5 rounded-xl flex justify-between items-center font-bold">
                   <span class="text-slate-405 font-sans">Vendas finais</span>
-                  <strong id="out-sales" class="text-[#52c47c] font-bold">14 vendas</strong>
+                  <strong id="out-sales" class="text-[#52c47c] font-mono">14 vendas</strong>
                 </div>
               </div>
             </div>
 
-            <div class="p-4 bg-emerald-950/20 border border-[#52c47c]/20 rounded-2xl text-center">
+            <div class="p-4 bg-emerald-950/20 border border-[#52c47c]/20 rounded-2xl text-center font-mono">
               <span class="text-[10px] text-slate-400 block uppercase font-sans">Faturamento Projetado</span>
-              <strong id="out-revenue" class="text-xl md:text-2xl text-[#52c47c] block mt-1">R$ 1.327.200</strong>
+              <strong id="out-revenue" class="text-2xl text-[#52c47c] block mt-1">R$ 1.327.200</strong>
             </div>
           </div>
 
           <!-- NORTH STAR -->
-          <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-5 space-y-4 shadow-2xl backdrop-blur-md flex flex-col justify-between">
+          <div class="bg-slate-950/20 border border-white/5 rounded-[24px] p-5 space-y-4 shadow-2xl backdrop-blur-md flex flex-col justify-between font-sans">
             <div>
-              <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 font-sans">Gargalos Financeiros</h3>
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 font-mono font-bold">Gargalos Financeiros</h3>
               
-              <div class="p-4 bg-emerald-950/20 border border-emerald-500/40 rounded-xl space-y-1">
+              <div class="p-4 bg-emerald-950/20 border border-emerald-500/40 rounded-xl space-y-1 font-mono">
                 <span class="text-[9px] font-bold text-[#52c47c] uppercase tracking-wider block font-sans">NORTH STAR METRIC</span>
-                <strong class="text-white text-sm block font-sans">Receita por ICP Presente</strong>
-                <div id="out-ns" class="text-lg md:text-xl font-bold text-white mt-1">R$ 5.898</div>
+                <strong class="text-white text-sm block font-sans font-bold">Receita por ICP Presente</strong>
+                <div id="out-ns" class="text-2xl font-bold text-white mt-1">R$ 5.898</div>
               </div>
 
-              <div class="p-4 bg-blue-950/25 border border-blue-500/20 rounded-xl space-y-1 mt-4">
-                <span class="text-[9px] font-bold text-blue-400 uppercase tracking-wider block font-sans font-bold">CUSTO DE AQUISIÇÃO</span>
-                <strong class="text-white text-sm block font-sans">Custo por ICP Presente</strong>
-                <p class="text-[10px] text-slate-400 mt-1 font-sans leading-relaxed">Substitui o CPL comum para alinhar a equipe de marketing à atração de clientes com alta maturidade.</p>
+              <div class="p-4 bg-blue-950/20 border border-blue-500/20 rounded-xl space-y-1 mt-4">
+                <span class="text-[9px] font-bold text-blue-400 uppercase tracking-wider block font-bold font-mono">CUSTO DE AQUISIÇÃO</span>
+                <strong class="text-white text-sm block">Custo por ICP Presente</strong>
+                <p class="text-[10px] text-slate-400 mt-1 leading-relaxed">Substitui o CPL comum para alinhar a equipe de marketing à atração de clientes com alta maturidade.</p>
               </div>
             </div>
           </div>
@@ -943,13 +994,13 @@
 
       <!-- ================= TAB 7: HIPÓTESES (KANBAN) ================= -->
       <div id="tab-hipoteses" class="tab-content space-y-6">
-        <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4 font-sans">
+        <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4 font-sans font-bold">
           <div>
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2 font-display">
               <span class="p-1 rounded bg-amber-600/20 text-amber-400">📌</span>
               Backlog de Hipóteses e Testes de Growth
             </h2>
-            <p class="text-xs text-slate-400 mt-1">Os 15 testes de hipótese ativos do time estratégico da Capital.</p>
+            <p class="text-xs text-slate-400 mt-1 font-sans">Os 15 testes de hipótese ativos do time estratégico da Capital.</p>
           </div>
         </div>
 
@@ -961,7 +1012,7 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="mt-16 border-t border-slate-850 bg-slate-950/60 px-8 py-6 text-xs text-slate-500 flex justify-between items-center font-sans">
+    <footer class="mt-16 border-t border-slate-855 bg-slate-950/60 px-8 py-6 text-xs text-slate-500 flex justify-between items-center font-sans">
       <div>
         <span>CAUP © 2026</span>
         <span class="mx-2">|</span>
@@ -987,7 +1038,7 @@
         { id: 'H6', text: 'Empresas maduras podem entrar diretamente no G.C. (Rota B).', category: 'Produto', status: 'Pendente' },
         { id: 'H7', text: 'MGA e Ambição não devem competir diretamente no pitch de vendas.', category: 'Conversão', status: 'Pendente' },
         { id: 'H8', text: 'Próximo passo personalizado com diagnóstico presencial aumenta taxa de conversão.', category: 'Conversão', status: 'Em Teste' },
-        { id: 'H9', text: 'Validar economicamente o bundle MGA + Ambição (risco de canibalização e perda de margem).', category: 'Pricing', status: 'Em Teste' },
+        { id: 'H9', text: 'Validar economicamente o combo Combo Ascension (risco de canibalização e perda de margem de Ambição).', category: 'Pricing', status: 'Em Teste' },
         { id: 'H10', text: 'Mentorias de Vendas e Growth podem recuperar receita de não compradores de high-ticket.', category: 'Recuperação', status: 'Pendente' },
         { id: 'H11', text: 'Produtos-ponte precisam obrigatoriamente possuir uma estratégia de reascensão automática.', category: 'Recuperação', status: 'Pendente' },
         { id: 'H12', text: 'Sala Secreta deve priorizar densidade de ICP sobre volume absoluto.', category: 'Conversão', status: 'Pendente' },
@@ -1006,7 +1057,7 @@
         targetTab.classList.add('active');
       }
 
-      document.querySelectorAll('header button[onclick^="switchTab"]').forEach(btn => {
+      document.querySelectorAll('header border-white/5 button[onclick^="switchTab"], header button[onclick^="switchTab"]').forEach(btn => {
         btn.className = "px-4 py-2 text-xs font-semibold rounded-full card-transition text-slate-400 hover:text-white";
       });
 
@@ -1096,7 +1147,7 @@
       const statuses = [
         { key: 'Pendente', title: '⏳ Aguardando / Pendentes', classColor: 'text-slate-400', border: 'border-slate-800' },
         { key: 'Em Teste', title: '🧪 Em Validação / Teste', classColor: 'text-blue-400', border: 'border-blue-500/30' },
-        { key: 'Validada', title: '✅ Validadas / Concluídas', classColor: 'text-emerald-400', border: 'border-emerald-500/30' }
+        { key: 'Validada', title: '✅ Validadas / Concluídas', classColor: 'text-[#52c47c]', border: 'border-[#52c47c]/30' }
       ];
 
       statuses.forEach(statusCol => {
@@ -1121,16 +1172,16 @@
           
           let actionButton = '';
           if (hyp.status === 'Pendente') {
-            actionButton = `<button onclick="moveHypothesis('${hyp.id}', 'Em Teste')" class="text-[9px] px-2 py-1 bg-blue-950 hover:bg-blue-900 text-blue-400 font-extrabold rounded-lg card-transition">Testar ➔</button>`;
+            actionButton = `<button onclick="moveHypothesis('${hyp.id}', 'Em Teste')" class="text-[9px] px-2 py-1 bg-blue-950 hover:bg-blue-900 text-blue-400 font-extrabold rounded-lg card-transition font-sans">Testar ➔</button>`;
           } else if (hyp.status === 'Em Teste') {
             actionButton = `
-              <div class="flex gap-1.5">
+              <div class="flex gap-1.5 font-sans">
                 <button onclick="moveHypothesis('${hyp.id}', 'Pendente')" class="text-[9px] px-2 py-1 bg-slate-900 hover:bg-slate-850 text-slate-400 rounded-lg card-transition">⬅ Recuar</button>
-                <button onclick="moveHypothesis('${hyp.id}', 'Validada')" class="text-[9px] px-2 py-1 bg-[#52c47c]/15 hover:bg-[#52c47c]/30 text-[#52c47c] font-extrabold rounded-lg card-transition font-bold">Validar ✔</button>
+                <button onclick="moveHypothesis('${hyp.id}', 'Validada')" class="text-[9px] px-2 py-1 bg-[#52c47c]/15 hover:bg-[#52c47c]/30 text-[#52c47c] font-extrabold rounded-lg card-transition">Validar ✔</button>
               </div>
             `;
           } else if (hyp.status === 'Validada') {
-            actionButton = `<button onclick="moveHypothesis('${hyp.id}', 'Em Teste')" class="text-[9px] px-2 py-1 bg-slate-900 hover:bg-slate-850 text-slate-400 rounded-lg card-transition">Reabrir</button>`;
+            actionButton = `<button onclick="moveHypothesis('${hyp.id}', 'Em Teste')" class="text-[9px] px-2 py-1 bg-slate-900 hover:bg-slate-850 text-slate-400 rounded-lg card-transition font-sans">Reabrir</button>`;
           }
 
           card.innerHTML = `
@@ -1138,7 +1189,7 @@
               <span class="text-[9px] font-bold text-slate-500 font-mono uppercase bg-slate-900 px-2 py-0.5 rounded">${hyp.id} - ${hyp.category}</span>
               ${actionButton}
             </div>
-            <p class="text-xs text-slate-300 font-medium leading-relaxed">${hyp.text}</p>
+            <p class="text-xs text-slate-300 font-medium leading-relaxed font-sans">${hyp.text}</p>
           `;
           cardsContainer.appendChild(card);
         });
