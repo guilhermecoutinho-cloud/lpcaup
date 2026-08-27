@@ -8,7 +8,7 @@ O projeto foi construído no formato de um dashboard interativo (SPA) em HTML, R
 
 Para abrir o painel estratégico:
 1. Faça o download ou clone do repositório.
-2. Abra o arquivo [`growth_os_dashboard.html`](./growth_os_dashboard.html) diretamente em qualquer navegador web (Chrome, Edge, Safari, Firefox).
+2. Abra o arquivo [`index.html`](./index.html) diretamente em qualquer navegador web (Chrome, Edge, Safari, Firefox).
 
 ---
 
