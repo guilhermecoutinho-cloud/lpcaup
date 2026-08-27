@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capital Upgrade - Growth Operating System</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React and ReactDOM CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <!-- Babel for JSX compilation -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #090d16;
+      color: #f3f4f6;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0d1527;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1f293d;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #10b981;
+    }
+    /* Animated pulse */
+    .glow-green {
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+    }
+    .glow-gold {
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+    }
+    /* Custom animation */
+    .animate-fadeIn {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="overflow-x-hidden">
+
+  <div id="root"></div>
+
+  <!-- React Code with JSX -->
+  <script type="text/babel">
+    const { useState } = React;
+
+    // Helper: Badge component
+    const StatusBadge = ({ type }) => {
+      if (type === 'REAL') {
+        return (
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-500/40">
+            🟢 DADO REAL
+          </span>
+        );
+      } else if (type === 'DECISAO') {
+        return (
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-950/80 text-blue-400 border border-blue-500/40">
+            🔵 DECISÃO ATUAL
+          </span>
+        );
+      } else {
+        return (
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-950/80 text-amber-400 border border-amber-500/40">
+            🟡 HIPÓTESE
+          </span>
+        );
+      }
+    };
+
+    function App() {
+      const [activeTab, setActiveTab] = useState('jornada');
+      const [subscribers, setSubscribers] = useState(1000);
+      const [showInfoPanel, setShowInfoPanel] = useState(true);
+
+      // Hypotheses State (Interactive Kanban)
+      const [hypotheses, setHypotheses] = useState([
+        { id: 'H1', text: 'Summit pago pode reduzir inscrições mas melhorar presença e ICP.', category: 'Aquisição', status: 'Em Teste' },
+        { id: 'H2', text: 'Palestra low-ticket + transmissão pode ser a principal máquina de aquisição em escala.', category: 'Aquisição', status: 'Pendente' },
+        { id: 'H3', text: 'Sala Secreta pode ser mais valiosa como ambiente de fechamento (Closing Environment).', category: 'Conversão', status: 'Em Teste' },
+        { id: 'H4', text: 'Prescrição de G.I./G.C. pode converter melhor do que a escolha livre do participante.', category: 'Produto', status: 'Pendente' },
+        { id: 'H5', text: 'Empresas de menor maturidade têm melhor resultado na trilha estruturada G.I. → G.C.', category: 'Produto', status: 'Pendente' },
+        { id: 'H6', text: 'Empresas maduras podem entrar diretamente no G.C. (Rota B).', category: 'Produto', status: 'Pendente' },
+        { id: 'H7', text: 'MGA e Ambição não devem competir diretamente no pitch de vendas.', category: 'Conversão', status: 'Pendente' },
+        { id: 'H8', text: 'Próximo passo personalizado com diagnóstico presencial aumenta taxa de conversão.', category: 'Conversão', status: 'Em Teste' },
+        { id: 'H9', text: 'Validar economicamente o bundle MGA + Ambição (risco de canibalização e perda de margem).', category: 'Pricing', status: 'Em Teste' },
+        { id: 'H10', text: 'Mentorias de Vendas e Growth podem recuperar receita de não compradores de high-ticket.', category: 'Recuperação', status: 'Pendente' },
+        { id: 'H11', text: 'Produtos-ponte precisam obrigatoriamente possuir uma estratégia de reascensão automática.', category: 'Recuperação', status: 'Pendente' },
+        { id: 'H12', text: 'Sala Secreta deve priorizar densidade de ICP sobre volume absoluto.', category: 'Conversão', status: 'Pendente' },
+        { id: 'H13', text: 'Programa de Embaixadores pode criar um canal de aquisição recorrente e previsível.', category: 'Aquisição', status: 'Pendente' },
+        { id: 'H14', text: 'Origens diferentes têm CPL semelhante, mas Receita por ICP amplamente distinta.', category: 'Canais', status: 'Pendente' },
+        { id: 'H15', text: 'O maior ganho de Growth está no meio do funil (ICP → G.I./G.C.) e não apenas no topo.', category: 'Métricas', status: 'Em Teste' }
+      ]);
+
+      const updateHypothesisStatus = (id, newStatus) => {
+        setHypotheses(hypotheses.map(h => h.id === id ? { ...h, status: newStatus } : h));
+      };
+
+      // Math funnels based on real baselines
+      const showRate = 0.50; // 50%
+      const icpRate = 0.45; // 45%
+      const salesRate = 0.20; // 20%
+
+      const mathPresent = Math.round(subscribers * showRate);
+      const mathIcp = Math.round(mathPresent * icpRate);
+
+      return (
+        <div className="min-h-screen flex flex-col bg-[#090d16] text-[#f3f4f6]">
+          
+          {/* HEADER */}
+          <header className="border-b border-slate-800 bg-[#0d1322] px-6 py-5 sticky top-0 z-50 shadow-lg">
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <h1 className="text-xl md:text-2xl font-extrabold tracking-wider text-white">
+                  CAPITAL UPGRADE <span className="text-[#00E676] text-xs px-2 py-0.5 border border-[#00E676]/30 bg-[#00E676]/10 rounded ml-2 font-mono">GROWTH OS</span>
+                </h1>
+                <p className="text-xs text-slate-400 mt-1 uppercase font-semibold tracking-widest flex flex-wrap items-center gap-1">
+                  Atrair <span className="text-slate-600">→</span> Qualificar <span className="text-slate-600">→</span> Diagnosticar <span className="text-slate-600">→</span> Prescrever <span className="text-slate-600">→</span> Transformar <span className="text-slate-600">→</span> Monetizar <span className="text-slate-600">→</span> Reascender
+                </p>
+              </div>
+              
+              {/* Global Legend */}
+              <div className="flex flex-wrap gap-2 text-xs">
+                <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-900 border border-slate-800 rounded">
+                  <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Aquisição
+                </span>
+                <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-900 border border-slate-800 rounded">
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> Diagnóstico
+                </span>
+                <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-900 border border-slate-800 rounded">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> G.I.
+                </span>
+                <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-900 border border-slate-800 rounded">
+                  <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span> G.C.
+                </span>
+                <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-900 border border-slate-800 rounded">
+                  <span className="w-2.5 h-2.5 rounded-full bg-purple-500"></span> S. Secreta
+                </span>
+                <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-900 border border-slate-800 rounded">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Monetização
+                </span>
+                <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-900 border border-slate-800 rounded">
+                  <span className="w-2.5 h-2.5 rounded-full bg-gray-500"></span> Recovery
+                </span>
+              </div>
+            </div>
+
+            {/* TAB NAVIGATION */}
+            <div className="max-w-7xl mx-auto mt-5 flex flex-wrap gap-1 border-t border-slate-800/60 pt-4">
+              <button 
+                onClick={() => setActiveTab('jornada')}
+                className={`px-4 py-2 text-xs md:text-sm font-semibold rounded-md transition-all flex items-center gap-2 ${activeTab === 'jornada' ? 'bg-[#00E676] text-black shadow-lg shadow-[#00E676]/20' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
+              >
+                🗺️ 1. Jornada Completa
+              </button>
+              <button 
+                onClick={() => setActiveTab('aquisicao')}
+                className={`px-4 py-2 text-xs md:text-sm font-semibold rounded-md transition-all flex items-center gap-2 ${activeTab === 'aquisicao' ? 'bg-orange-600 text-white shadow-lg shadow-orange-600/20' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
+              >
+                📢 2. Aquisição (TOFU)
+              </button>
+              <button 
+                onClick={() => setActiveTab('gigc')}
+                className={`px-4 py-2 text-xs md:text-sm font-semibold rounded-md transition-all flex items-center gap-2 ${activeTab === 'gigc' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
+              >
+                📊 3. G.I. vs G.C.
+              </button>
+              <button 
+                onClick={() => setActiveTab('monetizacao')}
+                className={`px-4 py-2 text-xs md:text-sm font-semibold rounded-md transition-all flex items-center gap-2 ${activeTab === 'monetizacao' ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
+              >
+                💰 4. Monetização & Pricing
+              </button>
+              <button 
+                onClick={() => setActiveTab('recovery')}
+                className={`px-4 py-2 text-xs md:text-sm font-semibold rounded-md transition-all flex items-center gap-2 ${activeTab === 'recovery' ? 'bg-gray-600 text-white shadow-lg shadow-gray-600/20' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
+              >
+                🔄 5. Recovery & Reascensão
+              </button>
+              <button 
+                onClick={() => setActiveTab('kpis')}
+                className={`px-4 py-2 text-xs md:text-sm font-semibold rounded-md transition-all flex items-center gap-2 ${activeTab === 'kpis' ? 'bg-[#00E676] text-black shadow-lg shadow-emerald-600/20' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
+              >
+                📈 6. KPIs & Funil
+              </button>
+              <button 
+                onClick={() => setActiveTab('hipoteses')}
+                className={`px-4 py-2 text-xs md:text-sm font-semibold rounded-md transition-all flex items-center gap-2 ${activeTab === 'hipoteses' ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/20' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
+              >
+                📌 7. Post-its de Hipóteses
+              </button>
+            </div>
+          </header>
+
+          {/* SYSTEM RULES / METADATA HEADER BANNER */}
+          {showInfoPanel && (
+            <div className="bg-slate-950 border-b border-slate-800 px-6 py-3 flex justify-between items-center text-xs text-slate-400">
+              <div className="flex flex-wrap gap-4 items-center">
+                <span>⚡ <strong>Tese Central:</strong> Não estamos construindo eventos, estamos construindo um <strong>Sistema de Ascensão de Clientes</strong>.</span>
+                <div className="flex gap-3">
+                  <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Dado Real</span>
+                  <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Decisão Atual</span>
+                  <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Hipótese</span>
+                </div>
+              </div>
+              <button onClick={() => setShowInfoPanel(false)} className="text-slate-500 hover:text-white transition">✖</button>
+            </div>
+          )}
+
+          {/* MAIN CONTAINER */}
+          <main className="flex-grow p-4 md:p-6 max-w-[1600px] mx-auto w-full">
+            
+            {/* VIEW 1: JORNADA COMPLETA (FLOW HORIZONTAL) */}
+            {activeTab === 'jornada' && (
+              <div className="space-y-8 animate-fadeIn">
+                <div className="bg-slate-900/60 p-4 border border-slate-800 rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                      <span className="p-1 rounded bg-[#00E676]/20 text-[#00E676]">🗺️</span>
+                      Mapa da Jornada do Cliente (Ascensão Completa)
+                    </h2>
+                    <p className="text-xs text-slate-400 mt-0.5">Visualize o fluxo horizontal dos empresários, desde o primeiro impacto até a reascensão.</p>
+                  </div>
+                  <div className="text-xs text-slate-400 italic">💡 Clique nas abas de detalhamento para análises aprofundadas.</div>
+                </div>
+
+                {/* HORIZONTAL FLOW CONTAINER */}
+                <div className="overflow-x-auto pb-6 pt-2">
+                  <div className="flex min-w-[1300px] items-stretch gap-4 relative">
+                    
+                    {/* STAGE 1: AQUISIÇÃO */}
+                    <div className="w-80 flex-shrink-0 bg-slate-900/40 p-4 border border-orange-500/20 rounded-xl relative flex flex-col justify-between">
+                      <div className="absolute -top-3 left-4 px-2 py-0.5 bg-orange-600 text-white rounded text-[10px] uppercase font-bold tracking-widest">
+                        1. Atrair
+                      </div>
+                      
+                      <div className="space-y-4 mt-2">
+                        <h3 className="text-sm font-bold text-orange-400">Portas de Entrada</h3>
+                        
+                        {/* Box Summit */}
+                        <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg hover:border-orange-500/50 transition">
+                          <div className="flex justify-between items-start">
+                            <span className="text-xs font-bold text-white">Summit Capital Upgrade</span>
+                            <StatusBadge type="DECISAO" />
+                          </div>
+                          <p className="text-[11px] text-slate-400 mt-1">1 dia | ~300 pessoas | Pago/Gratuito debate. Focado em Autoridade + Escala. Sem pitch direto de MGA.</p>
+                          <div className="mt-2 text-[10px] text-orange-300 font-mono">CTA: Diagnóstico de Rota (G.I./G.C.)</div>
+                        </div>
+
+                        {/* Box Palestra */}
+                        <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg hover:border-orange-500/50 transition">
+                          <div className="flex justify-between items-start">
+                            <span className="text-xs font-bold text-white">Palestra / Evento 1 Dia</span>
+                            <StatusBadge type="DECISAO" />
+                          </div>
+                          <p className="text-[11px] text-slate-400 mt-1">Ticket Baixo | Presencial + Online. Escala rápida.</p>
+                          <div className="mt-2 text-[10px] text-slate-500">Coortes separadas por presencialidade.</div>
+                        </div>
+
+                        {/* Box Indicações */}
+                        <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg hover:border-orange-500/50 transition">
+                          <div className="flex justify-between items-start">
+                            <span className="text-xs font-bold text-white">Referral / Canais</span>
+                            <StatusBadge type="DECISAO" />
+                          </div>
+                          <p className="text-[11px] text-slate-400 mt-1">Parceiros, comunidades, associações B2B. Confiança prévia alta.</p>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4 p-2 bg-orange-950/20 border border-orange-500/30 rounded text-[10px] text-orange-200">
+                        📌 <strong>Hipótese H1:</strong> Cobrar ingresso reduz volume, mas aumenta show-rate e densidade de ICP.
+                      </div>
+                    </div>
+
+                    {/* ARROW */}
+                    <div className="flex items-center justify-center text-slate-600 px-1">
+                      <svg className="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+                    </div>
+
+                    {/* STAGE 2: QUALIFICAÇÃO & DIAGNÓSTICO */}
+                    <div className="w-80 flex-shrink-0 bg-slate-900/40 p-4 border border-yellow-500/20 rounded-xl relative flex flex-col justify-between">
+                      <div className="absolute -top-3 left-4 px-2 py-0.5 bg-yellow-600 text-black rounded text-[10px] uppercase font-bold tracking-widest">
+                        2. Qualificar & Diagnosticar
+                      </div>
+                      
+                      <div className="space-y-4 mt-2">
+                        {/* Losango de Decisão (Falso Losango em CSS) */}
+                        <div className="p-4 bg-slate-950 border border-yellow-500/40 rounded-lg relative overflow-hidden">
+                          <div className="flex justify-between items-start">
+                            <span className="text-xs font-bold text-yellow-400 uppercase tracking-wider">Filtro: É ICP?</span>
+                            <StatusBadge type="DECISAO" />
+                          </div>
+                          <p className="text-[11px] text-slate-400 mt-1">Critérios: Faturamento, Maturidade, Cargo de Decisão, Capacidade de Investimento, Gargalos.</p>
+                          
+                          <div className="mt-3 flex gap-2 justify-between">
+                            <div className="p-1.5 bg-red-950/30 border border-red-500/30 rounded text-[9px] text-red-400 flex-1 text-center">
+                              ❌ Não: Nutrição/Conteúdo
+                            </div>
+                            <div className="p-1.5 bg-emerald-950/30 border border-emerald-500/30 rounded text-[9px] text-emerald-400 flex-1 text-center font-bold">
+                              ✅ Sim: Rota G.I./G.C.
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Rota Prescritiva */}
+                        <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg">
+                          <div className="flex justify-between items-start">
+                            <span className="text-xs font-bold text-white">Prescrição de Rota</span>
+                            <StatusBadge type="HIPOTESE" />
+                          </div>
+                          <p className="text-[11px] text-slate-400 mt-1">Não oferecemos um cardápio livre. Diagnosticamos o momento e indicamos a melhor imersão.</p>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 p-2 bg-yellow-950/20 border border-yellow-500/30 rounded text-[10px] text-yellow-200">
+                        💡 <strong>Tese:</strong> A conversão de prescrição (direcionada) é superior à de catálogo de livre escolha (H4).
+                      </div>
+                    </div>
+
+                    {/* ARROW */}
+                    <div className="flex items-center justify-center text-slate-600 px-1">
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+                    </div>
+
+                    {/* STAGE 3: TRANSFORMAÇÃO (G.I. / G.C.) */}
+                    <div className="w-[380px] flex-shrink-0 bg-slate-900/40 p-4 border border-emerald-500/20 rounded-xl relative flex flex-col justify-between">
+                      <div className="absolute -top-3 left-4 px-2 py-0.5 bg-teal-600 text-white rounded text-[10px] uppercase font-bold tracking-widest">
+                        3. Transformar (Imersões 2 Dias)
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-3 mt-2">
+                        {/* G.I. */}
+                        <div className="p-3 bg-slate-950 border-l-4 border-emerald-500 rounded-r-lg space-y-1.5">
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs font-bold text-emerald-400">G.I. Gestão Inteligente</span>
+                          </div>
+                          <p className="text-[10px] text-slate-400">Maturidade & Estruturação de Processos.</p>
+                          <div className="text-[9px] text-slate-500">4 Pilares: Demanda → Receita → Entrega → Margem/Lucro</div>
+                          <div className="bg-emerald-950/40 p-1 text-[9px] text-emerald-300 rounded font-mono text-center">Contém Pitch de Vendas</div>
+                        </div>
+
+                        {/* G.C. */}
+                        <div className="p-3 bg-slate-950 border-l-4 border-blue-500 rounded-r-lg space-y-1.5">
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs font-bold text-blue-400">G.C. Gestão Crescimento</span>
+                          </div>
+                          <p className="text-[10px] text-slate-400">Escalar com Governança e Estratégia.</p>
+                          <div className="text-[9px] text-slate-500">Entrega: Roadmap Estratégico de Crescimento. Onde agir primeiro.</div>
+                          <div className="bg-blue-950/40 p-1 text-[9px] text-blue-300 rounded font-mono text-center">Contém Pitch de Vendas</div>
+                        </div>
+                      </div>
+
+                      {/* Bifurcations / Routes */}
+                      <div className="mt-3 p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-[11px] space-y-1">
+                        <div className="font-bold text-white flex justify-between">
+                          <span>Rotas de Maturidade</span>
+                          <StatusBadge type="HIPOTESE" />
+                        </div>
+                        <div className="text-slate-400"><strong className="text-emerald-400">Rota A:</strong> G.I. (Baixa maturidade) → G.C.</div>
+                        <div className="text-slate-400"><strong className="text-blue-400">Rota B:</strong> G.C. Direto (Empresa já estruturada)</div>
+                      </div>
+
+                      <div className="mt-3 p-2 bg-emerald-950/20 border border-emerald-500/30 rounded text-[10px] text-emerald-200">
+                        🔄 Ambos os eventos possuem capacidade de ~100 pessoas e atuam como funil para os programas premium (MGA/Ambição).
+                      </div>
+                    </div>
+
+                    {/* ARROW */}
+                    <div className="flex items-center justify-center text-slate-600 px-1">
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+                    </div>
+
+                    {/* STAGE 4: CLOSING ENVIRONMENT & MONETIZAÇÃO */}
+                    <div className="w-[340px] flex-shrink-0 bg-slate-900/40 p-4 border border-amber-500/20 rounded-xl relative flex flex-col justify-between">
+                      <div className="absolute -top-3 left-4 px-2 py-0.5 bg-amber-600 text-black rounded text-[10px] uppercase font-bold tracking-widest">
+                        4. Monetizar / Fechamento
+                      </div>
+                      
+                      <div className="space-y-3 mt-2">
+                        {/* Sala Secreta */}
+                        <div className="p-3 bg-purple-950/20 border border-purple-500/30 rounded-lg">
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs font-bold text-purple-400 flex items-center gap-1">🤫 Sala Secreta</span>
+                            <StatusBadge type="HIPOTESE" />
+                          </div>
+                          <p className="text-[10px] text-slate-300 mt-1">
+                            ~20 empresários | Experiência exclusiva. 
+                          </p>
+                          <div className="text-[9px] text-slate-400 mt-1 font-semibold border-t border-purple-500/20 pt-1">
+                            🚀 Tese: Usar como <strong className="text-purple-300">Closing Environment</strong> para Hot Leads de G.I./G.C. 
+                          </div>
+                          <div className="text-[9px] text-slate-500 italic mt-0.5">
+                            * Rota alternativa (linha tracejada): Summit → ICP Muito Qualificado.
+                          </div>
+                        </div>
+
+                        {/* High ticket products */}
+                        <div className="p-3 bg-slate-950 border border-amber-500/30 rounded-lg space-y-2">
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs font-extrabold text-amber-400">Produtos Premium</span>
+                            <StatusBadge type="REAL" />
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-1 text-[10px] font-mono">
+                            <div className="bg-slate-900 p-1 text-center rounded border border-slate-805">
+                              <span className="block text-[8px] text-slate-500">MGA</span>
+                              <strong className="text-white">R$ 50k</strong>
+                            </div>
+                            <div className="bg-slate-900 p-1 text-center rounded border border-slate-805">
+                              <span className="block text-[8px] text-slate-500">Ambição</span>
+                              <strong className="text-white">R$ 130k</strong>
+                            </div>
+                          </div>
+
+                          <div className="p-1.5 bg-amber-950/40 border border-amber-500/40 rounded text-center">
+                            <span className="block text-[8px] text-amber-400 uppercase font-bold">Bundle Especial (Evento)</span>
+                            <strong className="text-white font-mono text-[11px]">12x R$ 7.900 (R$ 94,8k)</strong>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 p-2 bg-amber-950/20 border border-amber-500/30 rounded text-[9px] text-amber-200">
+                        ⚠️ <strong>ALERTA DE ANOMALIA DE PREÇO (H9):</strong> O Bundle custa R$ 85,2k a menos do que a soma, e menos que o Ambição sozinho (R$ 130k). Risco de canibalização e margem.
+                      </div>
+                    </div>
+
+                    {/* ARROW */}
+                    <div className="flex items-center justify-center text-slate-600 px-1">
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+                    </div>
+
+                    {/* STAGE 5: RECUPERAÇÃO & REASCENSÃO */}
+                    <div className="w-80 flex-shrink-0 bg-slate-900/40 p-4 border border-gray-600 rounded-xl relative flex flex-col justify-between">
+                      <div className="absolute -top-3 left-4 px-2 py-0.5 bg-gray-600 text-white rounded text-[10px] uppercase font-bold tracking-widest">
+                        5. Recuperar & Reascender
+                      </div>
+                      
+                      <div className="space-y-3 mt-2">
+                        <div className="p-3 bg-slate-950 border border-slate-850 rounded-lg">
+                          <span className="text-xs font-bold text-slate-400">Não Comprou?</span>
+                          <p className="text-[10px] text-slate-550 mt-0.5">Diagnosticar gargalo real: Caixa, Timing, Confiança, Valor ou Momento.</p>
+                        </div>
+
+                        {/* Produtos Ponte */}
+                        <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg space-y-2">
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs font-bold text-white">Produtos-Ponte</span>
+                            <StatusBadge type="DECISAO" />
+                          </div>
+                          
+                          <div className="space-y-1.5 text-[10px]">
+                            <div className="p-1 bg-slate-900 border border-slate-800 rounded flex justify-between items-center">
+                              <span>Mentoria de Vendas</span>
+                              <strong className="text-white">R$ 20k</strong>
+                            </div>
+                            <div className="p-1 bg-slate-900 border border-slate-800 rounded flex justify-between items-center">
+                              <span>Estruturação de Growth</span>
+                              <strong className="text-white">R$ 25k</strong>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Loop de Reascensão */}
+                        <div className="p-2.5 bg-emerald-950/20 border border-emerald-500/20 rounded-lg text-[10px] text-emerald-300 flex items-center gap-2">
+                          <div className="text-lg">🔄</div>
+                          <div>
+                            <strong>Loop de Reascensão:</strong> Implementação da mentoria gera resultado e recoloca o cliente no G.I./G.C. rumo ao MGA.
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 p-2 bg-gray-900 border border-gray-700 rounded text-[9px] text-slate-400">
+                        🚫 <strong>Regra:</strong> Não é downsell automático. É indicação focada no gargalo comercial ou de marketing detectado.
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* VISÃO DE ECOSSISTEMA E FLYWHEEL */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                  {/* FLYWHEEL BOARD */}
+                  <div className="bg-[#0d1322] border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-base font-bold text-white flex items-center gap-2">
+                        <span className="text-emerald-400">⚙️</span> Flywheel Capital Upgrade (Ecossistema)
+                      </h3>
+                      <p className="text-xs text-slate-400 mt-1">O motor de crescimento orgânico e atração de novos ICPs através de resultados e embaixadores.</p>
+                      
+                      {/* Circular Representation */}
+                      <div className="my-8 flex justify-center items-center">
+                        <div className="relative w-64 h-64 border-4 border-dashed border-emerald-500/20 rounded-full flex items-center justify-center">
+                          <div className="absolute w-20 h-20 bg-slate-950 border border-slate-800 rounded-full flex items-center justify-center text-center p-2 text-xs font-bold text-[#00E676] shadow-lg shadow-emerald-500/10">
+                            CLIENTE NO CENTRO
+                          </div>
+                          
+                          {/* Circle steps */}
+                          <div className="absolute -top-4 bg-slate-900 border border-slate-800 text-[10px] font-semibold px-2 py-1 rounded text-orange-400">1. Atração</div>
+                          <div className="absolute right-0 top-12 bg-slate-900 border border-slate-850 text-[10px] font-semibold px-2 py-1 rounded text-yellow-400">2. Qualificação</div>
+                          <div className="absolute right-[-10px] bottom-16 bg-slate-900 border border-slate-800 text-[10px] font-semibold px-2 py-1 rounded text-emerald-400">3. Transformação</div>
+                          <div className="absolute bottom-[-10px] bg-slate-900 border border-slate-800 text-[10px] font-semibold px-2 py-1 rounded text-amber-400">4. Monetização</div>
+                          <div className="absolute left-[-20px] bottom-16 bg-slate-900 border border-slate-800 text-[10px] font-semibold px-2 py-1 rounded text-purple-400">5. Case & Resultados</div>
+                          <div className="absolute left-0 top-12 bg-slate-900 border border-slate-800 text-[10px] font-semibold px-2 py-1 rounded text-slate-300">6. Embaixador (Indicação)</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg text-xs space-y-1">
+                      <div className="font-bold text-white">🔄 Loop de Indicações (Referral Engine)</div>
+                      <p className="text-slate-400">Clientes geram resultados → transformam-se em cases → atuam como embaixadores → trazem novos empresários altamente qualificados diretamente no diagnóstico.</p>
+                    </div>
+                  </div>
+
+                  {/* COORTES E CANAIS CARD */}
+                  <div className="bg-[#0d1322] border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-base font-bold text-white flex items-center gap-2">
+                        <span className="text-orange-400">👥</span> Filtro de Coortes & Canais Estratégicos
+                      </h3>
+                      <p className="text-xs text-slate-400 mt-1">A separação tática de como lidar com os canais e o nível de confiança na entrada.</p>
+
+                      <div className="space-y-3 mt-4">
+                        <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg">
+                          <span className="text-xs font-bold text-orange-400">Coorte Presencial vs Online (Palestra 1 Dia)</span>
+                          <p className="text-[11px] text-slate-400 mt-1">Participantes online e presenciais não devem ser considerados iguais. O público presencial possui muito mais intenção e deve receber prioridade na qualificação e diagnóstico ativo.</p>
+                        </div>
+
+                        <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg">
+                          <span className="text-xs font-bold text-yellow-400">Métricas Separadas: Pago vs Orgânico (Referral)</span>
+                          <p className="text-[11px] text-slate-400 mt-1">O CPL (Custo por Lead) de tráfego pago tende a ser menor que o CAC de parcerias, mas a densidade de ICP e o LTV de indicações/embaixadores é imensamente superior. Exige canais de análise paralelos.</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-yellow-950/20 border border-yellow-500/20 rounded-lg text-xs text-yellow-300">
+                      ⚡ <strong>Diretriz do Head de Growth:</strong> Não gaste verba de tráfego pago otimizando apenas para CPL genérico. A métrica de norte deve ser o Custo por ICP Presente.
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+            {/* VIEW 2: AQUISIÇÃO (DETALHE TOFU) */}
+            {activeTab === 'aquisicao' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 p-4 border border-slate-800 rounded-lg">
+                  <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                    <span className="p-1 rounded bg-orange-600/20 text-orange-400">📢</span>
+                    Detalhamento de Topo de Funil (Aquisição B2B)
+                  </h2>
+                  <p className="text-xs text-slate-400 mt-0.5">As três portas de entrada para alimentar o ecossistema, orientadas a qualificação rápida.</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* CANAL A: SUMMIT CAPITAL UPGRADE */}
+                  <div className="bg-[#0d1322] border border-orange-500/20 rounded-xl p-5 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="px-2.5 py-1 bg-orange-950/50 text-orange-400 border border-orange-500/30 rounded text-xs font-bold uppercase tracking-wider">CANAL A</span>
+                      <StatusBadge type="DECISAO" />
+                    </div>
+                    
+                    <h3 className="text-base font-extrabold text-white">Summit Capital Upgrade</h3>
+                    <p className="text-xs text-slate-400">Grande gerador de autoridade e aquisição em escala para atração inicial do ecossistema.</p>
+                    
+                    <ul className="space-y-2 text-xs text-slate-300 bg-slate-950 p-3 rounded-lg border border-slate-800">
+                      <li className="flex items-center gap-2">📅 <strong>Duração:</strong> 1 Dia (Presencial)</li>
+                      <li className="flex items-center gap-2">👥 <strong>Capacidade:</strong> ~300 pessoas</li>
+                      <li className="flex items-center gap-2">🎟️ <strong>Modelo:</strong> Pode vir a ser pago (teste de compromisso)</li>
+                      <li className="flex items-center gap-2 text-orange-400 font-semibold">❌ Sem Pitch de MGA/Ambição no palco</li>
+                      <li className="flex items-center gap-2 text-[#00E676]">🎯 <strong>CTA:</strong> Direcionar para Diagnóstico de Rota</li>
+                    </ul>
+
+                    <div className="p-3 bg-amber-950/20 border border-amber-500/30 rounded-lg text-xs">
+                      <strong className="text-amber-400 block mb-1">Tese / Hipótese H1:</strong>
+                      A cobrança de ingresso reduz o volume bruto de inscritos, mas melhora a taxa de comparecimento (show-rate), o comprometimento dos presentes e a densidade de ICP.
+                    </div>
+                  </div>
+
+                  {/* CANAL B: PALESTRA / EVENTO DE 1 DIA */}
+                  <div className="bg-[#0d1322] border border-orange-500/20 rounded-xl p-5 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="px-2.5 py-1 bg-orange-950/50 text-orange-400 border border-orange-500/30 rounded text-xs font-bold uppercase tracking-wider">CANAL B</span>
+                      <StatusBadge type="DECISAO" />
+                    </div>
+
+                    <h3 className="text-base font-extrabold text-white">Palestra / Evento de 1 Dia</h3>
+                    <p className="text-xs text-slate-400">Aquisição de baixíssima barreira com grande possibilidade de tração e escala digital.</p>
+
+                    <ul className="space-y-2 text-xs text-slate-300 bg-slate-950 p-3 rounded-lg border border-slate-800">
+                      <li className="flex items-center gap-2">🎟️ <strong>Ticket:</strong> Baixo</li>
+                      <li className="flex items-center gap-2">🌍 <strong>Formato:</strong> Presencial + Transmissão Online</li>
+                      <li className="flex items-center gap-2 text-orange-400 font-semibold">❌ Sem Pitch de MGA/Ambição</li>
+                      <li className="flex items-center gap-2 text-[#00E676]">🎯 <strong>CTA:</strong> Direcionar para G.I. ou G.C.</li>
+                    </ul>
+
+                    <div className="p-3 bg-blue-950/20 border border-blue-500/30 rounded-lg text-xs space-y-1">
+                      <strong className="text-blue-400 block">Coortes de Tracionamento:</strong>
+                      <div>• <strong>Presencial:</strong> Alta confiança e intenção comercial.</div>
+                      <div>• <strong>Online:</strong> Maior escala, menor engajamento inicial.</div>
+                      <div className="text-[10px] text-slate-400 italic mt-1">Devem ser nutridos e qualificados separadamente pelo comercial.</div>
+                    </div>
+                  </div>
+
+                  {/* CANAL C: PARCERIAS E INDICAÇÕES */}
+                  <div className="bg-[#0d1322] border border-orange-500/20 rounded-xl p-5 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="px-2.5 py-1 bg-orange-950/50 text-orange-400 border border-orange-500/30 rounded text-xs font-bold uppercase tracking-wider">CANAL C</span>
+                      <StatusBadge type="DECISAO" />
+                    </div>
+
+                    <h3 className="text-base font-extrabold text-white">Parcerias & Indicações</h3>
+                    <p className="text-xs text-slate-400">Indicações e parcerias com ecossistemas empresariais que geram leads de alta confiança prévia.</p>
+
+                    <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2 text-xs text-slate-300">
+                      <div className="font-bold text-white">Fontes Ativas:</div>
+                      <div className="grid grid-cols-2 gap-1 text-[10px]">
+                        <span className="p-1 bg-slate-900 border border-slate-800 rounded">Embaixadores</span>
+                        <span className="p-1 bg-slate-900 border border-slate-800 rounded">Indicações (Referral)</span>
+                        <span className="p-1 bg-slate-900 border border-slate-800 rounded">Influenciadores B2B</span>
+                        <span className="p-1 bg-slate-900 border border-slate-800 rounded">Associações Com.</span>
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-emerald-950/20 border border-emerald-500/30 rounded-lg text-xs space-y-1">
+                      <strong className="text-emerald-400 block">Destinos de Fluxo:</strong>
+                      <p className="text-slate-300">Podem ser enviados ao Summit, Palestras ou <strong>diretamente para o G.I./G.C.</strong> caso apresentem qualificação prévia e maturidade suficientes.</p>
+                      <p className="text-[10px] text-amber-300 font-semibold italic mt-1">⚠️ ATENÇÃO: Medir Referral separadamente de mídia paga.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-950 p-4 border border-slate-800 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">⚡</span>
+                    <div>
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-[#00E676]">Métrica Norte de Aquisição</h4>
+                      <p className="text-sm font-semibold text-white">Custo por ICP Presente (e não CPL/Custo por inscrito genérico)</p>
+                    </div>
+                  </div>
+                  <div className="text-xs text-slate-400 max-w-md">
+                    Medir apenas leads brutos mascara a ineficiência do tráfego pago em atrair decisores qualificados. Otimizar campanhas com foco em quem realmente atinge os critérios de ICP.
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* VIEW 3: G.I. vs G.C. */}
+            {activeTab === 'gigc' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 p-4 border border-slate-800 rounded-lg flex justify-between items-center">
+                  <div>
+                    <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                      <span className="p-1 rounded bg-emerald-600/20 text-emerald-400">📊</span>
+                      Imersões de Transformação: G.I. x G.C.
+                    </h2>
+                    <p className="text-xs text-slate-400 mt-0.5">As duas imersões de 2 dias focadas em estruturar e tracionar a operação das empresas.</p>
+                  </div>
+                  <StatusBadge type="HIPOTESE" />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  
+                  {/* G.I. GESTÃO INTELIGENTE */}
+                  <div className="bg-[#0d1322] border-t-4 border-emerald-500 rounded-xl p-5 space-y-4 shadow-lg shadow-emerald-950/10">
+                    <div className="flex justify-between items-center">
+                      <span className="px-2 py-0.5 bg-emerald-950/80 text-emerald-400 border border-emerald-500/20 rounded text-[10px] font-bold tracking-wider">ESTÁGIO DE MATURIDADE DE GESTÃO</span>
+                      <span className="text-xs text-slate-400 font-semibold">👥 ~100 pessoas | 2 dias</span>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-white">G.I. — Gestão Inteligente</h3>
+                    <p className="text-xs text-slate-400">Focado em empresários cujas empresas cresceram mais rápido que a estrutura interna, gerando desorganização e excesso de centralização.</p>
+
+                    <div className="p-3 bg-slate-950 border border-slate-850 rounded-lg">
+                      <span className="text-xs font-bold text-slate-300 block mb-2">Perfil do Participante (Gargalo de Entrada)</span>
+                      <div className="grid grid-cols-2 gap-2 text-[10px] text-slate-400">
+                        <div>• Fundador centraliza tudo</div>
+                        <div>• Processos informais/frágeis</div>
+                        <div>• Sem previsibilidade de caixa</div>
+                        <div>• Gargalos diários na operação</div>
+                        <div>• Indicadores escassos</div>
+                        <div>• Alta dependência do dono</div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider block">Os 4 Pilares do G.I. (Fluxo de Execução)</span>
+                      <div className="grid grid-cols-4 gap-2 text-center text-[10px]">
+                        <div className="p-2 bg-slate-900 border border-slate-800 rounded">
+                          <span className="block text-emerald-400 font-bold">1. Marketing</span>
+                          <span className="text-[9px] text-slate-500">Geração de Demanda</span>
+                        </div>
+                        <div className="p-2 bg-slate-900 border border-slate-800 rounded">
+                          <span className="block text-emerald-400 font-bold">2. Vendas</span>
+                          <span className="text-[9px] text-slate-500">Conversão de Receita</span>
+                        </div>
+                        <div className="p-2 bg-slate-900 border border-slate-800 rounded">
+                          <span className="block text-emerald-400 font-bold">3. Operações</span>
+                          <span className="text-[9px] text-slate-500">Excelência na Entrega</span>
+                        </div>
+                        <div className="p-2 bg-slate-900 border border-slate-800 rounded">
+                          <span className="block text-emerald-400 font-bold">4. Finanças</span>
+                          <span className="text-[9px] text-slate-500">Margem e Lucro Real</span>
+                        </div>
+                      </div>
+                      <div className="text-[10px] text-slate-400 font-semibold text-center mt-2 italic bg-slate-900/40 py-1 rounded">
+                        Fluxo Estrutural: DEMANDA ➔ RECEITA ➔ ENTREGA ➔ MARGEM/LUCRO
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-emerald-950/20 border border-emerald-500/20 rounded-lg text-xs">
+                      <strong>Resultado Esperado:</strong> Empresa estruturada, organizada, previsível e passível de delegação pelo fundador.
+                    </div>
+                  </div>
+
+                  {/* G.C. GESTÃO DO CRESCIMENTO */}
+                  <div className="bg-[#0d1322] border-t-4 border-blue-500 rounded-xl p-5 space-y-4 shadow-lg shadow-blue-950/10">
+                    <div className="flex justify-between items-center">
+                      <span className="px-2 py-0.5 bg-blue-950/80 text-blue-400 border border-blue-500/20 rounded text-[10px] font-bold tracking-wider">ESTÁGIO DE GOVERNANÇA E ESCALA</span>
+                      <span className="text-xs text-slate-400 font-semibold">👥 ~100 pessoas | 2 dias</span>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-white">G.C. — Gestão do Crescimento</h3>
+                    <p className="text-xs text-slate-400">Promessa: Transformar potencial em crescimento consistente. Para quem já tem a base estruturada e precisa escalar com segurança.</p>
+
+                    <div className="p-3 bg-slate-950 border border-slate-850 rounded-lg">
+                      <span className="text-xs font-bold text-slate-300 block mb-2">Desafios Trabalhados no G.C.</span>
+                      <div className="grid grid-cols-2 gap-2 text-[10px] text-slate-400">
+                        <div>• Aumentar margem de lucro</div>
+                        <div>• Priorizar alavancas de escala</div>
+                        <div>• Onde investir tempo e pessoas</div>
+                        <div>• Gestão sem amadorismo</div>
+                        <div>• Reduzir custos e desperdício</div>
+                        <div>• Construção de Roadmap</div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <span className="text-xs font-bold text-blue-400 uppercase tracking-wider block">As 4 Áreas de Ação do G.C.</span>
+                      <div className="grid grid-cols-4 gap-2 text-center text-[10px]">
+                        <div className="p-2 bg-slate-900 border border-slate-800 rounded">
+                          <span className="block text-blue-400 font-bold">Marketing</span>
+                          <span className="text-[9px] text-slate-500">Levers de Ticket, Conversão</span>
+                        </div>
+                        <div className="p-2 bg-slate-900 border border-slate-800 rounded">
+                          <span className="block text-blue-400 font-bold">Vendas</span>
+                          <span className="text-[9px] text-slate-500">Funil da Aquisição à Recompra</span>
+                        </div>
+                        <div className="p-2 bg-slate-900 border border-slate-800 rounded">
+                          <span className="block text-blue-400 font-bold">Operações</span>
+                          <span className="text-[9px] text-slate-500">Gargalos e Eficiência Operacional</span>
+                        </div>
+                        <div className="p-2 bg-slate-900 border border-slate-800 rounded">
+                          <span className="block text-blue-400 font-bold">Financeiro</span>
+                          <span className="text-[9px] text-slate-500">Controle de Margem e CMV</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-blue-950/20 border border-blue-500/20 rounded-lg text-xs">
+                      <strong>Resultado Esperado:</strong> Criação de um <strong>Roadmap Estruturado de Crescimento</strong>. O empresário sai sabendo exatamente onde agir primeiro.
+                    </div>
+                  </div>
+                </div>
+
+                {/* ROTAS DE ENTRADA HIPÓTESES */}
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                  <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-3">Modelagem de Rotas para os Eventos</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="p-3.5 bg-slate-950 border border-emerald-500/30 rounded-lg space-y-1.5">
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs font-bold text-emerald-400">ROTA A: Trilha Sequencial de Maturidade</span>
+                        <span className="text-[10px] text-amber-400 font-bold">HIPÓTESE (H5)</span>
+                      </div>
+                      <p className="text-xs text-slate-400">Empresas com baixa maturidade de processos obrigatoriamente iniciam no <strong>G.I.</strong> para arrumar a casa, e após consolidarem a estrutura interna, ascendem para o <strong>G.C.</strong> para escalar.</p>
+                      <div className="text-[10px] text-slate-500 font-mono">Fluxo: Entrada → G.I. → Implementação → G.C.</div>
+                    </div>
+
+                    <div className="p-3.5 bg-slate-950 border border-blue-500/30 rounded-lg space-y-1.5">
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs font-bold text-blue-400">ROTA B: Entrada Direta no Crescimento</span>
+                        <span className="text-[10px] text-amber-400 font-bold">HIPÓTESE (H6)</span>
+                      </div>
+                      <p className="text-xs text-slate-400">Empresas que já possuem sólida governança, previsibilidade financeira e controle operacional entram diretamente na imersão <strong>G.C.</strong>, encurtando o tempo para a escalabilidade.</p>
+                      <div className="text-[10px] text-slate-500 font-mono">Fluxo: Entrada → Diagnóstico → G.C. Direto</div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 p-3 bg-amber-950/20 border border-amber-500/20 rounded-lg text-xs text-amber-300">
+                    📌 <strong>Validação Necessária:</strong> Precisamos cruzar a taxa de sucesso e de recompra (LTV) da Rota A vs Rota B para entender se empresas de menor maturidade sofrem de sobrecarga intelectual se ingressarem direto no G.C.
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+            {/* VIEW 4: MONETIZAÇÃO & PRICING */}
+            {activeTab === 'monetizacao' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 p-4 border border-slate-800 rounded-lg">
+                  <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                    <span className="p-1 rounded bg-amber-500/20 text-amber-400">💰</span>
+                    Camada de Monetização & Alerta de Pricing
+                  </h2>
+                  <p className="text-xs text-slate-400 mt-0.5">As ofertas high-ticket e a análise de precificação conjunta (MGA + Ambição).</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* CARD MGA */}
+                  <div className="bg-[#0d1322] border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="px-2 py-0.5 bg-amber-950/50 text-amber-400 border border-amber-500/30 rounded text-[10px] font-bold">GRUPO DE NEGÓCIOS</span>
+                      <StatusBadge type="REAL" />
+                    </div>
+                    <h3 className="text-lg font-extrabold text-white">MGA</h3>
+                    <div className="text-2xl font-bold text-white font-mono">R$ 50.000</div>
+                    <p className="text-xs text-slate-400">Programa focado em mentoria e networking corporativo de alto padrão.</p>
+                    <div className="text-[10px] text-slate-500 border-t border-slate-850 pt-2">
+                      Foco em estruturação, processos e governança de liderança executiva.
+                    </div>
+                  </div>
+
+                  {/* CARD AMBIÇÃO */}
+                  <div className="bg-[#0d1322] border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="px-2 py-0.5 bg-amber-950/50 text-amber-400 border border-amber-500/30 rounded text-[10px] font-bold">MASTERMIND EXECUTIVE</span>
+                      <StatusBadge type="REAL" />
+                    </div>
+                    <h3 className="text-lg font-extrabold text-white">Ambição</h3>
+                    <div className="text-2xl font-bold text-white font-mono">R$ 130.000</div>
+                    <p className="text-xs text-slate-400">Grupo premium de alta proximidade, Mastermind executivo de alto escalão.</p>
+                    <div className="text-[10px] text-slate-500 border-t border-slate-850 pt-2">
+                      Networking exclusivo, mentoria estratégica direta e geração de novas alianças comerciais.
+                    </div>
+                  </div>
+
+                  {/* CARD BUNDLE */}
+                  <div className="bg-[#0d1322] border-2 border-amber-500 rounded-xl p-5 space-y-4 relative">
+                    <div className="absolute -top-3 right-4 px-2 py-0.5 bg-amber-500 text-black rounded text-[10px] uppercase font-bold tracking-widest">
+                      OFERTA EM EVENTO
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="px-2 py-0.5 bg-amber-950 text-amber-400 border border-amber-500/30 rounded text-[10px] font-bold">MGA + AMBIÇÃO</span>
+                      <StatusBadge type="REAL" />
+                    </div>
+                    <h3 className="text-lg font-extrabold text-white">Combo Ascension</h3>
+                    <div className="text-2xl font-bold text-[#FFD700] font-mono">
+                      12x R$ 7.900
+                      <span className="block text-xs font-semibold text-slate-400 mt-1">Total: R$ 94.800</span>
+                    </div>
+                    <p className="text-xs text-slate-400">Oferta conjunta especial exclusiva realizada no pitch interno do G.I. ou G.C.</p>
+                  </div>
+                </div>
+
+                {/* PRICING ANOMALY STRATEGIC BRIEF */}
+                <div className="bg-amber-950/10 border border-amber-500/40 rounded-xl p-6 space-y-4">
+                  <div className="flex items-center gap-2 text-amber-500">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    <h3 className="text-base font-bold uppercase tracking-wider">Alerta de Pricing & Canibalização (H9)</h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs text-slate-300">
+                    <div className="p-3 bg-slate-950 border border-slate-800 rounded">
+                      <span className="text-slate-500">Soma Tabela MGA + Ambição</span>
+                      <div className="text-base font-bold text-white font-mono mt-1">R$ 180.000</div>
+                    </div>
+                    <div className="p-3 bg-slate-950 border border-slate-800 rounded">
+                      <span className="text-slate-500">Diferença Nominal da Oferta</span>
+                      <div className="text-base font-bold text-red-400 font-mono mt-1">- R$ 85.200</div>
+                    </div>
+                    <div className="p-3 bg-slate-950 border border-slate-800 rounded">
+                      <span className="text-slate-500">Desconto do Bundle</span>
+                      <div className="text-base font-bold text-red-400 font-mono mt-1">~ 47.3% Off</div>
+                    </div>
+                    <div className="p-3 bg-slate-950 border border-slate-800 rounded">
+                      <span className="text-slate-500">Preço Ambição vs Bundle</span>
+                      <div className="text-base font-bold text-amber-500 font-mono mt-1">Bundle é R$ 35,2k mais barato</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-950 p-4 rounded-lg border border-slate-850 space-y-3">
+                    <h4 className="text-xs font-bold text-white uppercase tracking-wider">Dimensões Críticas a Validar na Estratégia de Vendas:</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-400">
+                      <div>
+                        <strong className="text-white block mb-1">1. Canibalização & Ancoragem</strong>
+                        Se o combo (MGA + Ambição) custa menos do que apenas o Ambição individual, nenhum cliente racional comprará o Ambição sozinho. Ambição vira uma âncora fictícia de valor.
+                      </div>
+                      <div>
+                        <strong className="text-white block mb-1">2. Impacto de Margem & Entrega</strong>
+                        O custo de entregar dois grupos ao mesmo tempo por quase metade do ticket unitário prejudica a margem de lucro de atendimento por parceiro/mentor da Capital?
+                      </div>
+                      <div>
+                        <strong className="text-white block mb-1">3. Inadimplência & LTV</strong>
+                        Parcelamento longo em 12x R$ 7.900 aumenta o risco de inadimplência? Qual o impacto real no LTV líquido versus caixa recebido (Upfront)?
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* DIAGNÓSTICO DE CONTINUIDADE VS CARDÁPIO */}
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                  <div className="flex justify-between items-center mb-3">
+                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">Tese de Venda: Diagnóstico de Continuidade</h3>
+                    <StatusBadge type="DECISAO" />
+                  </div>
+                  <p className="text-xs text-slate-400">No momento do pitch em G.I. ou G.C., a Capital não deve apresentar um "cardápio" para o cliente escolher livremente.</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    <div className="p-4 bg-slate-950 border border-slate-850 rounded-lg space-y-2">
+                      <span className="text-xs font-bold text-red-400 flex items-center gap-1">❌ Modelo Tradicional de Menu</span>
+                      <p className="text-[11px] text-slate-500">"Temos o MGA por R$ 50k ou o Ambição por R$ 130k. Escolha qual você deseja comprar."</p>
+                      <p className="text-[10px] text-slate-500 italic">Gera atrito de decisão e concorrência direta entre as duas opções da própria empresa.</p>
+                    </div>
+
+                    <div className="p-4 bg-emerald-950/10 border border-emerald-500/20 rounded-lg space-y-2">
+                      <span className="text-xs font-bold text-emerald-400 flex items-center gap-1">✅ Modelo Prescritivo Capital</span>
+                      <p className="text-[11px] text-slate-300">"Com base no diagnóstico da sua empresa durante estes 2 dias, o próximo passo estratégico ideal e necessário para o seu momento de maturidade é o [MGA / Ambição / Ambos]."</p>
+                      <p className="text-[10px] text-emerald-400 italic font-semibold">Tese: A prescrição personalizada reduz a fricção e eleva consideravelmente a conversão de vendas.</p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+            {/* VIEW 5: RECOVERY & REASCENSÃO */}
+            {activeTab === 'recovery' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 p-4 border border-slate-800 rounded-lg">
+                  <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                    <span className="p-1 rounded bg-gray-600/20 text-slate-400">🔄</span>
+                    Estratégia de Recuperação (Recovery) e Reascensão
+                  </h2>
+                  <p className="text-xs text-slate-400 mt-0.5">Como diagnosticar as perdas do high-ticket e recuperá-las através de produtos-ponte com metas de reascensão.</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* SEGMENTAÇÃO DE NÃO COMPRA */}
+                  <div className="bg-[#0d1322] border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-sm font-bold text-white uppercase tracking-wider">Filtro de Perda: Não comprou MGA/Ambição. Por quê?</h3>
+                      <StatusBadge type="DECISAO" />
+                    </div>
+                    
+                    <p className="text-xs text-slate-400">O time comercial deve mapear e registrar a causa raiz do impedimento, impedindo que o lead seja tratado de forma genérica.</p>
+                    
+                    <div className="space-y-2 text-xs">
+                      <div className="p-2.5 bg-slate-950 border-l-2 border-red-500 rounded flex justify-between">
+                        <span>💳 Falta de Caixa / Fluxo financeiro imediato</span>
+                        <span className="text-slate-500 font-mono">Ação: Parcelamento facilitado ou Downsell</span>
+                      </div>
+                      <div className="p-2.5 bg-slate-950 border-l-2 border-orange-500 rounded flex justify-between">
+                        <span>⏳ Timing / Outros projetos prioritários no momento</span>
+                        <span className="text-slate-500 font-mono">Ação: Nutrição ativa com régua de 60 dias</span>
+                      </div>
+                      <div className="p-2.5 bg-slate-950 border-l-2 border-yellow-500 rounded flex justify-between">
+                        <span>🔥 Falta de Urgência em resolver os gargalos de gestão</span>
+                        <span className="text-slate-500 font-mono">Ação: Diagnóstico de impacto financeiro</span>
+                      </div>
+                      <div className="p-2.5 bg-slate-950 border-l-2 border-blue-500 rounded flex justify-between">
+                        <span>🤝 Falta de Confiança na metodologia ou marca</span>
+                        <span className="text-slate-500 font-mono">Ação: Cases e depoimentos de nicho</span>
+                      </div>
+                      <div className="p-2.5 bg-slate-950 border-l-2 border-purple-500 rounded flex justify-between">
+                        <span>📉 Não percebeu valor ou achou caro</span>
+                        <span className="text-slate-500 font-mono">Ação: Redesenho de ancoragem</span>
+                      </div>
+                      <div className="p-2.5 bg-slate-950 border-l-2 border-slate-500 rounded flex justify-between">
+                        <span>⚙️ Solução inadequada ao momento da operação</span>
+                        <span className="text-slate-500 font-mono">Ação: Indicar mentoria focada (ponte)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* PRODUTOS-PONTE (NÃO SÃO DOWNSELL GENÉRICO) */}
+                  <div className="bg-[#0d1322] border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-sm font-bold text-white uppercase tracking-wider">Produtos-Ponte Estruturados</h3>
+                      <StatusBadge type="DECISAO" />
+                    </div>
+
+                    <p className="text-xs text-slate-400">Mentoria focada e pontual no principal gargalo identificado na imersão. <strong>Não é um downsell automático para salvar a venda.</strong></p>
+
+                    <div className="space-y-4">
+                      {/* MENTORIA VENDAS */}
+                      <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg space-y-1">
+                        <div className="flex justify-between">
+                          <span className="text-xs font-bold text-white">Mentoria de Vendas</span>
+                          <strong className="text-emerald-400 font-mono text-xs">R$ 20.000</strong>
+                        </div>
+                        <p className="text-[11px] text-slate-400">Indicada para gargalos puramente comerciais, conversão precária de leads, falta de previsibilidade de vendas e estruturação comercial de ponta.</p>
+                      </div>
+
+                      {/* ESTRUTURAÇÃO GROWTH */}
+                      <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg space-y-1">
+                        <div className="flex justify-between">
+                          <span className="text-xs font-bold text-white">Estruturação de Growth</span>
+                          <strong className="text-emerald-400 font-mono text-xs">R$ 25.000</strong>
+                        </div>
+                        <p className="text-[11px] text-slate-400">Indicada para gargalos de marketing, baixa atração de leads, necessidade de canais de growth e escala de tráfego.</p>
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-yellow-950/20 border border-yellow-500/20 rounded-lg text-xs text-yellow-300">
+                      ⚠️ <strong>Regra de Ouro:</strong> Venda o produto-ponte apenas se o gargalo for evidente nesses setores. Caso contrário, a mentoria pontual falhará em entregar resultado, travando o fluxo de reascensão.
+                    </div>
+                  </div>
+                </div>
+
+                {/* LOOP DE REASCENSÃO FLUXOGRAMA */}
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                  <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">O Fluxo Cíclico de Reascensão</h3>
+                  
+                  <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center">
+                    
+                    <div className="p-3 bg-slate-950 border border-slate-850 rounded-lg flex-1 text-center">
+                      <span className="text-xs text-slate-550 block">Passo 1</span>
+                      <strong className="text-white text-xs block mt-1">Aquisição do Produto-Ponte</strong>
+                      <span className="text-[10px] text-slate-500 font-mono">Vendas (20k) / Growth (25k)</span>
+                    </div>
+
+                    <div className="text-slate-600 font-extrabold">➔</div>
+
+                    <div className="p-3 bg-slate-950 border border-slate-850 rounded-lg flex-1 text-center">
+                      <span className="text-xs text-slate-550 block">Passo 2</span>
+                      <strong className="text-emerald-400 text-xs block mt-1">Implementação Focada</strong>
+                      <span className="text-[10px] text-slate-500 font-mono">Correção direta do gargalo</span>
+                    </div>
+
+                    <div className="text-slate-600 font-extrabold">➔</div>
+
+                    <div className="p-3 bg-slate-950 border border-slate-850 rounded-lg flex-1 text-center">
+                      <span className="text-xs text-slate-550 block">Passo 3</span>
+                      <strong className="text-white text-xs block mt-1">Resultado de Caixa gerado</strong>
+                      <span className="text-[10px] text-slate-500 font-mono font-bold">Mais faturamento</span>
+                    </div>
+
+                    <div className="text-slate-600 font-extrabold">➔</div>
+
+                    <div className="p-3 bg-slate-950 border border-slate-850 rounded-lg flex-1 text-center">
+                      <span className="text-xs text-slate-550 block">Passo 4</span>
+                      <strong className="text-yellow-400 text-xs block mt-1">Novo Diagnóstico</strong>
+                      <span className="text-[10px] text-slate-500 font-mono">Reavaliação de maturidade</span>
+                    </div>
+
+                    <div className="text-slate-600 font-extrabold">➔</div>
+
+                    <div className="p-3 bg-emerald-950/20 border border-emerald-500/30 rounded-lg flex-1 text-center">
+                      <span className="text-xs text-emerald-400 block">Passo 5</span>
+                      <strong className="text-white text-xs block mt-1">Ascensão ao G.I. / G.C.</strong>
+                      <span className="text-[10px] text-emerald-400 font-mono">Rumo ao MGA / Ambição</span>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+            {/* VIEW 6: KPIS & FUNIL */}
+            {activeTab === 'kpis' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 p-4 border border-slate-800 rounded-lg flex justify-between items-center">
+                  <div>
+                    <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                      <span className="p-1 rounded bg-[#00E676]/20 text-[#00E676]">📈</span>
+                      Modelagem de KPIs, Baselines e Funil Numérico
+                    </h2>
+                    <p className="text-xs text-slate-400 mt-0.5">Analise as taxas reais observadas no histórico e a projeção com o simulador de funil.</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <span className="px-2 py-1 bg-slate-800 text-slate-300 rounded text-xs">Simulador Ativo</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* METRICAS DE BASELINE */}
+                  <div className="bg-[#0d1322] border border-slate-800 rounded-xl p-5 space-y-4">
+                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">Histórico / Dados Reais</h3>
+                    
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center p-2.5 bg-slate-950 border border-slate-800 rounded">
+                        <span className="text-xs text-slate-400">Taxa de Comparecimento (Show rate)</span>
+                        <div className="text-right">
+                          <span className="text-sm font-bold text-emerald-400 block">50%</span>
+                          <StatusBadge type="REAL" />
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center p-2.5 bg-slate-950 border border-slate-800 rounded">
+                        <span className="text-xs text-slate-400">Taxa de ICP Presente</span>
+                        <div className="text-right">
+                          <span className="text-sm font-bold text-emerald-400 block">45%</span>
+                          <StatusBadge type="REAL" />
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center p-2.5 bg-slate-950 border border-slate-800 rounded">
+                        <span className="text-xs text-slate-400">Conversão de ICP no G.I./G.C.</span>
+                        <div className="text-right">
+                          <span className="text-sm font-bold text-emerald-400 block">20%</span>
+                          <StatusBadge type="REAL" />
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center p-2.5 bg-slate-950 border border-slate-850 rounded">
+                        <span className="text-xs text-slate-400">Conversão Histórica Sala Secreta</span>
+                        <div className="text-right">
+                          <span className="text-sm font-bold text-emerald-400 block">20%</span>
+                          <span className="text-[9px] text-slate-500 block">20 pax ➔ 4 vendas</span>
+                          <StatusBadge type="REAL" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg text-xs space-y-1">
+                      <div className="font-semibold text-white">Capacidades Físicas:</div>
+                      <div className="text-slate-400">• Summit: ~300 pessoas</div>
+                      <div className="text-slate-400">• G.I. / G.C.: ~100 pessoas</div>
+                      <div className="text-slate-400">• Sala Secreta: ~20 empresários</div>
+                    </div>
+                  </div>
+
+                  {/* SIMULADOR DE FUNIL NUMÉRICO BASE */}
+                  <div className="bg-[#0d1322] border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-sm font-bold text-white uppercase tracking-wider">Simulador de Funil</h3>
+                      <StatusBadge type="HIPOTESE" />
+                    </div>
+
+                    <div className="space-y-3">
+                      <label className="block">
+                        <span className="text-xs text-slate-400 block mb-1">Passo 1: Inscritos no Summit/Palestra</span>
+                        <input 
+                          type="number" 
+                          value={subscribers}
+                          onChange={(e) => setSubscribers(Number(e.target.value))}
+                          className="w-full bg-slate-950 border border-slate-850 text-white rounded p-2 text-xs font-mono text-center focus:border-emerald-500 focus:outline-none"
+                        />
+                      </label>
+
+                      <div className="space-y-2 pt-2 text-xs">
+                        <div className="p-2 bg-slate-950 border border-slate-850 rounded flex justify-between items-center">
+                          <span className="text-slate-400">Presentes (50% Show Rate)</span>
+                          <strong className="text-white font-mono">{mathPresent} pax</strong>
+                        </div>
+                        <div className="p-2 bg-slate-950 border border-slate-850 rounded flex justify-between items-center">
+                          <span className="text-slate-400">ICPs (45% Densidade)</span>
+                          <strong className="text-white font-mono">{mathIcp} pax</strong>
+                        </div>
+                        
+                        {/* Campos em Branco / Inputs para hipóteses desconhecidas */}
+                        <div className="p-2 bg-slate-950 border border-slate-850 rounded flex justify-between items-center border-dashed border-amber-500/40">
+                          <span className="text-amber-300">Ascensão para G.I. / G.C. (%)</span>
+                          <span className="text-slate-500 text-[10px] italic">Campo em branco</span>
+                        </div>
+                        <div className="p-2 bg-slate-950 border border-slate-850 rounded flex justify-between items-center border-dashed border-amber-500/40">
+                          <span className="text-amber-300">Show Rate G.I. / G.C. (%)</span>
+                          <span className="text-slate-500 text-[10px] italic">Campo em branco</span>
+                        </div>
+                        <div className="p-2 bg-slate-950 border border-slate-850 rounded flex justify-between items-center">
+                          <span className="text-slate-400">Vendas (20% conv. de ICP presente)</span>
+                          <strong className="text-emerald-400 font-mono">Calculado no G.I./G.C.</strong>
+                        </div>
+                        <div className="p-2 bg-slate-950 border border-slate-850 rounded flex justify-between items-center border-dashed border-amber-500/40">
+                          <span className="text-amber-300">Mix: MGA x Ambição x Combo</span>
+                          <span className="text-slate-500 text-[10px] italic">Aguardando dados</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* NORTH STAR E METRICAS DE DIREÇÃO */}
+                  <div className="bg-[#0d1322] border border-slate-800 rounded-xl p-5 space-y-4">
+                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">North Star & Métricas Norte</h3>
+                    
+                    <div className="p-4 bg-emerald-950/20 border border-emerald-500/40 rounded-xl space-y-2">
+                      <span className="text-[10px] font-bold text-[#00E676] uppercase tracking-wider block">NORTH STAR PROPOSTA</span>
+                      <strong className="text-sm text-white block">Receita por ICP Presente em 90 dias</strong>
+                      <p className="text-[11px] text-slate-400">Esta métrica mede o real aproveitamento de valor gerado por cada perfil ideal de cliente que conseguimos colocar presencialmente na nossa rede.</p>
+                    </div>
+
+                    <div className="p-4 bg-blue-950/20 border border-blue-500/40 rounded-xl space-y-2">
+                      <span className="text-[10px] font-bold text-blue-400 uppercase tracking-wider block">MÉTRICA DE AQUISIÇÃO</span>
+                      <strong className="text-sm text-white block">Custo por ICP Presente</strong>
+                      <p className="text-[11px] text-slate-400">Substitui o CPL comum (custo por lead bruto) como foco de mídia. Garante o alinhamento total do time de marketing digital.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* KPI TREE */}
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                  <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Árvore de KPIs (KPI Tree)</h3>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-7 gap-3 text-center text-xs">
+                    <div className="p-3 bg-slate-950 border border-slate-850 rounded">
+                      <span className="text-slate-500 block text-[9px] uppercase">Inscrições</span>
+                      <strong className="text-white block mt-1">INSCRITOS</strong>
+                    </div>
+                    <div className="p-3 bg-slate-950 border border-slate-850 rounded">
+                      <span className="text-slate-500 block text-[9px] uppercase">Show Rate</span>
+                      <strong className="text-orange-400 block mt-1">PRESENTES</strong>
+                    </div>
+                    <div className="p-3 bg-slate-950 border border-slate-850 rounded">
+                      <span className="text-slate-500 block text-[9px] uppercase">Filtro de Perfil</span>
+                      <strong className="text-yellow-400 block mt-1">ICPs DENSIDADE</strong>
+                    </div>
+                    <div className="p-3 bg-slate-950 border border-slate-850 rounded">
+                      <span className="text-slate-500 block text-[9px] uppercase">Qualificação</span>
+                      <strong className="text-emerald-400 block mt-1">TAXA ASCENSÃO</strong>
+                    </div>
+                    <div className="p-3 bg-slate-950 border border-slate-850 rounded">
+                      <span className="text-slate-500 block text-[9px] uppercase">G.I. / G.C.</span>
+                      <strong className="text-blue-400 block mt-1">OPORTUNIDADES</strong>
+                    </div>
+                    <div className="p-3 bg-slate-950 border border-slate-850 rounded">
+                      <span className="text-slate-500 block text-[9px] uppercase">Vendas / Conversão</span>
+                      <strong className="text-amber-500 block mt-1">VENDAS REAIS</strong>
+                    </div>
+                    <div className="p-3 bg-slate-950 border border-slate-850 rounded">
+                      <span className="text-slate-500 block text-[9px] uppercase">Financeiro</span>
+                      <strong className="text-emerald-400 block mt-1">RECEITA POR ICP</strong>
+                    </div>
+                  </div>
+                </div>
+
+                {/* COHORT ECONOMICS PREPARED TABLE */}
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 overflow-x-auto">
+                  <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Modelagem de Economia de Coortes (Preparada para entrada de dados)</h3>
+                  
+                  <table className="w-full text-xs text-left text-slate-300 min-w-[1000px]">
+                    <thead className="text-[10px] text-slate-500 uppercase bg-slate-950/80">
+                      <tr>
+                        <th className="p-3">Origem Coorte</th>
+                        <th className="p-3">Investimento</th>
+                        <th className="p-3">Inscritos</th>
+                        <th className="p-3">Presentes</th>
+                        <th className="p-3">ICPs</th>
+                        <th className="p-3">G.I./G.C.</th>
+                        <th className="p-3">S. Secreta</th>
+                        <th className="p-3">Oport. MGA</th>
+                        <th className="p-3">Ambição</th>
+                        <th className="p-3">Combo</th>
+                        <th className="p-3">Pontes</th>
+                        <th className="p-3">Receita D+90</th>
+                        <th className="p-3 text-emerald-400">CAC / ROI</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/60 bg-slate-950/30">
+                      <tr>
+                        <td className="p-3 font-semibold text-orange-400">Summit</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-semibold text-slate-500">Aguardando Mídia</td>
+                      </tr>
+                      <tr>
+                        <td className="p-3 font-semibold text-orange-400">Palestra Presencial</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-semibold text-slate-500">Aguardando Mídia</td>
+                      </tr>
+                      <tr>
+                        <td className="p-3 font-semibold text-orange-400">Palestra Online</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-semibold text-slate-500">Aguardando Mídia</td>
+                      </tr>
+                      <tr>
+                        <td className="p-3 font-semibold text-orange-400">Referral / Indicações</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-mono">---</td>
+                        <td className="p-3 font-semibold text-slate-500">Aguardando dados</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div className="p-2 text-[10px] text-slate-550 italic text-right mt-1">
+                    * Nota: A modelagem financeira de coortes requer a integração de dados históricos de faturamento D+30, D+60 e D+90 por canal de entrada para cálculo do payback real.
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+            {/* VIEW 7: HYPOTHESES */}
+            {activeTab === 'hipoteses' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 p-4 border border-slate-800 rounded-lg">
+                  <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                    <span className="p-1 rounded bg-amber-600/20 text-amber-400">📌</span>
+                    Backlog de Hipóteses (Kanban de Validação)
+                  </h2>
+                  <p className="text-xs text-slate-400 mt-0.5">As 15 hipóteses formuladas pelo time de Growth. Clique nos status de cada card para mover o progresso de validação.</p>
+                </div>
+
+                {/* KANBAN BOARD */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* COL 1: PENDENTES */}
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850 space-y-4">
+                    <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-800 pb-2">
+                      ⏳ Aguardando / Pendentes ({hypotheses.filter(h => h.status === 'Pendente').length})
+                    </h3>
+                    
+                    <div className="space-y-3">
+                      {hypotheses.filter(h => h.status === 'Pendente').map(hyp => (
+                        <div key={hyp.id} className="p-3 bg-slate-900 border border-slate-800 rounded-lg space-y-2 hover:border-slate-700 transition">
+                          <div className="flex justify-between items-center">
+                            <span className="text-[10px] font-bold text-slate-500 font-mono">{hyp.id} - {hyp.category}</span>
+                            <button 
+                              onClick={() => updateHypothesisStatus(hyp.id, 'Em Teste')}
+                              className="text-[9px] px-1.5 py-0.5 bg-blue-950 text-blue-400 rounded hover:bg-blue-900"
+                            >
+                              Testar ➔
+                            </button>
+                          </div>
+                          <p className="text-xs text-slate-300 font-medium leading-snug">{hyp.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* COL 2: EM TESTE */}
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850 space-y-4">
+                    <h3 className="text-xs font-bold text-blue-400 uppercase tracking-widest border-b border-slate-800 pb-2">
+                      🧪 Em Validação / Teste ({hypotheses.filter(h => h.status === 'Em Teste').length})
+                    </h3>
+
+                    <div className="space-y-3">
+                      {hypotheses.filter(h => h.status === 'Em Teste').map(hyp => (
+                        <div key={hyp.id} className="p-3 bg-slate-900 border border-blue-500/30 rounded-lg space-y-2 hover:border-blue-500/50 transition">
+                          <div className="flex justify-between items-center">
+                            <span className="text-[10px] font-bold text-blue-400 font-mono">{hyp.id} - {hyp.category}</span>
+                            <div className="flex gap-1">
+                              <button 
+                                onClick={() => updateHypothesisStatus(hyp.id, 'Pendente')}
+                                className="text-[9px] px-1.5 py-0.5 bg-slate-900 text-slate-400 rounded hover:bg-slate-800 border border-slate-700"
+                              >
+                                ⬅ Voltar
+                              </button>
+                              <button 
+                                onClick={() => updateHypothesisStatus(hyp.id, 'Validada')}
+                                className="text-[9px] px-1.5 py-0.5 bg-emerald-950 text-emerald-400 rounded hover:bg-emerald-900 border border-emerald-800"
+                              >
+                                Validar ✔
+                              </button>
+                            </div>
+                          </div>
+                          <p className="text-xs text-slate-300 font-medium leading-snug">{hyp.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* COL 3: VALIDADO */}
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850 space-y-4">
+                    <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-widest border-b border-slate-800 pb-2">
+                      ✅ Validadas ({hypotheses.filter(h => h.status === 'Validada').length})
+                    </h3>
+
+                    <div className="space-y-3">
+                      {hypotheses.filter(h => h.status === 'Validada').map(hyp => (
+                        <div key={hyp.id} className="p-3 bg-emerald-950/10 border border-emerald-500/40 rounded-lg space-y-2 hover:border-emerald-500/60 transition">
+                          <div className="flex justify-between items-center">
+                            <span className="text-[10px] font-bold text-emerald-400 font-mono">{hyp.id} - {hyp.category}</span>
+                            <button 
+                              onClick={() => updateHypothesisStatus(hyp.id, 'Em Teste')}
+                              className="text-[9px] px-1.5 py-0.5 bg-slate-900 text-slate-400 rounded hover:bg-slate-800 border border-slate-700"
+                            >
+                              Reabrir
+                            </button>
+                          </div>
+                          <p className="text-xs text-emerald-100 font-medium leading-snug">{hyp.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+          </main>
+
+          {/* FOOTER */}
+          <footer className="mt-12 border-t border-slate-800 bg-[#0d1322] px-6 py-4 text-xs text-slate-500 flex justify-between items-center">
+            <div>
+              <span>Capital Upgrade © 2026</span>
+              <span className="mx-2">|</span>
+              <span>Growth System Map V2.0</span>
+            </div>
+            <div className="text-slate-400">
+              Desenvolvido por <strong>Antigravity</strong>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
