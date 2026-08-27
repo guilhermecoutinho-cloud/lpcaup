@@ -6,11 +6,6 @@
   <title>Capital Upgrade - Growth Operating System</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- React and ReactDOM CDN -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <!-- Babel for JSX compilation -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <!-- Google Fonts: Inter & Outfit for a modern tech feel -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -55,15 +50,15 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     /* Glow highlights */
-    .glow-orange { box-shadow: 0 0 25px rgba(249, 115, 22, 0.15); }
-    .glow-yellow { box-shadow: 0 0 25px rgba(234, 179, 8, 0.15); }
-    .glow-green { box-shadow: 0 0 25px rgba(16, 185, 129, 0.15); }
-    .glow-blue { box-shadow: 0 0 25px rgba(59, 130, 246, 0.15); }
-    .glow-purple { box-shadow: 0 0 25px rgba(168, 85, 247, 0.15); }
-    .glow-gold { box-shadow: 0 0 25px rgba(212, 175, 55, 0.2); }
-    .glow-gray { box-shadow: 0 0 25px rgba(107, 114, 128, 0.15); }
+    .glow-orange { box-shadow: 0 0 25px rgba(249, 115, 22, 0.18); }
+    .glow-yellow { box-shadow: 0 0 25px rgba(234, 179, 8, 0.18); }
+    .glow-green { box-shadow: 0 0 25px rgba(16, 185, 129, 0.18); }
+    .glow-blue { box-shadow: 0 0 25px rgba(59, 130, 246, 0.18); }
+    .glow-purple { box-shadow: 0 0 25px rgba(168, 85, 247, 0.18); }
+    .glow-gold { box-shadow: 0 0 25px rgba(212, 175, 55, 0.25); }
+    .glow-gray { box-shadow: 0 0 25px rgba(107, 114, 128, 0.18); }
 
-    /* Flywheel rotation and pulse */
+    /* Flywheel rotation */
     @keyframes spin-slow {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
@@ -78,55 +73,916 @@
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
+    
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body class="overflow-x-hidden">
 
-  <div id="root"></div>
+  <div class="min-h-screen flex flex-col">
+    
+    <!-- HEADER -->
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md px-6 py-5 sticky top-0 z-50 shadow-2xl">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between w-full">
+          <div>
+            <div class="flex items-center gap-3">
+              <div class="w-3.5 h-3.5 rounded-full bg-[#00E676] animate-ping"></div>
+              <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white font-display">
+                CAPITAL UPGRADE <span class="text-[#00E676] text-xs font-mono px-2 py-0.5 border border-[#00E676]/30 bg-[#00E676]/10 rounded-md ml-2">GROWTH OPERATING SYSTEM</span>
+              </h1>
+            </div>
+            <p class="text-xs text-slate-400 mt-2 uppercase font-bold tracking-widest flex flex-wrap items-center gap-1.5 font-mono">
+              Atrair <span class="text-[#00E676]">➔</span> Qualificar <span class="text-[#00E676]">➔</span> Diagnosticar <span class="text-[#00E676]">➔</span> Prescrever <span class="text-[#00E676]">➔</span> Transformar <span class="text-[#00E676]">➔</span> Monetizar <span class="text-[#00E676]">➔</span> Reascender
+            </p>
+          </div>
+          
+          <!-- Interactive Legend Filter -->
+          <div class="flex flex-wrap gap-2 text-xs mt-4 md:mt-0" id="legend-filters">
+            <button onclick="toggleStageHighlight('aquisicao', this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg card-transition text-slate-400 hover:border-orange-500/50">
+              <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Aquisição
+            </button>
+            <button onclick="toggleStageHighlight('diagnostico', this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg card-transition text-slate-400 hover:border-yellow-500/50">
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> Diagnóstico
+            </button>
+            <button onclick="toggleStageHighlight('gi', this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg card-transition text-slate-400 hover:border-emerald-500/50">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> G.I.
+            </button>
+            <button onclick="toggleStageHighlight('gc', this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg card-transition text-slate-400 hover:border-blue-500/50">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> G.C.
+            </button>
+            <button onclick="toggleStageHighlight('secreta', this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg card-transition text-slate-400 hover:border-purple-500/50">
+              <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> S. Secreta
+            </button>
+            <button onclick="toggleStageHighlight('monetizacao', this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg card-transition text-slate-400 hover:border-amber-500/50">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Monetização
+            </button>
+            <button onclick="toggleStageHighlight('recovery', this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg card-transition text-slate-400 hover:border-gray-500/50">
+              <span class="w-2.5 h-2.5 rounded-full bg-gray-500"></span> Recovery
+            </button>
+          </div>
+        </div>
+      </div>
 
-  <!-- React Code with JSX -->
-  <script type="text/babel">
-    const { useState, useEffect } = React;
+      <!-- TAB NAVIGATION -->
+      <div class="max-w-7xl mx-auto mt-6 flex flex-wrap gap-1.5 border-t border-slate-800/80 pt-4">
+        <button id="btn-jornada" onclick="switchTab('jornada')" class="px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 bg-[#00E676] text-black shadow-lg shadow-[#00E676]/30 font-bold scale-[1.03]">
+          🗺️ 1. Jornada Completa
+        </button>
+        <button id="btn-aquisicao" onclick="switchTab('aquisicao')" class="px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:bg-slate-800">
+          📢 2. Aquisição (TOFU)
+        </button>
+        <button id="btn-gigc" onclick="switchTab('gigc')" class="px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:bg-slate-800">
+          📊 3. G.I. vs G.C.
+        </button>
+        <button id="btn-monetizacao" onclick="switchTab('monetizacao')" class="px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:bg-slate-800">
+          💰 4. Monetização & Pricing
+        </button>
+        <button id="btn-recovery" onclick="switchTab('recovery')" class="px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:bg-slate-800">
+          🔄 5. Recovery & Reascensão
+        </button>
+        <button id="btn-kpis" onclick="switchTab('kpis')" class="px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:bg-slate-800">
+          📈 6. KPIs & Simulador
+        </button>
+        <button id="btn-hipoteses" onclick="switchTab('hipoteses')" class="px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:bg-slate-800">
+          📌 7. Post-its de Hipóteses
+        </button>
+      </div>
+    </header>
 
-    // Helper: Badge component
-    const StatusBadge = ({ type }) => {
-      if (type === 'REAL') {
-        return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 tracking-wider">
-            ● DADO REAL
-          </span>
-        );
-      } else if (type === 'DECISAO') {
-        return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-950/80 text-blue-400 border border-blue-500/40 tracking-wider">
-            ● DECISÃO ATUAL
-          </span>
-        );
-      } else {
-        return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-950/80 text-amber-400 border border-amber-500/40 tracking-wider">
-            ▲ HIPÓTESE
-          </span>
-        );
-      }
-    };
+    <!-- INFO BOX -->
+    <div id="info-banner" class="bg-[#0b101c] border-b border-slate-800 px-6 py-3.5 flex justify-between items-center text-xs text-slate-300">
+      <div class="flex flex-wrap gap-4 items-center max-w-6xl">
+        <span>⚡ <strong>Tese Growth:</strong> Nosso foco estratégico é a construção de um <strong>Sistema Integrado de Ascensão</strong> que maximiza a receita extraída por ICP (Ideal Client Profile) presente na esteira.</span>
+        <span class="hidden md:inline-flex items-center gap-2 bg-[#00E676]/10 px-2 py-0.5 rounded border border-[#00E676]/20 text-[#00E676]">
+          ℹ️ Clique nos botões de legenda para destacar etapas específicas.
+        </span>
+      </div>
+      <button onclick="document.getElementById('info-banner').remove()" class="text-slate-500 hover:text-white transition p-1">✖</button>
+    </div>
 
-    function App() {
-      const [activeTab, setActiveTab] = useState('jornada');
-      const [selectedStage, setSelectedStage] = useState(null); // Stage filter for highlighting
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow p-4 md:p-8 max-w-[1700px] mx-auto w-full">
       
-      // Simulation States
-      const [subscribersInput, setSubscribersInput] = useState(500);
-      const [salesTargetRate, setSalesTargetRate] = useState(20); // 20%
-      const [selectedProduct, setSelectedProduct] = useState('bundle'); // mga, ambicao, bundle
-      const [customGItoGCRate, setCustomGItoGCRate] = useState(30); // 30% conversion TOFU -> GI/GC
-      
-      // Card details expansion state
-      const [expandedCard, setExpandedCard] = useState(null);
-      const [kanbanFilter, setKanbanFilter] = useState('Todos');
+      <!-- ================= TAB 1: JORNADA COMPLETA ================= -->
+      <div id="tab-jornada" class="tab-content active space-y-8">
+        
+        <div class="glass-morphism p-5 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <span class="p-1.5 rounded-lg bg-[#00E676]/10 text-[#00E676] border border-[#00E676]/20">🗺️</span>
+              Arquitetura Integrada do Customer Ascension System
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Visualize todo o fluxo horizontal dos decisores e as conexões entre as imersões presenciais, a Sala Secreta e a camada de reascensão.</p>
+          </div>
+          <div class="flex gap-2">
+            <span class="text-[10px] px-2 py-1 bg-slate-900 border border-slate-800 rounded-md text-[#00E676] font-mono">Duração: 1-2 dias</span>
+            <span class="text-[10px] px-2 py-1 bg-slate-900 border border-slate-800 rounded-md text-amber-400 font-mono">Tickets: R$ 20k - R$ 130k</span>
+          </div>
+        </div>
 
-      // Hypotheses State
-      const [hypotheses, setHypotheses] = useState([
+        <!-- HORIZONTAL FLOW -->
+        <div class="overflow-x-auto pb-8 pt-2">
+          <div class="flex min-w-[1450px] items-stretch gap-2 relative">
+            
+            <!-- STAGE 1: TOFU / AQUISIÇÃO -->
+            <div data-stage="aquisicao" class="w-80 flex-shrink-0 bg-slate-900/40 p-4 border border-orange-500/20 rounded-2xl relative flex flex-col justify-between card-transition">
+              <div class="absolute -top-3.5 left-4 px-3 py-1 bg-orange-600 text-white rounded-full text-[9px] uppercase font-bold tracking-wider shadow-lg">
+                1. Atrair (TOFU)
+              </div>
+              
+              <div class="space-y-4 mt-3">
+                <h3 class="text-xs font-extrabold uppercase tracking-widest text-orange-400 flex items-center justify-between">
+                  <span>Canais de Entrada</span>
+                  <span class="text-[9px] text-slate-500 font-mono">3 Portas</span>
+                </h3>
+                
+                <!-- Summit -->
+                <div class="p-3 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-orange-500/50 card-transition">
+                  <div class="flex justify-between items-start">
+                    <span class="text-xs font-bold text-white">Summit Capital</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-950/80 text-blue-400 border border-blue-500/40 tracking-wider">● DECISÃO ATUAL</span>
+                  </div>
+                  <p class="text-[11px] text-slate-400 mt-1">1 dia | ~300 pessoas. Grande geração de autoridade e escala. Sem pitch de MGA.</p>
+                  <div class="mt-2 text-[9px] text-orange-400 font-bold bg-orange-950/20 p-1 rounded text-center">
+                    CTA: Diagnóstico de Rota
+                  </div>
+                </div>
+
+                <!-- Palestra -->
+                <div class="p-3 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-orange-500/50 card-transition">
+                  <div class="flex justify-between items-start">
+                    <span class="text-xs font-bold text-white">Palestra / Evento 1D</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-950/80 text-blue-400 border border-blue-500/40 tracking-wider">● DECISÃO ATUAL</span>
+                  </div>
+                  <p class="text-[11px] text-slate-400 mt-1">Ticket baixo. Presencial + Online. Coortes tratadas de forma separada no CRM.</p>
+                  <div class="mt-2 text-[9px] text-slate-500">CTA: Continuar no G.I. ou G.C.</div>
+                </div>
+
+                <!-- Parcerias -->
+                <div class="p-3 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-orange-500/50 card-transition">
+                  <div class="flex justify-between items-start">
+                    <span class="text-xs font-bold text-white">Parcerias / Embaixadores</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-950/80 text-blue-400 border border-blue-500/40 tracking-wider">● DECISÃO ATUAL</span>
+                  </div>
+                  <p class="text-[11px] text-slate-400 mt-1">Referral de alta confiança. Pode direcionar direto para o G.I./G.C.</p>
+                </div>
+              </div>
+              
+              <div class="mt-4 p-2 bg-orange-950/20 border border-orange-500/30 rounded-lg text-[10px] text-orange-200">
+                ⚡ <strong>Hipótese H1:</strong> Cobrar ingresso reduz inscritos brutas mas eleva Show Rate e ICP.
+              </div>
+            </div>
+
+            <!-- ANIMATED PATH 1 -->
+            <div class="flex items-center justify-center w-12 flex-shrink-0">
+              <svg class="w-full h-12" viewBox="0 0 48 24" fill="none">
+                <path d="M0 12H48" stroke="#f97316" stroke-width="2.5" class="flow-line" stroke-linecap="round" />
+              </svg>
+            </div>
+
+            <!-- STAGE 2: QUALIFICAÇÃO / DIAGNÓSTICO -->
+            <div data-stage="diagnostico" class="w-80 flex-shrink-0 bg-slate-900/40 p-4 border border-yellow-500/20 rounded-2xl relative flex flex-col justify-between card-transition">
+              <div class="absolute -top-3.5 left-4 px-3 py-1 bg-yellow-600 text-black rounded-full text-[9px] uppercase font-bold tracking-wider shadow-lg">
+                2. Qualificar & Diagnosticar
+              </div>
+              
+              <div class="space-y-4 mt-3">
+                <h3 class="text-xs font-extrabold uppercase tracking-widest text-yellow-400">Ponto de Decisão</h3>
+                
+                <div class="p-4 bg-slate-950/80 border-2 border-yellow-500/40 rounded-xl relative overflow-hidden text-center">
+                  <div class="font-extrabold text-xs text-white uppercase tracking-wider mb-2">É ICP?</div>
+                  <p class="text-[10px] text-slate-400 mb-3">Faturamento, Maturity, Poder de Decisão, Capacidade de Investimento.</p>
+                  
+                  <div class="flex gap-2">
+                    <div class="flex-1 py-1 px-1 bg-red-950/30 border border-red-500/30 text-[9px] text-red-400 rounded-md">
+                      Não: Relacionamento
+                    </div>
+                    <div class="flex-1 py-1 px-1 bg-emerald-950/40 border border-emerald-500/55 text-[9px] text-[#00E676] rounded-md font-extrabold">
+                      Sim: Prescrever
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-3 bg-slate-950/80 border border-slate-800 rounded-xl">
+                  <div class="flex justify-between items-start">
+                    <span class="text-xs font-bold text-white">Prescrição de Rota</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-950/80 text-amber-400 border border-amber-500/40 tracking-wider">▲ HIPÓTESE</span>
+                  </div>
+                  <p class="text-[11px] text-slate-400 mt-1">A Capital Upgrade prescreve o próximo passo ideal baseado em gargalos reais (não há catálogo).</p>
+                </div>
+              </div>
+
+              <div class="mt-4 p-2 bg-yellow-950/20 border border-yellow-500/30 rounded-lg text-[10px] text-yellow-200">
+                💡 <strong>Tese H4:</strong> Prescrição personalizada converte mais do que oferecer opções concorrentes.
+              </div>
+            </div>
+
+            <!-- ANIMATED PATH 2 -->
+            <div class="flex items-center justify-center w-12 flex-shrink-0">
+              <svg class="w-full h-12" viewBox="0 0 48 24" fill="none">
+                <path d="M0 12H48" stroke="#eab308" stroke-width="2.5" class="flow-line" stroke-linecap="round" />
+              </svg>
+            </div>
+
+            <!-- STAGE 3: TRANSFORMAÇÃO (G.I. & G.C.) -->
+            <div data-stage="gi" class="w-[400px] flex-shrink-0 bg-slate-900/40 p-4 border border-emerald-500/20 rounded-2xl relative flex flex-col justify-between card-transition">
+              <div class="absolute -top-3.5 left-4 px-3 py-1 bg-emerald-600 text-white rounded-full text-[9px] uppercase font-bold tracking-wider shadow-lg">
+                3. Transformar (Imersões 2 Dias)
+              </div>
+              
+              <div class="grid grid-cols-2 gap-3 mt-3">
+                <div class="p-3 bg-slate-950/80 border-t-4 border-emerald-500 rounded-xl space-y-2">
+                  <span class="text-xs font-extrabold text-emerald-400 block">G.I. Gestão Inteligente</span>
+                  <p class="text-[10px] text-slate-400">Maturidade de Gestão, organização e delegação.</p>
+                  <div class="bg-emerald-950/50 p-1 text-[8px] text-[#00E676] rounded text-center font-bold tracking-wider font-mono">POSSUI PITCH COMERCIAL</div>
+                </div>
+
+                <div data-stage="gc" class="p-3 bg-slate-950/80 border-t-4 border-blue-500 rounded-xl space-y-2">
+                  <span class="text-xs font-extrabold text-blue-400 block">G.C. Gestão Crescimento</span>
+                  <p class="text-[10px] text-slate-400">Escalar lucro com governança. Geração de Roadmap de Ação.</p>
+                  <div class="bg-blue-950/50 p-1 text-[8px] text-blue-400 rounded text-center font-bold tracking-wider font-mono">POSSUI PITCH COMERCIAL</div>
+                </div>
+              </div>
+
+              <div class="mt-3 p-3 bg-slate-950/80 border border-slate-800 rounded-xl text-xs space-y-1.5">
+                <div class="font-bold text-white flex justify-between items-center">
+                  <span>Rotas de Maturidade</span>
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-950/80 text-amber-400 border border-amber-500/40 tracking-wider">▲ HIPÓTESE</span>
+                </div>
+                <div class="text-[11px] text-slate-400">🟢 <strong>Rota A:</strong> G.I. (Baixa maturidade) ➔ G.C.</div>
+                <div class="text-[11px] text-slate-400">🔵 <strong>Rota B:</strong> Entrada direta no G.C. (Empresa madura)</div>
+              </div>
+
+              <div class="mt-3 p-2 bg-emerald-950/20 border border-emerald-500/30 rounded-lg text-[10px] text-emerald-200">
+                🔄 Ambos operam com capacidade para ~100 empresários e servem de funil de conversão para os grupos premium.
+              </div>
+            </div>
+
+            <!-- ANIMATED PATH 3 -->
+            <div class="flex items-center justify-center w-12 flex-shrink-0">
+              <svg class="w-full h-12" viewBox="0 0 48 24" fill="none">
+                <path d="M0 12H48" stroke="#10b981" stroke-width="2.5" class="flow-line" stroke-linecap="round" />
+              </svg>
+            </div>
+
+            <!-- STAGE 4: CLOSING ENVIRONMENT & MONETIZAÇÃO -->
+            <div data-stage="monetizacao" class="w-[360px] flex-shrink-0 bg-slate-900/40 p-4 border border-amber-500/20 rounded-2xl relative flex flex-col justify-between card-transition">
+              <div class="absolute -top-3.5 left-4 px-3 py-1 bg-amber-600 text-black rounded-full text-[9px] uppercase font-bold tracking-wider shadow-lg">
+                4. Monetizar / Fechamento
+              </div>
+              
+              <div class="space-y-3 mt-3">
+                <!-- Sala Secreta -->
+                <div data-stage="secreta" class="p-3 bg-purple-950/30 border border-purple-500/40 rounded-xl relative">
+                  <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold text-purple-400 flex items-center gap-1">🤫 Sala Secreta</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-950/80 text-amber-400 border border-amber-500/40 tracking-wider">▲ HIPÓTESE</span>
+                  </div>
+                  <p class="text-[10px] text-slate-300 mt-1">~20 empresários. Conversão observada de 20% (4 vendas).</p>
+                  <div class="text-[9px] text-[#00E676] bg-emerald-950/30 border border-emerald-500/20 p-1 rounded mt-1.5 font-semibold text-center">
+                    🚀 Hipótese: Closing Environment para leads quentes
+                  </div>
+                </div>
+
+                <!-- Premium products -->
+                <div class="p-3.5 bg-gradient-to-b from-slate-950 to-slate-900 border border-amber-500/30 rounded-xl space-y-2.5 shadow-lg">
+                  <div class="flex justify-between items-center">
+                    <span class="text-xs font-extrabold text-amber-400 tracking-wider">PRODUTOS HIGH-TICKET</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 tracking-wider">● DADO REAL</span>
+                  </div>
+                  
+                  <div class="grid grid-cols-2 gap-2 text-[10px] font-mono">
+                    <div class="bg-slate-950 p-2 text-center rounded-lg border border-slate-800">
+                      <span class="block text-[8px] text-slate-500 uppercase tracking-widest">MGA</span>
+                      <strong class="text-white text-xs">R$ 50k</strong>
+                    </div>
+                    <div class="bg-slate-950 p-2 text-center rounded-lg border border-slate-800">
+                      <span class="block text-[8px] text-slate-500 uppercase tracking-widest">Ambição</span>
+                      <strong class="text-white text-xs">R$ 130k</strong>
+                    </div>
+                  </div>
+
+                  <div class="p-2 bg-gradient-to-r from-amber-600/20 to-yellow-600/20 border border-amber-500/50 rounded-lg text-center">
+                    <span class="block text-[8px] text-amber-400 uppercase font-bold tracking-widest">Bundle Especial (Imersões)</span>
+                    <strong class="text-[#FFD700] font-mono text-sm block mt-0.5">12x R$ 7.900 (R$ 94,8k)</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-3 p-2 bg-red-950/20 border border-red-500/30 rounded-lg text-[9px] text-red-200">
+                ⚠️ <strong>ALERTA ANOMALIA H9:</strong> O combo completo custa R$ 85,2k a menos do que a soma, e é mais barato que o Ambição sozinho. Margem e canibalização sob análise.
+              </div>
+            </div>
+
+            <!-- ANIMATED PATH 4 -->
+            <div class="flex items-center justify-center w-12 flex-shrink-0">
+              <svg class="w-full h-12" viewBox="0 0 48 24" fill="none">
+                <path d="M0 12H48" stroke="#d4af37" stroke-width="2.5" class="flow-line" stroke-linecap="round" />
+              </svg>
+            </div>
+
+            <!-- STAGE 5: RECUPERAÇÃO -->
+            <div data-stage="recovery" class="w-80 flex-shrink-0 bg-slate-900/40 p-4 border border-gray-600 rounded-2xl relative flex flex-col justify-between card-transition">
+              <div class="absolute -top-3.5 left-4 px-3 py-1 bg-gray-600 text-white rounded-full text-[9px] uppercase font-bold tracking-wider shadow-lg">
+                5. Recuperar & Reascender
+              </div>
+              
+              <div class="space-y-3 mt-3">
+                <div class="p-3 bg-slate-950/80 border border-slate-850 rounded-xl">
+                  <span class="text-xs font-bold text-slate-400">Análise de Perda</span>
+                  <p class="text-[10px] text-slate-550 mt-0.5">Segmentação comercial: Falta de Caixa, Timing, Confiança, Valor ou Urgência.</p>
+                </div>
+
+                <div class="p-3 bg-slate-950/80 border border-slate-800 rounded-xl space-y-2">
+                  <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold text-white">Produtos-Ponte</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-950/80 text-blue-400 border border-blue-500/40 tracking-wider">● DECISÃO ATUAL</span>
+                  </div>
+                  
+                  <div class="space-y-1.5 text-[10px] font-mono">
+                    <div class="p-1.5 bg-slate-900 border border-slate-800 rounded flex justify-between items-center">
+                      <span>Mentoria Vendas</span>
+                      <strong class="text-white">R$ 20k</strong>
+                    </div>
+                    <div class="p-1.5 bg-slate-900 border border-slate-800 rounded flex justify-between items-center">
+                      <span>Estruturação Growth</span>
+                      <strong class="text-white">R$ 25k</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-2.5 bg-emerald-950/20 border border-emerald-500/20 rounded-xl text-[10px] text-emerald-300 flex items-center gap-2">
+                  <div class="text-xl animate-bounce">🔄</div>
+                  <div>
+                    <strong>Loop de Reascensão:</strong> Geração de resultados nas mentorias ponte recoloca o cliente de volta no funil de high-ticket.
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-4 p-2 bg-slate-900 border border-slate-800 rounded-lg text-[9px] text-slate-400">
+                🚫 <strong>Regra:</strong> Não é downsell automático. Prescrição estritamente dependente do gargalo operacional.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- BOTTOM GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+          <!-- FLYWHEEL -->
+          <div class="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
+            <div>
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span class="text-emerald-400">⚙️</span>
+                O Motor de Recombinação (Flywheel da Capital Upgrade)
+              </h3>
+              <p class="text-xs text-slate-400 mt-1">Como a satisfação de um cliente e seus resultados reais alimentam organicamente novos canais de indicação e parcerias.</p>
+              
+              <div class="my-10 flex justify-center items-center">
+                <div class="relative w-72 h-72 flex items-center justify-center">
+                  <div class="w-24 h-24 bg-slate-950 border border-slate-850 rounded-full flex items-center justify-center text-center p-3 text-xs font-bold text-[#00E676] shadow-[0_0_20px_rgba(16,185,129,0.15)] z-20">
+                    RESULTADO DO CLIENTE
+                  </div>
+                  
+                  <div class="absolute w-64 h-64 border-[3px] border-dashed border-emerald-500/30 rounded-full animate-spin-slow"></div>
+                  
+                  <div class="absolute top-0 bg-slate-950 border border-orange-500/50 text-[9px] px-2 py-1 rounded-md font-bold text-orange-400 -translate-y-1/2">
+                    1. CLIENTE DE SUCESSO
+                  </div>
+                  <div class="absolute right-0 top-1/4 translate-x-1/2 bg-slate-950 border border-yellow-500/50 text-[9px] px-2 py-1 rounded-md font-bold text-yellow-400">
+                    2. GERAÇÃO DE CASE
+                  </div>
+                  <div class="absolute right-0 bottom-1/4 translate-x-1/2 bg-slate-950 border border-emerald-500/50 text-[9px] px-2 py-1 rounded-md font-bold text-emerald-400">
+                    3. EMBAIXADOR
+                  </div>
+                  <div class="absolute bottom-0 bg-slate-950 border border-purple-500/50 text-[9px] px-2 py-1 rounded-md font-bold text-purple-400 translate-y-1/2">
+                    4. RECOMENDAÇÃO
+                  </div>
+                  <div class="absolute left-0 bottom-1/4 -translate-x-1/2 bg-slate-950 border border-blue-500/50 text-[9px] px-2 py-1 rounded-md font-bold text-blue-400">
+                    5. NOVO EMPRESÁRIO
+                  </div>
+                  <div class="absolute left-0 top-1/4 -translate-x-1/2 bg-slate-950 border border-slate-700 text-[9px] px-2 py-1 rounded-md font-bold text-slate-300">
+                    6. ENTRADA EM EVENTOS
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-xl text-xs space-y-1.5">
+              <div class="font-bold text-[#00E676] flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 bg-[#00E676] rounded-full"></span>
+                Auto-alimentação do Ecossistema
+              </div>
+              <p class="text-slate-400">À medida que o faturamento do cliente cresce devido à imersão (G.I. / G.C.), ele gera depoimentos e atua como embaixador, reduzindo o CAC de novas aquisições de altíssimo ICP.</p>
+            </div>
+          </div>
+
+          <!-- COORTES -->
+          <div class="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
+            <div>
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span class="text-orange-400">👥</span>
+                Gestão Científica de Coortes e Canais
+              </h3>
+              <p class="text-xs text-slate-400 mt-1">Ações estratégicas para mitigar atritos e isolar métricas de canais.</p>
+
+              <div class="space-y-4 mt-6">
+                <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-xl">
+                  <span class="text-xs font-bold text-orange-400 block mb-1">Coorte Presencial vs Online (Palestra 1 Dia)</span>
+                  <p class="text-[11px] text-slate-400">A taxa de presença e nível de confiança do público presencial é amplamente superior. Os leads da transmissão online devem ser nutridos via fluxos de email e SDR, enquanto o presencial recebe diagnóstico direto no evento.</p>
+                </div>
+
+                <div class="p-4 bg-slate-950/80 border border-slate-800 rounded-xl">
+                  <span class="text-xs font-bold text-yellow-400 block mb-1">Tráfego Pago vs Referral (Parcerias)</span>
+                  <p class="text-[11px] text-slate-400">Referrals trazem faturamentos maiores e ciclo de vendas 40% menor. Misturar estes dados mascara os custos do tráfego pago. A diretoria exige relatórios paralelos de CAC e LTV.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-yellow-950/20 border border-yellow-500/20 rounded-xl text-xs text-yellow-300 mt-4">
+              📈 <strong>North Star da Operação:</strong> Otimize a aquisição com foco no <strong>Custo por ICP Presente</strong>. Focar apenas em "leads gerados" ou CPL oculta o desperdício de caixa na atração de não decisores.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ================= TAB 2: AQUISIÇÃO ================= -->
+      <div id="tab-aquisicao" class="tab-content space-y-6">
+        <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80">
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <span class="p-1 rounded bg-orange-600/20 text-orange-400">📢</span>
+            Canais e Portas de Entrada de Topo de Funil (TOFU)
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">Como atraímos empresários para o ecossistema presencial garantindo alta concentração de público qualificado.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- SUMMIT -->
+          <div class="bg-[#0b0f19] border border-orange-500/20 rounded-2xl p-5 space-y-4 hover:border-orange-500/50 card-transition shadow-lg">
+            <div class="flex justify-between items-center">
+              <span class="px-2 py-0.5 bg-orange-950 text-orange-400 rounded text-[9px] font-bold tracking-wider">CANAL A</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-950/80 text-blue-400 border border-blue-500/40 tracking-wider">● DECISÃO ATUAL</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">Summit Capital Upgrade</h3>
+            <p class="text-xs text-slate-400">1 dia presencial | ~300 pessoas. Grande autoridade em escala para geração de ICP.</p>
+            
+            <ul class="space-y-2 text-xs text-slate-300 bg-slate-950/80 p-3.5 rounded-xl border border-slate-850">
+              <li>⚡ <strong>Formato:</strong> Pode ser pago para validar compromisso.</li>
+              <li>🚫 <strong>Regra:</strong> Sem pitch direto de MGA ou Ambição do palco.</li>
+              <li class="text-[#00E676]">🎯 <strong>CTA:</strong> Direcionar para Diagnóstico de Rota (G.I. / G.C.).</li>
+            </ul>
+
+            <div class="p-3 bg-amber-950/20 border border-amber-500/30 rounded-xl text-xs">
+              <span class="font-bold text-amber-400 block mb-1">Tese H1 (Compromisso):</span>
+              Cobrar ingresso pode reduzir o volume de inscrições, mas aumenta a taxa de presença, a qualificação de ICP e o ticket final.
+            </div>
+          </div>
+
+          <!-- PALESTRA -->
+          <div class="bg-[#0b0f19] border border-orange-500/20 rounded-2xl p-5 space-y-4 hover:border-orange-500/50 card-transition shadow-lg">
+            <div class="flex justify-between items-center">
+              <span class="px-2 py-0.5 bg-orange-950 text-orange-400 rounded text-[9px] font-bold tracking-wider">CANAL B</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-950/80 text-blue-400 border border-blue-500/40 tracking-wider">● DECISÃO ATUAL</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">Palestra / Evento 1 Dia</h3>
+            <p class="text-xs text-slate-400">Baixo ticket. Porta de entrada de altíssima escala e baixa fricção.</p>
+            
+            <ul class="space-y-2 text-xs text-slate-300 bg-slate-950/80 p-3.5 rounded-xl border border-slate-850">
+              <li>⚡ <strong>Formato:</strong> Presencial + Transmissão Digital Online.</li>
+              <li>🚫 <strong>Regra:</strong> Sem pitch direto de produtos premium.</li>
+              <li class="text-[#00E676]">🎯 <strong>CTA:</strong> Continuar a jornada na imersão recomendada.</li>
+            </ul>
+
+            <div class="p-3 bg-blue-950/20 border border-blue-500/30 rounded-xl text-xs">
+              <span class="font-bold text-blue-400 block mb-1">Tratamento de Coortes:</span>
+              O engajamento de leads da transmissão online difere do presencial. É recomendável isolar ambas as coortes para análise de conversão.
+            </div>
+          </div>
+
+          <!-- PARCERIAS -->
+          <div class="bg-[#0b0f19] border border-orange-500/20 rounded-2xl p-5 space-y-4 hover:border-orange-500/50 card-transition shadow-lg">
+            <div class="flex justify-between items-center">
+              <span class="px-2 py-0.5 bg-orange-950 text-orange-400 rounded text-[9px] font-bold tracking-wider">CANAL C</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-950/80 text-blue-400 border border-blue-500/40 tracking-wider">● DECISÃO ATUAL</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">Parcerias & Embaixadores</h3>
+            <p class="text-xs text-slate-400">Referrals, comunidades, influenciadores B2B e associações corporativas comerciais.</p>
+            
+            <ul class="space-y-2 text-xs text-slate-300 bg-slate-950/80 p-3.5 rounded-xl border border-slate-850">
+              <li>⚡ <strong>Formato:</strong> Entrada orgânica com alta confiança prévia.</li>
+              <li>🎯 <strong>Destinos:</strong> Enviar para o Summit, Palestras ou direto ao G.I./G.C.</li>
+              <li class="text-amber-400 font-bold">⚠️ Regra: Medir Referral separadamente de mídia paga.</li>
+            </ul>
+
+            <div class="p-3 bg-emerald-950/20 border border-emerald-500/30 rounded-xl text-xs">
+              <span class="font-bold text-emerald-400 block mb-1">Densidade de Perfil:</span>
+              Canal de altíssimo faturamento médio devido à transferência de autoridade gerada pelo parceiro/embaixador.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 3: G.I. vs G.C. ================= -->
+      <div id="tab-gigc" class="tab-content space-y-6">
+        <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+              <span class="p-1 rounded bg-emerald-600/20 text-emerald-400">📊</span>
+              Imersões de 2 Dias: G.I. vs G.C.
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Conheça o posicionamento, pilares e perfis das duas imersões presenciais que geram caixa.</p>
+          </div>
+          <div class="text-xs text-[#00E676] bg-emerald-950/50 px-3 py-1.5 border border-emerald-500/20 rounded-lg font-mono">
+            Capacidade: ~100 pessoas por edição
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- GI CARD -->
+          <div class="bg-[#0b0f19] border-t-4 border-emerald-500 rounded-2xl p-6 space-y-4 shadow-xl">
+            <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest block">Imersão de Estruturação</span>
+            <h3 class="text-xl font-bold text-white">G.I. — Gestão Inteligente</h3>
+            <p class="text-xs text-slate-400">Destinada a empresários que cresceram rápido demais e perderam o controle sobre a estrutura interna da empresa, gerando gargalos.</p>
+
+            <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-850 space-y-2">
+              <span class="text-xs font-bold text-slate-300 block">Perfil de Entrada (Gargalos)</span>
+              <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400">
+                <div>• Dono centraliza as decisões</div>
+                <div>• Falta de processos claros</div>
+                <div>• Sem previsibilidade operacional</div>
+                <div>• Gargalos rotineiros diários</div>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">Os 4 Pilares da Gestão Inteligente</span>
+              <div class="grid grid-cols-4 gap-2 text-center text-[10px]">
+                <div class="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
+                  <span class="block text-emerald-400 font-extrabold mb-1">Marketing</span>
+                  <span class="text-[9px] text-slate-500">Demanda</span>
+                </div>
+                <div class="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
+                  <span class="block text-emerald-400 font-extrabold mb-1">Vendas</span>
+                  <span class="text-[9px] text-slate-500">Receita</span>
+                </div>
+                <div class="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
+                  <span class="block text-emerald-400 font-extrabold mb-1">Operações</span>
+                  <span class="text-[9px] text-slate-500">Entrega</span>
+                </div>
+                <div class="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
+                  <span class="block text-emerald-400 font-extrabold mb-1">Finanças</span>
+                  <span class="text-[9px] text-slate-500">Margem/Lucro</span>
+                </div>
+              </div>
+              <div class="text-[10px] text-slate-400 font-semibold text-center mt-2 italic bg-slate-950 p-2 rounded-lg border border-slate-850">
+                Fluxo Lógico: DEMANDA ➔ RECEITA ➔ ENTREGA ➔ MARGEM/LUCRO
+              </div>
+            </div>
+          </div>
+
+          <!-- GC CARD -->
+          <div class="bg-[#0b0f19] border-t-4 border-blue-500 rounded-2xl p-6 space-y-4 shadow-xl">
+            <span class="text-xs font-bold text-blue-400 uppercase tracking-widest block">Imersão de Escala</span>
+            <h3 class="text-xl font-bold text-white">G.C. — Gestão do Crescimento</h3>
+            <p class="text-xs text-slate-400">"Transformar potencial em crescimento consistente". Desenvolvido para empresários com a base pronta que desejam crescer com governança.</p>
+
+            <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-850 space-y-2">
+              <span class="text-xs font-bold text-slate-300 block">Perfil de Entrada (Desafios)</span>
+              <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400">
+                <div>• Escalar lucros de forma segura</div>
+                <div>• Otimizar CMV e margem</div>
+                <div>• Identificar e priorizar alavancas</div>
+                <div>• Onde investir tempo e pessoas</div>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <span class="text-xs font-bold text-blue-400 uppercase tracking-wider block">As 4 Áreas de Governança do G.C.</span>
+              <div class="grid grid-cols-4 gap-2 text-center text-[10px]">
+                <div class="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
+                  <span class="block text-blue-400 font-extrabold mb-1">Marketing</span>
+                  <span class="text-[9px] text-slate-550">Ticket & Retenção</span>
+                </div>
+                <div class="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
+                  <span class="block text-blue-400 font-extrabold mb-1">Vendas</span>
+                  <span class="text-[9px] text-slate-550">Funil de Recompra</span>
+                </div>
+                <div class="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
+                  <span class="block text-blue-400 font-extrabold mb-1">Operações</span>
+                  <span class="text-[9px] text-slate-550">Eficiência & CMV</span>
+                </div>
+                <div class="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
+                  <span class="block text-blue-400 font-extrabold mb-1">Finanças</span>
+                  <span class="text-[9px] text-slate-550">Fluxo de Caixa</span>
+                </div>
+              </div>
+              <div class="text-[10px] text-slate-400 font-semibold text-center mt-2 italic bg-slate-950 p-2 rounded-lg border border-slate-850">
+                Resultado: ROADMAP ESTRATÉGICO DE CRESCIMENTO (saber onde agir primeiro)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 4: MONETIZAÇÃO ================= -->
+      <div id="tab-monetizacao" class="tab-content space-y-6">
+        <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80">
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <span class="p-1 rounded bg-amber-500/20 text-amber-400">💰</span>
+            Camada de Monetização & Alerta de Pricing
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">Nossa oferta de programas premium e a análise detalhada sobre a precificação conjunta do combo.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-4 hover:border-amber-500/30 card-transition shadow-lg">
+            <span class="text-xs text-slate-500 font-bold block uppercase tracking-wider">GRUPO DE NEGÓCIOS</span>
+            <h3 class="text-xl font-extrabold text-white">MGA</h3>
+            <div class="text-3xl font-bold text-white font-mono">R$ 50.000</div>
+            <p class="text-xs text-slate-400">Programa estratégico de networking e mentoria corporativa executiva.</p>
+          </div>
+
+          <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-4 hover:border-amber-500/30 card-transition shadow-lg">
+            <span class="text-xs text-slate-500 font-bold block uppercase tracking-wider">MASTERMIND EXECUTIVE</span>
+            <h3 class="text-xl font-extrabold text-white">Ambição</h3>
+            <div class="text-3xl font-bold text-white font-mono">R$ 130.000</div>
+            <p class="text-xs text-slate-400">Grupo premium de alta proximidade, direcionado para empresários de grande porte.</p>
+          </div>
+
+          <div class="bg-[#0b0f19] border-2 border-amber-500 rounded-2xl p-5 space-y-4 glow-gold relative shadow-xl">
+            <div class="absolute -top-3.5 right-4 px-3 py-1 bg-amber-500 text-black font-extrabold rounded-full text-[9px] uppercase tracking-wider">
+              OFERTA DE EVENTO
+            </div>
+            <span class="text-xs text-amber-400 font-bold block uppercase tracking-wider">MGA + AMBIÇÃO (BUNDLE)</span>
+            <h3 class="text-xl font-extrabold text-white">Combo Ascension</h3>
+            <div class="text-3xl font-bold text-white font-mono">
+              12x R$ 7.900
+              <span class="block text-xs text-slate-400 mt-1 font-semibold">Total: R$ 94.800</span>
+            </div>
+            <p class="text-xs text-slate-300">A oferta especial apresentada nos pitches internos de imersões presenciais.</p>
+          </div>
+        </div>
+
+        <!-- PRICING ANOMALY -->
+        <div class="bg-amber-950/20 border-2 border-amber-500/40 rounded-2xl p-6 space-y-4">
+          <div class="flex items-center gap-2 text-amber-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            <h3 class="text-base font-extrabold uppercase tracking-wider">Dimensões Críticas do Pricing Bundle (H9)</h3>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs text-slate-300">
+            <div class="p-3 bg-slate-950 border border-slate-800 rounded-lg">
+              <span class="text-slate-500">Soma Tabela MGA + Ambição</span>
+              <div class="text-base font-bold text-white font-mono mt-1">R$ 180.000</div>
+            </div>
+            <div class="p-3 bg-slate-950 border border-slate-800 rounded-lg">
+              <span class="text-slate-500">Desconto do Combo</span>
+              <div class="text-base font-bold text-red-400 font-mono mt-1">- R$ 85.200 (47% Off)</div>
+            </div>
+            <div class="p-3 bg-slate-950 border border-slate-800 rounded-lg">
+              <span class="text-slate-500">Combo vs Ambição Individual</span>
+              <div class="text-base font-bold text-amber-400 font-mono mt-1">Combo é R$ 35,2k mais barato</div>
+            </div>
+            <div class="p-3 bg-slate-950 border border-slate-800 rounded-lg">
+              <span class="text-slate-500">Status da Hipótese</span>
+              <div class="text-base font-bold text-yellow-400 mt-1">Em Validação Ativa</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 5: RECOVERY ================= -->
+      <div id="tab-recovery" class="tab-content space-y-6">
+        <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80">
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <span class="p-1 rounded bg-gray-600/20 text-slate-400">🔄</span>
+            Estratégia de Recuperação (Recovery) e Reascensão
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">Mapeamos as razões de perda e estruturamos as Mentorias-Ponte como ferramenta técnica de reascensão do cliente.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-4 shadow-lg">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Causas de Não Compra (Segmentação)</h3>
+            <div class="space-y-2 text-xs">
+              <div class="p-3 bg-slate-950 border border-slate-850 rounded-lg flex justify-between">
+                <span>💳 Caixa / Fluxo financeiro restrito</span>
+                <strong class="text-red-400">Downsell ou Pontes</strong>
+              </div>
+              <div class="p-3 bg-slate-950 border border-slate-850 rounded-lg flex justify-between">
+                <span>⏳ Timing / Outros projetos imediatos</span>
+                <strong class="text-orange-400">Nutrição SDR (60 dias)</strong>
+              </div>
+              <div class="p-3 bg-slate-950 border border-slate-850 rounded-lg flex justify-between">
+                <span>⚙️ Solução inadequada para o momento</span>
+                <strong class="text-[#00E676]">Encaminhar para Pontes</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-4 shadow-lg">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Mentorias-Ponte Estruturadas</h3>
+            <div class="space-y-3">
+              <div class="p-3 bg-slate-950 border border-slate-850 rounded-xl">
+                <div class="flex justify-between">
+                  <span class="text-xs font-bold text-white">Mentoria de Vendas</span>
+                  <strong class="text-[#00E676] font-mono text-xs">R$ 20.000</strong>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-1">Focada em estruturação de processos comerciais e previsibilidade de funil de vendas.</p>
+              </div>
+
+              <div class="p-3 bg-slate-950 border border-slate-850 rounded-xl">
+                <div class="flex justify-between">
+                  <span class="text-xs font-bold text-white">Estruturação de Growth</span>
+                  <strong class="text-[#00E676] font-mono text-xs">R$ 25.000</strong>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-1">Focada em marketing de aquisição, estrutura de growth e geração de leads.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 6: KPIS & SIMULADOR ================= -->
+      <div id="tab-kpis" class="tab-content space-y-6">
+        <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+              <span class="p-1 rounded bg-[#00E676]/20 text-[#00E676]">📈</span>
+              Modelagem de KPIs, Baselines e Funil de Projeção
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Ajuste os controles deslizantes abaixo para simular as receitas potenciais com base nos baselines da Capital Upgrade.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- CONTROLES -->
+          <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-5 shadow-lg">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Simulador de Cohorts</h3>
+            
+            <div class="space-y-2">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-400">Inscritos (Summit/Palestra):</span>
+                <strong id="val-subscribers" class="text-white font-mono">1000 leads</strong>
+              </div>
+              <input 
+                type="range" 
+                min="100" 
+                max="5000" 
+                step="100"
+                value="1000"
+                id="slider-subscribers"
+                oninput="runSimulation()"
+                class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-[#00E676]"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-400">Taxa de Ascensão para G.I. / G.C.:</span>
+                <strong id="val-ascension" class="text-yellow-400 font-mono">30%</strong>
+              </div>
+              <input 
+                type="range" 
+                min="5" 
+                max="80" 
+                step="5"
+                value="30"
+                id="slider-ascension"
+                oninput="runSimulation()"
+                class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-yellow-500"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-400">Conversão de ICP no G.I./G.C.:</span>
+                <strong id="val-conversion" class="text-[#00E676] font-mono">20%</strong>
+              </div>
+              <input 
+                type="range" 
+                min="5" 
+                max="40" 
+                step="1"
+                value="20"
+                id="slider-conversion"
+                oninput="runSimulation()"
+                class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <span class="text-xs text-slate-400 block">Produto High-Ticket Selecionado:</span>
+              <select id="sim-product" onchange="runSimulation()" class="w-full bg-slate-950 border border-slate-850 text-xs text-slate-350 p-2.5 rounded-lg focus:outline-none">
+                <option value="94800">Combo (R$ 94,8k)</option>
+                <option value="50000">MGA (R$ 50k)</option>
+                <option value="130000">Ambição (R$ 130k)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- RESULTADOS -->
+          <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-4 shadow-lg flex flex-col justify-between">
+            <div>
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-3">Resultados da Simulação</h3>
+              <div class="space-y-2 text-xs">
+                <div class="p-2.5 bg-slate-950 border border-slate-850 rounded-lg flex justify-between items-center">
+                  <span class="text-slate-400">Presentes (50% Show Rate)</span>
+                  <strong id="out-present" class="text-white font-mono">500 pax</strong>
+                </div>
+                <div class="p-2.5 bg-slate-950 border border-slate-850 rounded-lg flex justify-between items-center">
+                  <span class="text-slate-400">ICPs Presentes (45% Densidade)</span>
+                  <strong id="out-icp" class="text-white font-mono">225 pax</strong>
+                </div>
+                <div class="p-2.5 bg-slate-950 border border-slate-850 rounded-lg flex justify-between items-center">
+                  <span class="text-slate-400">Ascendidos para G.I./G.C.</span>
+                  <strong id="out-gigc" class="text-yellow-400 font-mono">68 pax</strong>
+                </div>
+                <div class="p-2.5 bg-slate-950 border border-slate-850 rounded-lg flex justify-between items-center">
+                  <span class="text-slate-400">Vendas finais</span>
+                  <strong id="out-sales" class="text-[#00E676] font-mono">14 vendas</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-4 bg-[#00E676]/10 border border-[#00E676]/20 rounded-xl text-center">
+              <span class="text-[10px] text-slate-400 block uppercase">Faturamento Projetado</span>
+              <strong id="out-revenue" class="text-xl md:text-2xl text-[#00E676] font-mono block mt-1">R$ 1.327.200</strong>
+            </div>
+          </div>
+
+          <!-- NORTH STAR -->
+          <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-4 shadow-lg flex flex-col justify-between">
+            <div>
+              <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Gargalos Financeiros</h3>
+              
+              <div class="p-4 bg-emerald-950/20 border border-emerald-500/40 rounded-xl space-y-1">
+                <span class="text-[9px] font-bold text-[#00E676] uppercase tracking-wider block">NORTH STAR METRIC</span>
+                <strong class="text-white text-sm block">Receita por ICP Presente</strong>
+                <div id="out-ns" class="text-lg md:text-xl font-bold text-white font-mono mt-1">R$ 5.898</div>
+              </div>
+
+              <div class="p-4 bg-blue-950/20 border border-blue-500/40 rounded-xl space-y-1 mt-4">
+                <span class="text-[9px] font-bold text-blue-400 uppercase tracking-wider block">CUSTO DE AQUISIÇÃO</span>
+                <strong class="text-white text-sm block">Custo por ICP Presente</strong>
+                <p class="text-[10px] text-slate-400 mt-1">Substitui o CPL comum para alinhar a equipe de marketing à atração de clientes com alta maturidade.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 7: HIPÓTESES (KANBAN) ================= -->
+      <div id="tab-hipoteses" class="tab-content space-y-6">
+        <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+              <span class="p-1 rounded bg-amber-600/20 text-amber-400">📌</span>
+              Backlog de Hipóteses e Testes de Growth
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Os 15 testes de hipótese ativos do time estratégico da Capital.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="kanban-board">
+          <!-- Column boxes populated by JS script dynamically -->
+        </div>
+      </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-16 border-t border-slate-800 bg-slate-950/60 px-8 py-6 text-xs text-slate-500 flex justify-between items-center">
+      <div>
+        <span>Capital Upgrade © 2026</span>
+        <span class="mx-2">|</span>
+        <span>Growth System Map V3.0</span>
+      </div>
+      <div class="text-slate-400 font-mono">
+        Designed & Redesigned by <strong>Antigravity</strong>
+      </div>
+    </footer>
+  </div>
+
+  <!-- SCRIPT VANILLA JS -->
+  <script>
+    // State management
+    const state = {
+      activeTab: 'jornada',
+      selectedStage: null,
+      hypotheses: [
         { id: 'H1', text: 'Summit pago pode reduzir inscrições mas melhorar presença e ICP.', category: 'Aquisição', status: 'Em Teste' },
         { id: 'H2', text: 'Palestra low-ticket + transmissão pode ser a principal máquina de aquisição em escala.', category: 'Aquisição', status: 'Pendente' },
         { id: 'H3', text: 'Sala Secreta pode ser mais valiosa como ambiente de fechamento (Closing Environment).', category: 'Conversão', status: 'Em Teste' },
@@ -142,1217 +998,198 @@
         { id: 'H13', text: 'Programa de Embaixadores pode criar um canal de aquisição recorrente e previsível.', category: 'Aquisição', status: 'Pendente' },
         { id: 'H14', text: 'Origens diferentes têm CPL semelhante, mas Receita por ICP amplamente distinta.', category: 'Canais', status: 'Pendente' },
         { id: 'H15', text: 'O maior ganho de Growth está no meio do funil (ICP → G.I./G.C.) e não apenas no topo.', category: 'Métricas', status: 'Em Teste' }
-      ]);
+      ]
+    };
 
-      const updateHypothesisStatus = (id, newStatus) => {
-        setHypotheses(hypotheses.map(h => h.id === id ? { ...h, status: newStatus } : h));
-      };
+    // Tab switching
+    function switchTab(tabId) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.remove('active');
+      });
+      // Show selected tab
+      const targetTab = document.getElementById('tab-' + tabId);
+      if (targetTab) {
+        targetTab.classList.add('active');
+      }
 
-      // Real Baselines
-      const showRate = 0.50; // 50%
-      const icpRate = 0.45; // 45%
-      const actualSalesRate = 0.20; // 20%
+      // Update button classes
+      document.querySelectorAll('header button[onclick^="switchTab"]').forEach(btn => {
+        btn.className = "px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:bg-slate-800";
+      });
 
-      // Calculations for projections
-      const presentOutput = Math.round(subscribersInput * showRate);
-      const icpOutput = Math.round(presentOutput * icpRate);
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        let activeColorClass = "bg-[#00E676] text-black shadow-lg shadow-[#00E676]/30 font-bold scale-[1.03]";
+        if (tabId === 'aquisicao') activeColorClass = "bg-orange-600 text-white shadow-lg shadow-orange-600/30 font-bold scale-[1.03]";
+        if (tabId === 'gigc') activeColorClass = "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 font-bold scale-[1.03]";
+        if (tabId === 'monetizacao') activeColorClass = "bg-amber-500 text-black shadow-lg shadow-amber-500/30 font-bold scale-[1.03]";
+        if (tabId === 'recovery') activeColorClass = "bg-gray-600 text-white shadow-lg shadow-gray-600/30 font-bold scale-[1.03]";
+        if (tabId === 'hipoteses') activeColorClass = "bg-amber-600 text-white shadow-lg shadow-amber-600/30 font-bold scale-[1.03]";
+        
+        activeBtn.className = `px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 ${activeColorClass}`;
+      }
+
+      state.activeTab = tabId;
       
-      // Potential attendees to GI/GC based on custom rate slider
-      const giGcOutput = Math.round(icpOutput * (customGItoGCRate / 100));
-      const finalSales = Math.round(giGcOutput * (salesTargetRate / 100));
-      
-      // Pricing selection
-      let ticketVal = 94800; // default bundle
-      if (selectedProduct === 'mga') ticketVal = 50000;
-      if (selectedProduct === 'ambicao') ticketVal = 130000;
-
-      const projectedRevenue = finalSales * ticketVal;
-      const revenuePerIcpPresent = icpOutput > 0 ? (projectedRevenue / icpOutput) : 0;
-
-      // Handle highlighting stage cards
-      const getOpacity = (stage) => {
-        if (!selectedStage) return 'opacity-100';
-        return selectedStage === stage ? 'opacity-100 scale-[1.01] border-opacity-100 shadow-md' : 'opacity-30 scale-95 border-opacity-20';
-      };
-
-      const getHighlightClass = (stage, colorClass) => {
-        if (selectedStage === stage) {
-          return `${colorClass} ring-2 ring-[#00E676]`;
-        }
-        return '';
-      };
-
-      return (
-        <div className="min-h-screen flex flex-col">
-          
-          {/* BACKGROUND AMBIENT GLOWS */}
-          <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
-          <div className="absolute bottom-20 right-1/4 w-[400px] h-[400px] bg-amber-500/300 bg-opacity-[0.03] rounded-full blur-[100px] -z-10 pointer-events-none"></div>
-
-          {/* MAIN STICKY HEADER */}
-          <header className="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md px-6 py-5 sticky top-0 z-50 shadow-2xl">
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              <div>
-                <div className="flex items-center gap-3">
-                  <div className="w-3.5 h-3.5 rounded-full bg-[#00E676] animate-ping"></div>
-                  <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white font-display">
-                    CAPITAL UPGRADE <span className="text-[#00E676] text-xs font-mono px-2 py-0.5 border border-[#00E676]/30 bg-[#00E676]/10 rounded-md ml-2">GROWTH OPERATING SYSTEM</span>
-                  </h1>
-                </div>
-                <p className="text-xs text-slate-400 mt-2 uppercase font-bold tracking-widest flex flex-wrap items-center gap-1.5 font-mono">
-                  Atrair <span className="text-[#00E676]">➔</span> Qualificar <span className="text-[#00E676]">➔</span> Diagnosticar <span className="text-[#00E676]">➔</span> Prescrever <span className="text-[#00E676]">➔</span> Transformar <span className="text-[#00E676]">➔</span> Monetizar <span className="text-[#00E676]">➔</span> Reascender
-                </p>
-              </div>
-              
-              {/* Interactive Legend with click filters */}
-              <div className="flex flex-wrap gap-2 text-xs">
-                <button 
-                  onClick={() => setSelectedStage(selectedStage === 'aquisicao' ? null : 'aquisicao')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border rounded-lg card-transition hover:border-orange-500/50 ${selectedStage === 'aquisicao' ? 'border-orange-500 ring-2 ring-orange-500/30 bg-orange-950/20 text-orange-300' : 'border-slate-800 text-slate-400'}`}
-                >
-                  <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Aquisição
-                </button>
-                <button 
-                  onClick={() => setSelectedStage(selectedStage === 'diagnostico' ? null : 'diagnostico')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border rounded-lg card-transition hover:border-yellow-500/50 ${selectedStage === 'diagnostico' ? 'border-yellow-500 ring-2 ring-yellow-500/30 bg-yellow-950/20 text-yellow-300' : 'border-slate-800 text-slate-400'}`}
-                >
-                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> Diagnóstico
-                </button>
-                <button 
-                  onClick={() => setSelectedStage(selectedStage === 'gi' ? null : 'gi')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border rounded-lg card-transition hover:border-emerald-500/50 ${selectedStage === 'gi' ? 'border-emerald-500 ring-2 ring-emerald-500/30 bg-emerald-950/20 text-emerald-300' : 'border-slate-800 text-slate-400'}`}
-                >
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> G.I.
-                </button>
-                <button 
-                  onClick={() => setSelectedStage(selectedStage === 'gc' ? null : 'gc')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border rounded-lg card-transition hover:border-blue-500/50 ${selectedStage === 'gc' ? 'border-blue-500 ring-2 ring-blue-500/30 bg-blue-950/20 text-blue-300' : 'border-slate-800 text-slate-400'}`}
-                >
-                  <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span> G.C.
-                </button>
-                <button 
-                  onClick={() => setSelectedStage(selectedStage === 'secreta' ? null : 'secreta')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border rounded-lg card-transition hover:border-purple-500/50 ${selectedStage === 'secreta' ? 'border-purple-500 ring-2 ring-purple-500/30 bg-purple-950/20 text-purple-300' : 'border-slate-800 text-slate-400'}`}
-                >
-                  <span className="w-2.5 h-2.5 rounded-full bg-purple-500"></span> S. Secreta
-                </button>
-                <button 
-                  onClick={() => setSelectedStage(selectedStage === 'monetizacao' ? null : 'monetizacao')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border rounded-lg card-transition hover:border-amber-500/50 ${selectedStage === 'monetizacao' ? 'border-amber-500 ring-2 ring-amber-500/30 bg-amber-950/20 text-amber-300' : 'border-slate-800 text-slate-400'}`}
-                >
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Monetização
-                </button>
-                <button 
-                  onClick={() => setSelectedStage(selectedStage === 'recovery' ? null : 'recovery')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border rounded-lg card-transition hover:border-gray-500/50 ${selectedStage === 'recovery' ? 'border-gray-500 ring-2 ring-gray-500/30 bg-gray-950/20 text-gray-300' : 'border-slate-800 text-slate-400'}`}
-                >
-                  <span className="w-2.5 h-2.5 rounded-full bg-gray-500"></span> Recovery
-                </button>
-              </div>
-            </div>
-
-            {/* TAB NAVEGATION */}
-            <div className="max-w-7xl mx-auto mt-6 flex flex-wrap gap-1.5 border-t border-slate-800/80 pt-4">
-              <button 
-                onClick={() => setActiveTab('jornada')}
-                className={`px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 ${activeTab === 'jornada' ? 'bg-[#00E676] text-black shadow-lg shadow-[#00E676]/30 font-bold scale-[1.03]' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
-              >
-                🗺️ 1. Jornada Completa
-              </button>
-              <button 
-                onClick={() => setActiveTab('aquisicao')}
-                className={`px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 ${activeTab === 'aquisicao' ? 'bg-orange-600 text-white shadow-lg shadow-orange-600/30 font-bold scale-[1.03]' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
-              >
-                📢 2. Aquisição (TOFU)
-              </button>
-              <button 
-                onClick={() => setActiveTab('gigc')}
-                className={`px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 ${activeTab === 'gigc' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 font-bold scale-[1.03]' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
-              >
-                📊 3. G.I. vs G.C.
-              </button>
-              <button 
-                onClick={() => setActiveTab('monetizacao')}
-                className={`px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 ${activeTab === 'monetizacao' ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/30 font-bold scale-[1.03]' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
-              >
-                💰 4. Monetização & Pricing
-              </button>
-              <button 
-                onClick={() => setActiveTab('recovery')}
-                className={`px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 ${activeTab === 'recovery' ? 'bg-gray-600 text-white shadow-lg shadow-gray-600/30 font-bold scale-[1.03]' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
-              >
-                🔄 5. Recovery & Reascensão
-              </button>
-              <button 
-                onClick={() => setActiveTab('kpis')}
-                className={`px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 ${activeTab === 'kpis' ? 'bg-[#00E676] text-black shadow-lg shadow-[#00E676]/30 font-bold scale-[1.03]' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
-              >
-                📈 6. KPIs & Simulador
-              </button>
-              <button 
-                onClick={() => setActiveTab('hipoteses')}
-                className={`px-4 py-2.5 text-xs md:text-sm font-semibold rounded-lg card-transition flex items-center gap-2 ${activeTab === 'hipoteses' ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/30 font-bold scale-[1.03]' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
-              >
-                📌 7. Post-its de Hipóteses
-              </button>
-            </div>
-          </header>
-
-          {/* MAIN INFO BAR */}
-          {showInfoPanel && (
-            <div className="bg-[#0b101c] border-b border-slate-800 px-6 py-3.5 flex justify-between items-center text-xs text-slate-300 transition-all">
-              <div className="flex flex-wrap gap-4 items-center max-w-6xl">
-                <span>⚡ <strong>Tese Growth:</strong> Nosso foco estratégico é a construção de um <strong>Sistema Integrado de Ascensão</strong> que maximiza a receita extraída por ICP (Ideal Client Profile) presente na esteira.</span>
-                <span className="hidden md:inline-flex items-center gap-2 bg-[#00E676]/10 px-2 py-0.5 rounded border border-[#00E676]/20 text-[#00E676]">
-                  ℹ️ Clique nos botões de legenda para destacar etapas específicas.
-                </span>
-              </div>
-              <button onClick={() => setShowInfoPanel(false)} className="text-slate-500 hover:text-white transition p-1">✖</button>
-            </div>
-          )}
-
-          {/* MAIN CONTENT AREA */}
-          <main className="flex-grow p-4 md:p-8 max-w-[1700px] mx-auto w-full">
-            
-            {/* VIEW 1: JORNADA COMPLETA (FLOW COM ANIMACAO DE FLUXO) */}
-            {activeTab === 'jornada' && (
-              <div className="space-y-8 animate-fadeIn">
-                
-                {/* Header card visual */}
-                <div className="glass-morphism p-5 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                      <span className="p-1.5 rounded-lg bg-[#00E676]/10 text-[#00E676] border border-[#00E676]/20">🗺️</span>
-                      Arquitetura Integrada do Customer Ascension System
-                    </h2>
-                    <p className="text-xs text-slate-400 mt-1">Visualize todo o fluxo horizontal dos decisores e as conexões entre as imersões presenciais, a Sala Secreta e a camada de reascensão.</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="text-[10px] px-2 py-1 bg-slate-900 border border-slate-800 rounded-md text-[#00E676] font-mono">Duração: 1-2 dias</span>
-                    <span className="text-[10px] px-2 py-1 bg-slate-900 border border-slate-800 rounded-md text-amber-400 font-mono">Tickets: R$ 20k - R$ 130k</span>
-                  </div>
-                </div>
-
-                {/* HORIZONTAL FLOW CONTAINER */}
-                <div className="overflow-x-auto pb-8 pt-2">
-                  <div className="flex min-w-[1450px] items-stretch gap-2 relative">
-                    
-                    {/* STAGE 1: TOFU / AQUISIÇÃO */}
-                    <div className={`w-80 flex-shrink-0 bg-slate-900/40 p-4 border border-orange-500/20 rounded-2xl relative flex flex-col justify-between card-transition ${getOpacity('aquisicao')} ${getHighlightClass('aquisicao', 'glow-orange')}`}>
-                      <div className="absolute -top-3.5 left-4 px-3 py-1 bg-orange-600 text-white rounded-full text-[9px] uppercase font-bold tracking-wider shadow-lg">
-                        1. Atrair (TOFU)
-                      </div>
-                      
-                      <div className="space-y-4 mt-3">
-                        <h3 className="text-xs font-extrabold uppercase tracking-widest text-orange-400 flex items-center justify-between">
-                          <span>Canais de Entrada</span>
-                          <span className="text-[9px] text-slate-500 font-mono">3 Portas</span>
-                        </h3>
-                        
-                        {/* Summit */}
-                        <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-orange-500/50 card-transition">
-                          <div className="flex justify-between items-start">
-                            <span className="text-xs font-bold text-white">Summit Capital</span>
-                            <StatusBadge type="DECISAO" />
-                          </div>
-                          <p className="text-[11px] text-slate-400 mt-1">1 dia | ~300 pessoas. Grande geração de autoridade e escala. Sem pitch de MGA.</p>
-                          <div className="mt-2 text-[9px] text-orange-400 font-bold bg-orange-950/20 p-1 rounded text-center">
-                            CTA: Diagnóstico de Rota
-                          </div>
-                        </div>
-
-                        {/* Palestra */}
-                        <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-orange-500/50 card-transition">
-                          <div className="flex justify-between items-start">
-                            <span className="text-xs font-bold text-white">Palestra / Evento 1D</span>
-                            <StatusBadge type="DECISAO" />
-                          </div>
-                          <p className="text-[11px] text-slate-400 mt-1">Ticket baixo. Presencial + Online. Coortes tratadas de forma separada no CRM.</p>
-                          <div className="mt-2 text-[9px] text-slate-500">CTA: Continuar no G.I. ou G.C.</div>
-                        </div>
-
-                        {/* Parcerias */}
-                        <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-orange-500/50 card-transition">
-                          <div className="flex justify-between items-start">
-                            <span className="text-xs font-bold text-white">Parcerias / Embaixadores</span>
-                            <StatusBadge type="DECISAO" />
-                          </div>
-                          <p className="text-[11px] text-slate-400 mt-1">Referral de alta confiança. Pode direcionar direto para o G.I./G.C.</p>
-                        </div>
-                      </div>
-                      
-                      <div className="mt-4 p-2 bg-orange-950/20 border border-orange-500/30 rounded-lg text-[10px] text-orange-200">
-                        ⚡ <strong>Hipótese H1:</strong> Cobrar ingresso reduz inscritos brutas mas eleva Show Rate e ICP.
-                      </div>
-                    </div>
-
-                    {/* ANIMATED SVG PATH 1 */}
-                    <div className="flex items-center justify-center w-12 flex-shrink-0">
-                      <svg className="w-full h-12" viewBox="0 0 48 24" fill="none">
-                        <path d="M0 12H48" stroke="#f97316" strokeWidth="2.5" className="flow-line" strokeLinecap="round" />
-                      </svg>
-                    </div>
-
-                    {/* STAGE 2: QUALIFICAÇÃO / FILTRO ICP */}
-                    <div className={`w-80 flex-shrink-0 bg-slate-900/40 p-4 border border-yellow-500/20 rounded-2xl relative flex flex-col justify-between card-transition ${getOpacity('diagnostico')} ${getHighlightClass('diagnostico', 'glow-yellow')}`}>
-                      <div className="absolute -top-3.5 left-4 px-3 py-1 bg-yellow-600 text-black rounded-full text-[9px] uppercase font-bold tracking-wider shadow-lg">
-                        2. Qualificar & Diagnosticar
-                      </div>
-                      
-                      <div className="space-y-4 mt-3">
-                        <h3 className="text-xs font-extrabold uppercase tracking-widest text-yellow-400">Ponto de Decisão</h3>
-                        
-                        {/* Decision diamond simulation */}
-                        <div className="p-4 bg-slate-950/80 border-2 border-yellow-500/40 rounded-xl relative overflow-hidden text-center">
-                          <div className="font-extrabold text-xs text-white uppercase tracking-wider mb-2">É ICP?</div>
-                          <p className="text-[10px] text-slate-400 mb-3">Faturamento, Maturity, Poder de Decisão, Capacidade de Investimento.</p>
-                          
-                          <div className="flex gap-2">
-                            <div className="flex-1 py-1 px-1 bg-red-950/30 border border-red-500/30 text-[9px] text-red-400 rounded-md">
-                              Não: Relacionamento
-                            </div>
-                            <div className="flex-1 py-1 px-1 bg-emerald-950/40 border border-emerald-500/50 text-[9px] text-[#00E676] rounded-md font-extrabold">
-                              Sim: Prescrever
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Prescription model */}
-                        <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-xl">
-                          <div className="flex justify-between items-start">
-                            <span className="text-xs font-bold text-white">Prescrição de Rota</span>
-                            <StatusBadge type="HIPOTESE" />
-                          </div>
-                          <p className="text-[11px] text-slate-400 mt-1">A Capital Upgrade prescreve o próximo passo ideal baseado em gargalos reais (não há catálogo).</p>
-                        </div>
-                      </div>
-
-                      <div className="mt-4 p-2 bg-yellow-950/20 border border-yellow-500/30 rounded-lg text-[10px] text-yellow-200">
-                        💡 <strong>Tese H4:</strong> Prescrição personalizada converte mais do que oferecer opções concorrentes.
-                      </div>
-                    </div>
-
-                    {/* ANIMATED SVG PATH 2 */}
-                    <div className="flex items-center justify-center w-12 flex-shrink-0">
-                      <svg className="w-full h-12" viewBox="0 0 48 24" fill="none">
-                        <path d="M0 12H48" stroke="#eab308" strokeWidth="2.5" className="flow-line" strokeLinecap="round" />
-                      </svg>
-                    </div>
-
-                    {/* STAGE 3: TRANSFORMAÇÃO (G.I. & G.C.) */}
-                    <div className={`w-[400px] flex-shrink-0 bg-slate-900/40 p-4 border border-emerald-500/20 rounded-2xl relative flex flex-col justify-between card-transition ${getOpacity('gi') || getOpacity('gc')} ${(selectedStage === 'gi' || selectedStage === 'gc') ? 'glow-green ring-2 ring-[#00E676]' : ''}`}>
-                      <div className="absolute -top-3.5 left-4 px-3 py-1 bg-emerald-600 text-white rounded-full text-[9px] uppercase font-bold tracking-wider shadow-lg">
-                        3. Transformar (Imersões 2 Dias)
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-3 mt-3">
-                        {/* G.I. */}
-                        <div className="p-3 bg-slate-950/80 border-t-4 border-emerald-500 rounded-xl space-y-2">
-                          <span className="text-xs font-extrabold text-emerald-400 block">G.I. Gestão Inteligente</span>
-                          <p className="text-[10px] text-slate-400">Maturidade de Gestão, organização e delegação. 4 Pilares estruturados.</p>
-                          <div className="bg-emerald-950/50 p-1 text-[8px] text-[#00E676] rounded text-center font-bold tracking-wider font-mono">POSSUI PITCH COMERCIAL</div>
-                        </div>
-
-                        {/* G.C. */}
-                        <div className="p-3 bg-slate-950/80 border-t-4 border-blue-500 rounded-xl space-y-2">
-                          <span className="text-xs font-extrabold text-blue-400 block">G.C. Gestão Crescimento</span>
-                          <p className="text-[10px] text-slate-400">Escalar lucro com governança. Geração de Roadmap de Ação.</p>
-                          <div className="bg-blue-950/50 p-1 text-[8px] text-blue-400 rounded text-center font-bold tracking-wider font-mono">POSSUI PITCH COMERCIAL</div>
-                        </div>
-                      </div>
-
-                      {/* Routes toggle layout */}
-                      <div className="mt-3 p-3 bg-slate-950/80 border border-slate-800 rounded-xl text-xs space-y-1.5">
-                        <div className="font-bold text-white flex justify-between items-center">
-                          <span>Rotas de Maturidade</span>
-                          <StatusBadge type="HIPOTESE" />
-                        </div>
-                        <div className="text-[11px] text-slate-400">
-                          🟢 <strong>Rota A:</strong> G.I. (Baixa maturidade) ➔ G.C.
-                        </div>
-                        <div className="text-[11px] text-slate-400">
-                          🔵 <strong>Rota B:</strong> Entrada direta no G.C. (Empresa madura)
-                        </div>
-                      </div>
-
-                      <div className="mt-3 p-2 bg-emerald-950/20 border border-emerald-500/30 rounded-lg text-[10px] text-emerald-200">
-                        🔄 Ambos operam com capacidade para ~100 empresários e servem de funil de conversão para os grupos premium.
-                      </div>
-                    </div>
-
-                    {/* ANIMATED SVG PATH 3 */}
-                    <div className="flex items-center justify-center w-12 flex-shrink-0">
-                      <svg className="w-full h-12" viewBox="0 0 48 24" fill="none">
-                        <path d="M0 12H48" stroke="#10b981" strokeWidth="2.5" className="flow-line" strokeLinecap="round" />
-                      </svg>
-                    </div>
-
-                    {/* STAGE 4: CLOSING ENVIRONMENT & MONETIZAÇÃO */}
-                    <div className={`w-[360px] flex-shrink-0 bg-slate-900/40 p-4 border border-amber-500/20 rounded-2xl relative flex flex-col justify-between card-transition ${getOpacity('secreta') || getOpacity('monetizacao')} ${(selectedStage === 'secreta' || selectedStage === 'monetizacao') ? 'glow-gold ring-2 ring-amber-500' : ''}`}>
-                      <div className="absolute -top-3.5 left-4 px-3 py-1 bg-amber-600 text-black rounded-full text-[9px] uppercase font-bold tracking-wider shadow-lg">
-                        4. Monetizar / Fechamento
-                      </div>
-                      
-                      <div className="space-y-3 mt-3">
-                        {/* Sala Secreta */}
-                        <div className="p-3 bg-purple-950/30 border border-purple-500/40 rounded-xl relative">
-                          <div className="flex justify-between items-center">
-                            <span className="text-xs font-bold text-purple-400 flex items-center gap-1">🤫 Sala Secreta</span>
-                            <StatusBadge type="HIPOTESE" />
-                          </div>
-                          <p className="text-[10px] text-slate-300 mt-1">~20 empresários. Conversão observada de 20% (4 vendas).</p>
-                          <div className="text-[9px] text-[#00E676] bg-emerald-950/30 border border-emerald-500/20 p-1 rounded mt-1.5 font-semibold text-center">
-                            🚀 Hipótese: Closing Environment para leads quentes
-                          </div>
-                        </div>
-
-                        {/* Premium products with gold gradients */}
-                        <div className="p-3.5 bg-gradient-to-b from-slate-950 to-slate-900 border border-amber-500/30 rounded-xl space-y-2.5 shadow-lg">
-                          <div className="flex justify-between items-center">
-                            <span className="text-xs font-extrabold text-amber-400 tracking-wider">PRODUTOS HIGH-TICKET</span>
-                            <StatusBadge type="REAL" />
-                          </div>
-                          
-                          <div className="grid grid-cols-2 gap-2 text-[10px] font-mono">
-                            <div className="bg-slate-950 p-2 text-center rounded-lg border border-slate-800">
-                              <span className="block text-[8px] text-slate-500 uppercase tracking-widest">MGA</span>
-                              <strong className="text-white text-xs">R$ 50k</strong>
-                            </div>
-                            <div className="bg-slate-950 p-2 text-center rounded-lg border border-slate-800">
-                              <span className="block text-[8px] text-slate-500 uppercase tracking-widest">Ambição</span>
-                              <strong className="text-white text-xs">R$ 130k</strong>
-                            </div>
-                          </div>
-
-                          <div className="p-2 bg-gradient-to-r from-amber-600/20 to-yellow-600/20 border border-amber-500/50 rounded-lg text-center">
-                            <span className="block text-[8px] text-amber-400 uppercase font-bold tracking-widest">Bundle Especial (Imersões)</span>
-                            <strong className="text-[#FFD700] font-mono text-sm block mt-0.5">12x R$ 7.900 (R$ 94,8k)</strong>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-3 p-2 bg-red-950/20 border border-red-500/30 rounded-lg text-[9px] text-red-200">
-                        ⚠️ <strong>ALERTA ANOMALIA H9:</strong> O combo completo custa R$ 85,2k a menos do que a soma, e é mais barato que o Ambição sozinho. Margem e canibalização sob análise.
-                      </div>
-                    </div>
-
-                    {/* ANIMATED SVG PATH 4 */}
-                    <div className="flex items-center justify-center w-12 flex-shrink-0">
-                      <svg className="w-full h-12" viewBox="0 0 48 24" fill="none">
-                        <path d="M0 12H48" stroke="#d4af37" strokeWidth="2.5" className="flow-line" strokeLinecap="round" />
-                      </svg>
-                    </div>
-
-                    {/* STAGE 5: RECUPERAÇÃO & REASCENSÃO */}
-                    <div className={`w-80 flex-shrink-0 bg-slate-900/40 p-4 border border-gray-600 rounded-2xl relative flex flex-col justify-between card-transition ${getOpacity('recovery')} ${getHighlightClass('recovery', 'glow-gray')}`}>
-                      <div className="absolute -top-3.5 left-4 px-3 py-1 bg-gray-600 text-white rounded-full text-[9px] uppercase font-bold tracking-wider shadow-lg">
-                        5. Recuperar & Reascender
-                      </div>
-                      
-                      <div className="space-y-3 mt-3">
-                        <div className="p-3 bg-slate-950/80 border border-slate-850 rounded-xl">
-                          <span className="text-xs font-bold text-slate-400">Análise de Perda</span>
-                          <p className="text-[10px] text-slate-500 mt-0.5">Segmentação comercial: Falta de Caixa, Timing, Confiança, Valor ou Urgência.</p>
-                        </div>
-
-                        {/* Pontes */}
-                        <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-xl space-y-2">
-                          <div className="flex justify-between items-center">
-                            <span className="text-xs font-bold text-white">Produtos-Ponte</span>
-                            <StatusBadge type="DECISAO" />
-                          </div>
-                          
-                          <div className="space-y-1.5 text-[10px] font-mono">
-                            <div className="p-1.5 bg-slate-900 border border-slate-800 rounded flex justify-between items-center">
-                              <span>Mentoria Vendas</span>
-                              <strong className="text-white">R$ 20k</strong>
-                            </div>
-                            <div className="p-1.5 bg-slate-900 border border-slate-800 rounded flex justify-between items-center">
-                              <span>Estruturação Growth</span>
-                              <strong className="text-white">R$ 25k</strong>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Loop */}
-                        <div className="p-2.5 bg-emerald-950/20 border border-emerald-500/20 rounded-xl text-[10px] text-emerald-300 flex items-center gap-2">
-                          <div className="text-xl animate-bounce">🔄</div>
-                          <div>
-                            <strong>Loop de Reascensão:</strong> Geração de resultados nas mentorias ponte recoloca o cliente de volta no funil de high-ticket.
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-4 p-2 bg-slate-900 border border-slate-800 rounded-lg text-[9px] text-slate-400">
-                        🚫 <strong>Regra:</strong> Não é downsell automático. Prescrição estritamente dependente do gargalo operacional.
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-
-                {/* BOTTOM CHARTS AND DETAILS */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
-                  {/* FLYWHEEL SYSTEM */}
-                  <div className="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
-                    <div>
-                      <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                        <span className="text-emerald-400">⚙️</span>
-                        O Motor de Recombinação (Flywheel da Capital Upgrade)
-                      </h3>
-                      <p className="text-xs text-slate-400 mt-1">Como a satisfação de um cliente e seus resultados reais alimentam organicamente novos canais de indicação e parcerias.</p>
-                      
-                      {/* Interactive visual SVG Flywheel */}
-                      <div className="my-10 flex justify-center items-center">
-                        <div className="relative w-72 h-72 flex items-center justify-center">
-                          {/* Inner Circle */}
-                          <div className="w-24 h-24 bg-slate-950 border border-slate-850 rounded-full flex items-center justify-center text-center p-3 text-xs font-bold text-[#00E676] shadow-[0_0_20px_rgba(16,185,129,0.15)] z-20">
-                            RESULTADO DO CLIENTE
-                          </div>
-                          
-                          {/* Rotating dashed ring */}
-                          <div className="absolute w-64 h-64 border-[3px] border-dashed border-emerald-500/30 rounded-full animate-spin-slow"></div>
-                          
-                          {/* Flywheel stages around the circle */}
-                          <div className="absolute top-0 bg-slate-950 border border-orange-500/50 text-[9px] px-2 py-1 rounded-md font-bold text-orange-400 -translate-y-1/2">
-                            1. CLIENTE DE SUCESSO
-                          </div>
-                          <div className="absolute right-0 top-1/4 translate-x-1/2 bg-slate-950 border border-yellow-500/50 text-[9px] px-2 py-1 rounded-md font-bold text-yellow-400">
-                            2. GERAÇÃO DE CASE
-                          </div>
-                          <div className="absolute right-0 bottom-1/4 translate-x-1/2 bg-slate-950 border border-emerald-500/50 text-[9px] px-2 py-1 rounded-md font-bold text-emerald-400">
-                            3. EMBAIXADOR
-                          </div>
-                          <div className="absolute bottom-0 bg-slate-950 border border-purple-500/50 text-[9px] px-2 py-1 rounded-md font-bold text-purple-400 translate-y-1/2">
-                            4. RECOMENDAÇÃO / REFERRAL
-                          </div>
-                          <div className="absolute left-0 bottom-1/4 -translate-x-1/2 bg-slate-950 border border-blue-500/50 text-[9px] px-2 py-1 rounded-md font-bold text-blue-400">
-                            5. NOVO EMPRESÁRIO
-                          </div>
-                          <div className="absolute left-0 top-1/4 -translate-x-1/2 bg-slate-950 border border-slate-700 text-[9px] px-2 py-1 rounded-md font-bold text-slate-300">
-                            6. ENTRADA EM EVENTOS
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="p-4 bg-slate-950/80 border border-slate-800 rounded-xl text-xs space-y-1.5">
-                      <div className="font-bold text-[#00E676] flex items-center gap-1.5">
-                        <span className="w-2 h-2 bg-[#00E676] rounded-full"></span>
-                        Auto-alimentação do Ecossistema
-                      </div>
-                      <p className="text-slate-400">À medida que o faturamento do cliente cresce devido à imersão (G.I. / G.C.), ele gera depoimentos e atua como embaixador, reduzindo o CAC de novas aquisições de altíssimo ICP.</p>
-                    </div>
-                  </div>
-
-                  {/* COORTES E CANAIS CARD */}
-                  <div className="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between shadow-xl">
-                    <div>
-                      <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                        <span className="text-orange-400">👥</span>
-                        Gestão Científica de Coortes e Canais
-                      </h3>
-                      <p className="text-xs text-slate-400 mt-1">Ações estratégicas para mitigar atritos e isolar métricas de canais.</p>
-
-                      <div className="space-y-4 mt-6">
-                        <div className="p-4 bg-slate-950/80 border border-slate-800 rounded-xl">
-                          <span className="text-xs font-bold text-orange-400 block mb-1">Coorte Presencial vs Online (Palestra 1 Dia)</span>
-                          <p className="text-[11px] text-slate-400">A taxa de presença e nível de confiança do público presencial é amplamente superior. Os leads da transmissão online devem ser nutridos via fluxos de email e SDR, enquanto o presencial recebe diagnóstico direto no evento.</p>
-                        </div>
-
-                        <div className="p-4 bg-slate-950/80 border border-slate-800 rounded-xl">
-                          <span className="text-xs font-bold text-yellow-400 block mb-1">Tráfego Pago vs Referral (Parcerias)</span>
-                          <p className="text-[11px] text-slate-400">Referrals trazem faturamentos maiores e ciclo de vendas 40% menor. Misturar estes dados mascara os custos do tráfego pago. A diretoria exige relatórios paralelos de CAC e LTV.</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-3 bg-yellow-950/20 border border-yellow-500/20 rounded-xl text-xs text-yellow-300 mt-4">
-                      📈 <strong>North Star da Operação:</strong> Otimize a aquisição com foco no <strong>Custo por ICP Presente</strong>. Focar apenas em "leads gerados" ou CPL oculta o desperdício de caixa na atração de não decisores.
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            )}
-
-            {/* VIEW 2: AQUISIÇÃO */}
-            {activeTab === 'aquisicao' && (
-              <div className="space-y-6 animate-fadeIn">
-                <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80">
-                  <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                    <span className="p-1 rounded bg-orange-600/20 text-orange-400">📢</span>
-                    Canais e Portas de Entrada de Topo de Funil (TOFU)
-                  </h2>
-                  <p className="text-xs text-slate-400 mt-1">Como atraímos empresários para o ecossistema presencial garantindo alta concentração de público qualificado.</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* SUMMIT */}
-                  <div className="bg-[#0b0f19] border border-orange-500/20 rounded-2xl p-5 space-y-4 hover:border-orange-500/50 card-transition shadow-lg">
-                    <div className="flex justify-between items-center">
-                      <span className="px-2 py-0.5 bg-orange-950 text-orange-400 rounded text-[9px] font-bold tracking-wider">CANAL A</span>
-                      <StatusBadge type="DECISAO" />
-                    </div>
-                    <h3 className="text-lg font-bold text-white">Summit Capital Upgrade</h3>
-                    <p className="text-xs text-slate-400">1 dia presencial | ~300 pessoas. Grande autoridade em escala para geração de ICP.</p>
-                    
-                    <ul className="space-y-2 text-xs text-slate-300 bg-slate-950/80 p-3.5 rounded-xl border border-slate-850">
-                      <li>⚡ <strong>Formato:</strong> Pode ser pago para validar compromisso.</li>
-                      <li>🚫 <strong>Regra:</strong> Sem pitch direto de MGA ou Ambição do palco.</li>
-                      <li className="text-[#00E676]">🎯 <strong>CTA:</strong> Direcionar para Diagnóstico de Rota (G.I. / G.C.).</li>
-                    </ul>
-
-                    <div className="p-3 bg-amber-950/20 border border-amber-500/30 rounded-xl text-xs">
-                      <span className="font-bold text-amber-400 block mb-1">Tese H1 (Compromisso):</span>
-                      Cobrar ingresso pode reduzir o volume de inscrições, mas aumenta a taxa de presença, a qualificação de ICP e o ticket final.
-                    </div>
-                  </div>
-
-                  {/* PALESTRA 1 DIA */}
-                  <div className="bg-[#0b0f19] border border-orange-500/20 rounded-2xl p-5 space-y-4 hover:border-orange-500/50 card-transition shadow-lg">
-                    <div className="flex justify-between items-center">
-                      <span className="px-2 py-0.5 bg-orange-950 text-orange-400 rounded text-[9px] font-bold tracking-wider">CANAL B</span>
-                      <StatusBadge type="DECISAO" />
-                    </div>
-                    <h3 className="text-lg font-bold text-white">Palestra / Evento 1 Dia</h3>
-                    <p className="text-xs text-slate-400">Baixo ticket. Porta de entrada de altíssima escala e baixa fricção.</p>
-                    
-                    <ul className="space-y-2 text-xs text-slate-300 bg-slate-950/80 p-3.5 rounded-xl border border-slate-850">
-                      <li>⚡ <strong>Formato:</strong> Presencial + Transmissão Digital Online.</li>
-                      <li>🚫 <strong>Regra:</strong> Sem pitch direto de produtos premium.</li>
-                      <li className="text-[#00E676]">🎯 <strong>CTA:</strong> Continuar a jornada na imersão recomendada.</li>
-                    </ul>
-
-                    <div className="p-3 bg-blue-950/20 border border-blue-500/30 rounded-xl text-xs">
-                      <span className="font-bold text-blue-400 block mb-1">Tratamento de Coortes:</span>
-                      O engajamento de leads da transmissão online difere do presencial. É recomendável isolar ambas as coortes para análise de conversão.
-                    </div>
-                  </div>
-
-                  {/* PARCERIAS */}
-                  <div className="bg-[#0b0f19] border border-orange-500/20 rounded-2xl p-5 space-y-4 hover:border-orange-500/50 card-transition shadow-lg">
-                    <div className="flex justify-between items-center">
-                      <span className="px-2 py-0.5 bg-orange-950 text-orange-400 rounded text-[9px] font-bold tracking-wider">CANAL C</span>
-                      <StatusBadge type="DECISAO" />
-                    </div>
-                    <h3 className="text-lg font-bold text-white">Parcerias & Embaixadores</h3>
-                    <p className="text-xs text-slate-400">Referrals, comunidades, influenciadores B2B e associações corporativas comerciais.</p>
-                    
-                    <ul className="space-y-2 text-xs text-slate-300 bg-slate-950/80 p-3.5 rounded-xl border border-slate-850">
-                      <li>⚡ <strong>Formato:</strong> Entrada orgânica com alta confiança prévia.</li>
-                      <li>🎯 <strong>Destinos:</strong> Enviar para o Summit, Palestras ou direto ao G.I./G.C.</li>
-                      <li className="text-amber-400 font-bold">⚠️ Regra: Medir Referral separadamente de mídia paga.</li>
-                    </ul>
-
-                    <div className="p-3 bg-emerald-950/20 border border-emerald-500/30 rounded-xl text-xs">
-                      <span className="font-bold text-emerald-400 block mb-1">Densidade de Perfil:</span>
-                      Canal de altíssimo faturamento médio devido à transferência de autoridade gerada pelo parceiro/embaixador.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* VIEW 3: G.I. VS G.C. */}
-            {activeTab === 'gigc' && (
-              <div className="space-y-6 animate-fadeIn">
-                <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                      <span className="p-1 rounded bg-emerald-600/20 text-emerald-400">📊</span>
-                      Imersões de 2 Dias: G.I. vs G.C.
-                    </h2>
-                    <p className="text-xs text-slate-400 mt-1">Conheça o posicionamento, pilares e perfis das duas imersões presenciais que geram caixa.</p>
-                  </div>
-                  <div className="text-xs text-[#00E676] bg-emerald-950/50 px-3 py-1.5 border border-emerald-500/20 rounded-lg font-mono">
-                    Capacidade: ~100 pessoas por edição
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* GI CARD */}
-                  <div className="bg-[#0b0f19] border-t-4 border-emerald-500 rounded-2xl p-6 space-y-4 shadow-xl">
-                    <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest block">Imersão de Estruturação</span>
-                    <h3 className="text-xl font-bold text-white">G.I. — Gestão Inteligente</h3>
-                    <p className="text-xs text-slate-400">Destinada a empresários que cresceram rápido demais e perderam o controle sobre a estrutura interna da empresa, gerando gargalos.</p>
-
-                    <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-850 space-y-2">
-                      <span className="text-xs font-bold text-slate-300 block">Perfil de Entrada (Gargalos)</span>
-                      <div className="grid grid-cols-2 gap-2 text-[10px] text-slate-400">
-                        <div>• Dono centraliza as decisões</div>
-                        <div>• Falta de processos claros</div>
-                        <div>• Sem previsibilidade operacional</div>
-                        <div>• Gargalos rotineiros diários</div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider block">Os 4 Pilares da Gestão Inteligente</span>
-                      <div className="grid grid-cols-4 gap-2 text-center text-[10px]">
-                        <div className="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
-                          <span className="block text-emerald-400 font-extrabold mb-1">Marketing</span>
-                          <span className="text-[9px] text-slate-500">Demanda</span>
-                        </div>
-                        <div className="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
-                          <span className="block text-emerald-400 font-extrabold mb-1">Vendas</span>
-                          <span className="text-[9px] text-slate-500">Receita</span>
-                        </div>
-                        <div className="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
-                          <span className="block text-emerald-400 font-extrabold mb-1">Operações</span>
-                          <span className="text-[9px] text-slate-500">Entrega</span>
-                        </div>
-                        <div className="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
-                          <span className="block text-emerald-400 font-extrabold mb-1">Finanças</span>
-                          <span className="text-[9px] text-slate-500">Margem/Lucro</span>
-                        </div>
-                      </div>
-                      <div className="text-[10px] text-slate-400 font-semibold text-center mt-2 italic bg-slate-950 p-2 rounded-lg border border-slate-850">
-                        Fluxo Lógico: DEMANDA ➔ RECEITA ➔ ENTREGA ➔ MARGEM/LUCRO
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* GC CARD */}
-                  <div className="bg-[#0b0f19] border-t-4 border-blue-500 rounded-2xl p-6 space-y-4 shadow-xl">
-                    <span className="text-xs font-bold text-blue-400 uppercase tracking-widest block">Imersão de Escala</span>
-                    <h3 className="text-xl font-bold text-white">G.C. — Gestão do Crescimento</h3>
-                    <p className="text-xs text-slate-400">"Transformar potencial em crescimento consistente". Desenvolvido para empresários com a base pronta que desejam crescer com governança.</p>
-
-                    <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-850 space-y-2">
-                      <span className="text-xs font-bold text-slate-300 block">Perfil de Entrada (Desafios)</span>
-                      <div className="grid grid-cols-2 gap-2 text-[10px] text-slate-400">
-                        <div>• Escalar lucros de forma segura</div>
-                        <div>• Otimizar CMV e margem</div>
-                        <div>• Identificar e priorizar alavancas</div>
-                        <div>• Onde investir tempo e pessoas</div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <span className="text-xs font-bold text-blue-400 uppercase tracking-wider block">As 4 Áreas de Governança do G.C.</span>
-                      <div className="grid grid-cols-4 gap-2 text-center text-[10px]">
-                        <div className="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
-                          <span className="block text-blue-400 font-extrabold mb-1">Marketing</span>
-                          <span className="text-[9px] text-slate-550">Ticket & Retenção</span>
-                        </div>
-                        <div className="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
-                          <span className="block text-blue-400 font-extrabold mb-1">Vendas</span>
-                          <span className="text-[9px] text-slate-550">Funil de Recompra</span>
-                        </div>
-                        <div className="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
-                          <span className="block text-blue-400 font-extrabold mb-1">Operações</span>
-                          <span className="text-[9px] text-slate-550">Eficiência & CMV</span>
-                        </div>
-                        <div className="p-2.5 bg-slate-900 border border-slate-800 rounded-lg">
-                          <span className="block text-blue-400 font-extrabold mb-1">Finanças</span>
-                          <span className="text-[9px] text-slate-550">Fluxo de Caixa</span>
-                        </div>
-                      </div>
-                      <div className="text-[10px] text-slate-400 font-semibold text-center mt-2 italic bg-slate-950 p-2 rounded-lg border border-slate-850">
-                        Resultado: ROADMAP ESTRATÉGICO DE CRESCIMENTO (saber onde agir primeiro)
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* VIEW 4: MONETIZAÇÃO */}
-            {activeTab === 'monetizacao' && (
-              <div className="space-y-6 animate-fadeIn">
-                <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80">
-                  <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                    <span className="p-1 rounded bg-amber-500/20 text-amber-400">💰</span>
-                    Camada de Monetização & Alerta de Pricing
-                  </h2>
-                  <p className="text-xs text-slate-400 mt-1">Nossa oferta de programas premium e a análise detalhada sobre a precificação conjunta do combo.</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* MGA */}
-                  <div className="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-4 hover:border-amber-500/30 card-transition shadow-lg">
-                    <span className="text-xs text-slate-500 font-bold block uppercase tracking-wider">GRUPO DE NEGÓCIOS</span>
-                    <h3 className="text-xl font-extrabold text-white">MGA</h3>
-                    <div className="text-3xl font-bold text-white font-mono">R$ 50.000</div>
-                    <p className="text-xs text-slate-400">Programa estratégico de networking e mentoria corporativa executiva.</p>
-                  </div>
-
-                  {/* AMBIÇÃO */}
-                  <div className="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-4 hover:border-amber-500/30 card-transition shadow-lg">
-                    <span className="text-xs text-slate-500 font-bold block uppercase tracking-wider">MASTERMIND EXECUTIVE</span>
-                    <h3 className="text-xl font-extrabold text-white">Ambição</h3>
-                    <div className="text-3xl font-bold text-white font-mono">R$ 130.000</div>
-                    <p className="text-xs text-slate-400">Grupo premium de alta proximidade, direcionado para empresários de grande porte.</p>
-                  </div>
-
-                  {/* COMBO */}
-                  <div className="bg-[#0b0f19] border-2 border-amber-500 rounded-2xl p-5 space-y-4 glow-gold relative shadow-xl">
-                    <div className="absolute -top-3.5 right-4 px-3 py-1 bg-amber-500 text-black font-extrabold rounded-full text-[9px] uppercase tracking-wider">
-                      OFERTA DE EVENTO
-                    </div>
-                    <span className="text-xs text-amber-400 font-bold block uppercase tracking-wider">MGA + AMBIÇÃO (BUNDLE)</span>
-                    <h3 className="text-xl font-extrabold text-white">Combo Ascension</h3>
-                    <div className="text-3xl font-bold text-white font-mono">
-                      12x R$ 7.900
-                      <span className="block text-xs text-slate-400 mt-1 font-semibold">Total: R$ 94.800</span>
-                    </div>
-                    <p className="text-xs text-slate-300">A oferta especial apresentada nos pitches internos de imersões presenciais.</p>
-                  </div>
-                </div>
-
-                {/* PRICING ANOMALY ALERT */}
-                <div className="bg-amber-950/20 border-2 border-amber-500/40 rounded-2xl p-6 space-y-4">
-                  <div className="flex items-center gap-2 text-amber-500">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                    <h3 className="text-base font-extrabold uppercase tracking-wider">Dimensões Críticas do Pricing Bundle (H9)</h3>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs text-slate-300">
-                    <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg">
-                      <span className="text-slate-500">Soma Tabela MGA + Ambição</span>
-                      <div className="text-base font-bold text-white font-mono mt-1">R$ 180.000</div>
-                    </div>
-                    <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg">
-                      <span className="text-slate-500">Desconto do Combo</span>
-                      <div className="text-base font-bold text-red-400 font-mono mt-1">- R$ 85.200 (47% Off)</div>
-                    </div>
-                    <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg">
-                      <span className="text-slate-500">Combo vs Ambição Individual</span>
-                      <div className="text-base font-bold text-amber-400 font-mono mt-1">Combo é R$ 35,2k mais barato</div>
-                    </div>
-                    <div className="p-3 bg-slate-950 border border-slate-800 rounded-lg">
-                      <span className="text-slate-500">Status da Hipótese</span>
-                      <div className="text-base font-bold text-yellow-400 mt-1">Em Validação Ativa</div>
-                    </div>
-                  </div>
-
-                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-850 text-xs text-slate-400 space-y-2">
-                    <strong className="text-white block">Riscos de Negócio sob Investigação:</strong>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      <div>
-                        <strong className="text-amber-500 block mb-1">Canibalização e Ancoragem</strong>
-                        Nenhum cliente compra o Ambição sozinho no evento. O Ambição atua como âncora de valor fictícia apenas para fechar o Combo.
-                      </div>
-                      <div>
-                        <strong className="text-amber-500 block mb-1">Custos de Entrega / Margem</strong>
-                        Entregar dois programas complexos pelo preço de um reduz a margem operacional de entrega da Capital?
-                      </div>
-                      <div>
-                        <strong className="text-amber-500 block mb-1">Inadimplência de Longo Prazo</strong>
-                        O parcelamento de 12 meses para tíquetes de quase R$ 100k aumenta a taxa de cancelamento e churn financeiro no meio da trilha?
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* VIEW 5: RECOVERY & REASCENSÃO */}
-            {activeTab === 'recovery' && (
-              <div className="space-y-6 animate-fadeIn">
-                <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80">
-                  <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                    <span className="p-1 rounded bg-gray-600/20 text-slate-400">🔄</span>
-                    Estratégia de Recuperação (Recovery) e Reascensão
-                  </h2>
-                  <p className="text-xs text-slate-400 mt-1">Mapeamos as razões de perda e estruturamos as Mentorias-Ponte como ferramenta técnica de reascensão do cliente.</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* MOTIVOS DE PERDA */}
-                  <div className="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-4 shadow-lg">
-                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">Causas de Não Compra (Segmentação)</h3>
-                    
-                    <div className="space-y-2 text-xs">
-                      <div className="p-3 bg-slate-950 border border-slate-850 rounded-lg flex justify-between">
-                        <span>💳 Caixa / Fluxo financeiro restrito</span>
-                        <strong className="text-red-400">Downsell ou Pontes</strong>
-                      </div>
-                      <div className="p-3 bg-slate-950 border border-slate-850 rounded-lg flex justify-between">
-                        <span>⏳ Timing / Outros projetos imediatos</span>
-                        <strong className="text-orange-400">Nutrição SDR (60 dias)</strong>
-                      </div>
-                      <div className="p-3 bg-slate-950 border border-slate-850 rounded-lg flex justify-between">
-                        <span>🤝 Confiança / Falta de autoridade técnica</span>
-                        <strong className="text-blue-400">Envio de Cases de Nicho</strong>
-                      </div>
-                      <div className="p-3 bg-slate-950 border border-slate-850 rounded-lg flex justify-between">
-                        <span>⚙️ Solução inadequada para o momento</span>
-                        <strong className="text-[#00E676]">Encaminhar para Pontes</strong>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* PRODUTOS PONTE */}
-                  <div className="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-4 shadow-lg">
-                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">Mentorias-Ponte Estruturadas</h3>
-                    <p className="text-xs text-slate-400">Produtos focados em gargalos específicos. <strong>Não é um downsell genérico.</strong></p>
-
-                    <div className="space-y-3">
-                      <div className="p-3 bg-slate-950 border border-slate-850 rounded-xl">
-                        <div className="flex justify-between">
-                          <span className="text-xs font-bold text-white">Mentoria de Vendas</span>
-                          <strong className="text-[#00E676] font-mono text-xs">R$ 20.000</strong>
-                        </div>
-                        <p className="text-[11px] text-slate-400 mt-1">Focada em estruturação de processos comerciais e previsibilidade de funil de vendas.</p>
-                      </div>
-
-                      <div className="p-3 bg-slate-950 border border-slate-850 rounded-xl">
-                        <div className="flex justify-between">
-                          <span className="text-xs font-bold text-white">Estruturação de Growth</span>
-                          <strong className="text-[#00E676] font-mono text-xs">R$ 25.000</strong>
-                        </div>
-                        <p className="text-[11px] text-slate-400 mt-1">Focada em marketing de aquisição, estrutura de growth e geração de leads.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* LOOP DE REASCENSÃO */}
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-center">
-                  <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">O Loop de Reascensão Estrutural</h3>
-                  <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="p-3.5 bg-slate-950 border border-slate-800 rounded-xl flex-1">
-                      <span className="text-[8px] text-slate-500 font-bold block uppercase">PASSO 1</span>
-                      <strong className="text-white text-xs block mt-1">Mentoria de Vendas/Growth</strong>
-                    </div>
-                    <div className="text-slate-600 font-extrabold">➔</div>
-                    <div className="p-3.5 bg-slate-950 border border-slate-800 rounded-xl flex-1">
-                      <span className="text-[8px] text-slate-500 font-bold block uppercase">PASSO 2</span>
-                      <strong className="text-[#00E676] text-xs block mt-1">Implementação do Método</strong>
-                    </div>
-                    <div className="text-slate-600 font-extrabold">➔</div>
-                    <div className="p-3.5 bg-slate-950 border border-slate-800 rounded-xl flex-1">
-                      <span className="text-[8px] text-slate-500 font-bold block uppercase">PASSO 3</span>
-                      <strong className="text-white text-xs block mt-1">Resultado & Geração Caixa</strong>
-                    </div>
-                    <div className="text-slate-600 font-extrabold">➔</div>
-                    <div className="p-3.5 bg-slate-950 border border-slate-800 rounded-xl flex-1">
-                      <span className="text-[8px] text-slate-500 font-bold block uppercase">PASSO 4</span>
-                      <strong className="text-yellow-400 text-xs block mt-1">Novo Diagnóstico</strong>
-                    </div>
-                    <div className="text-slate-600 font-extrabold">➔</div>
-                    <div className="p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl flex-1">
-                      <span className="text-[8px] text-emerald-400 font-bold block uppercase">PASSO 5</span>
-                      <strong className="text-white text-xs block mt-1">Ascensão G.I. / G.C.</strong>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* VIEW 6: KPIS & SIMULADOR */}
-            {activeTab === 'kpis' && (
-              <div className="space-y-6 animate-fadeIn">
-                <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                      <span className="p-1 rounded bg-[#00E676]/20 text-[#00E676]">📈</span>
-                      Modelagem de KPIs, Baselines e Funil de Projeção
-                    </h2>
-                    <p className="text-xs text-slate-400 mt-1">Ajuste os controles deslizantes abaixo para simular as receitas potenciais com base nos baselines da Capital Upgrade.</p>
-                  </div>
-                  <div className="text-xs text-amber-400 bg-amber-950/40 px-3 py-1.5 border border-amber-500/20 rounded-lg">
-                    ⚠️ Projeções baseadas no funil numérico real
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* CONTROLES */}
-                  <div className="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-5 shadow-lg">
-                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">Simulador de Cohorts</h3>
-                    
-                    {/* Slider 1 */}
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-xs">
-                        <span className="text-slate-400">Inscritos (Summit/Palestra):</span>
-                        <strong className="text-white font-mono">{subscribersInput} leads</strong>
-                      </div>
-                      <input 
-                        type="range" 
-                        min="100" 
-                        max="5000" 
-                        step="100"
-                        value={subscribersInput}
-                        onChange={(e) => setSubscribersInput(Number(e.target.value))}
-                        className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-[#00E676]"
-                      />
-                    </div>
-
-                    {/* Slider 2 */}
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-xs">
-                        <span className="text-slate-400">Taxa de Ascensão para G.I. / G.C.:</span>
-                        <strong className="text-yellow-400 font-mono">{customGItoGCRate}%</strong>
-                      </div>
-                      <input 
-                        type="range" 
-                        min="5" 
-                        max="80" 
-                        step="5"
-                        value={customGItoGCRate}
-                        onChange={(e) => setCustomGItoGCRate(Number(e.target.value))}
-                        className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-yellow-500"
-                      />
-                      <span className="text-[9px] text-slate-500 italic block">Taxa de ascensão é uma hipótese estratégica.</span>
-                    </div>
-
-                    {/* Slider 3 */}
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-xs">
-                        <span className="text-slate-400">Taxa de Conversão de ICP no G.I./G.C.:</span>
-                        <strong className="text-[#00E676] font-mono">{salesTargetRate}%</strong>
-                      </div>
-                      <input 
-                        type="range" 
-                        min="5" 
-                        max="40" 
-                        step="1"
-                        value={salesTargetRate}
-                        onChange={(e) => setSalesTargetRate(Number(e.target.value))}
-                        className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
-                      />
-                      <span className="text-[9px] text-slate-500 italic block">Média de mercado/histórico: 20%.</span>
-                    </div>
-
-                    {/* Select Product */}
-                    <div className="space-y-2">
-                      <span className="text-xs text-slate-400 block">Produto High-Ticket Principal Prescrito:</span>
-                      <div className="grid grid-cols-3 gap-2">
-                        <button 
-                          onClick={() => setSelectedProduct('mga')}
-                          className={`py-2 px-1 text-[10px] rounded-lg font-bold border transition ${selectedProduct === 'mga' ? 'bg-amber-500 text-black border-amber-500' : 'bg-slate-950 text-slate-400 border-slate-800'}`}
-                        >
-                          MGA (50k)
-                        </button>
-                        <button 
-                          onClick={() => setSelectedProduct('ambicao')}
-                          className={`py-2 px-1 text-[10px] rounded-lg font-bold border transition ${selectedProduct === 'ambicao' ? 'bg-amber-500 text-black border-amber-500' : 'bg-slate-950 text-slate-400 border-slate-800'}`}
-                        >
-                          Ambição (130k)
-                        </button>
-                        <button 
-                          onClick={() => setSelectedProduct('bundle')}
-                          className={`py-2 px-1 text-[10px] rounded-lg font-bold border transition ${selectedProduct === 'bundle' ? 'bg-[#00E676] text-black border-[#00E676]' : 'bg-slate-950 text-slate-400 border-slate-800'}`}
-                        >
-                          Combo (94,8k)
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* CALCULOS DE FUNIL */}
-                  <div className="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-4 shadow-lg flex flex-col justify-between">
-                    <div>
-                      <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-3">Resultados da Simulação</h3>
-                      
-                      <div className="space-y-2 text-xs">
-                        <div className="p-2.5 bg-slate-950 border border-slate-850 rounded-lg flex justify-between items-center">
-                          <span className="text-slate-400">Presentes no Summit (50% Show Rate)</span>
-                          <strong className="text-white font-mono">{presentOutput} pax</strong>
-                        </div>
-                        
-                        <div className="p-2.5 bg-slate-950 border border-slate-850 rounded-lg flex justify-between items-center">
-                          <span className="text-slate-400">Perfil ICP Presente (45% Densidade)</span>
-                          <strong className="text-white font-mono">{mathIcp} pax</strong>
-                        </div>
-
-                        <div className="p-2.5 bg-slate-950 border border-slate-850 rounded-lg flex justify-between items-center">
-                          <span className="text-slate-400">Ascendidos para G.I. / G.C.</span>
-                          <strong className="text-yellow-400 font-mono">{giGcOutput} pax</strong>
-                        </div>
-
-                        <div className="p-2.5 bg-slate-950 border border-slate-850 rounded-lg flex justify-between items-center">
-                          <span className="text-slate-400">Vendas Finais ({salesTargetRate}% conversão)</span>
-                          <strong className="text-[#00E676] font-mono">{finalSales} vendas</strong>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-[#00E676]/10 border border-[#00E676]/20 rounded-xl text-center">
-                      <span className="text-[10px] text-slate-400 block uppercase">Faturamento Projetado da Coorte</span>
-                      <strong className="text-xl md:text-2xl text-[#00E676] font-mono block mt-1">
-                        R$ {projectedRevenue.toLocaleString('pt-BR')}
-                      </strong>
-                    </div>
-                  </div>
-
-                  {/* METRICAS CHAVE */}
-                  <div className="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 space-y-4 shadow-lg flex flex-col justify-between">
-                    <div>
-                      <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Gargalos Financeiros</h3>
-                      
-                      <div className="p-4 bg-emerald-950/20 border border-emerald-500/40 rounded-xl space-y-1">
-                        <span className="text-[9px] font-bold text-[#00E676] uppercase tracking-wider block">NORTH STAR METRIC</span>
-                        <strong className="text-white text-sm block">Receita por ICP Presente</strong>
-                        <div className="text-lg md:text-xl font-bold text-white font-mono mt-1">
-                          R$ {revenuePerIcpPresent.toLocaleString('pt-BR')}
-                        </div>
-                      </div>
-
-                      <div className="p-4 bg-blue-950/20 border border-blue-500/40 rounded-xl space-y-1 mt-4">
-                        <span className="text-[9px] font-bold text-blue-400 uppercase tracking-wider block">CUSTO DE AQUISIÇÃO</span>
-                        <strong className="text-white text-sm block">Custo por ICP Presente</strong>
-                        <p className="text-[10px] text-slate-400 mt-1">Substitui o CPL comum para alinhar a equipe de marketing à atração de clientes com alta maturidade.</p>
-                      </div>
-                    </div>
-
-                    <div className="text-[10px] text-slate-500 italic bg-slate-950 p-2.5 rounded-lg border border-slate-850 text-center">
-                      * Nota: Faturamento D+90 da coorte real exige acompanhamento e análise de payback líquido.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* VIEW 7: HIPÓTESES (POST-ITS KANBAN BOARD) */}
-            {activeTab === 'hipoteses' && (
-              <div className="space-y-6 animate-fadeIn">
-                <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                      <span className="p-1 rounded bg-amber-600/20 text-amber-400">📌</span>
-                      Backlog de Hipóteses e Testes de Growth
-                    </h2>
-                    <p className="text-xs text-slate-400 mt-1">Os 15 testes de hipótese ativos. Clique nos controles de cada card para mover o progresso de validação.</p>
-                  </div>
-                  
-                  {/* Category Filter */}
-                  <div className="flex flex-wrap gap-1.5">
-                    {['Todos', 'Aquisição', 'Conversão', 'Produto', 'Pricing', 'Recuperação'].map(cat => (
-                      <button 
-                        key={cat}
-                        onClick={() => setKanbanFilter(cat)}
-                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition ${kanbanFilter === cat ? 'bg-[#00E676] text-black font-bold' : 'bg-slate-900 text-slate-400 hover:bg-slate-800'}`}
-                      >
-                        {cat}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* KANBAN BOARD LAYOUT */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  
-                  {/* COLUMN 1: PENDENTES */}
-                  <div className="bg-[#0b0f19] p-5 rounded-2xl border border-slate-800 space-y-4">
-                    <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest border-b border-slate-800/60 pb-3 flex justify-between items-center">
-                      <span>⏳ Aguardando / Pendentes</span>
-                      <span className="px-2 py-0.5 bg-slate-900 rounded-md text-[10px] text-slate-400 font-mono">
-                        {hypotheses.filter(h => h.status === 'Pendente' && (kanbanFilter === 'Todos' || h.category === kanbanFilter)).length}
-                      </span>
-                    </h3>
-                    
-                    <div className="space-y-4 max-h-[600px] overflow-y-auto pr-1">
-                      {hypotheses
-                        .filter(h => h.status === 'Pendente' && (kanbanFilter === 'Todos' || h.category === kanbanFilter))
-                        .map(hyp => (
-                          <div key={hyp.id} className="p-4 bg-slate-950/80 border border-slate-850 rounded-xl space-y-3 hover:border-slate-700 card-transition">
-                            <div className="flex justify-between items-center">
-                              <span className="text-[9px] font-bold text-slate-500 font-mono uppercase bg-slate-900 px-2 py-0.5 rounded">{hyp.id} - {hyp.category}</span>
-                              <button 
-                                onClick={() => updateHypothesisStatus(hyp.id, 'Em Teste')}
-                                className="text-[9px] px-2 py-1 bg-blue-950 hover:bg-blue-900 text-blue-400 font-extrabold rounded-lg card-transition"
-                              >
-                                Testar ➔
-                              </button>
-                            </div>
-                            <p className="text-xs text-slate-300 font-medium leading-snug">{hyp.text}</p>
-                          </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* COLUMN 2: EM TESTE */}
-                  <div className="bg-[#0b0f19] p-5 rounded-2xl border border-slate-800 space-y-4">
-                    <h3 className="text-xs font-extrabold text-blue-400 uppercase tracking-widest border-b border-slate-800/60 pb-3 flex justify-between items-center">
-                      <span>🧪 Em Validação / Teste</span>
-                      <span className="px-2 py-0.5 bg-blue-950/50 rounded-md text-[10px] text-blue-400 font-mono">
-                        {hypotheses.filter(h => h.status === 'Em Teste' && (kanbanFilter === 'Todos' || h.category === kanbanFilter)).length}
-                      </span>
-                    </h3>
-
-                    <div className="space-y-4 max-h-[600px] overflow-y-auto pr-1">
-                      {hypotheses
-                        .filter(h => h.status === 'Em Teste' && (kanbanFilter === 'Todos' || h.category === kanbanFilter))
-                        .map(hyp => (
-                          <div key={hyp.id} className="p-4 bg-slate-950/80 border border-blue-500/20 rounded-xl space-y-3 hover:border-blue-500/40 card-transition">
-                            <div className="flex justify-between items-center">
-                              <span className="text-[9px] font-bold text-blue-400 font-mono uppercase bg-blue-950/30 px-2 py-0.5 rounded">{hyp.id} - {hyp.category}</span>
-                              <div className="flex gap-1.5">
-                                <button 
-                                  onClick={() => updateHypothesisStatus(hyp.id, 'Pendente')}
-                                  className="text-[9px] px-2 py-1 bg-slate-900 hover:bg-slate-800 text-slate-400 rounded-lg card-transition"
-                                >
-                                  ⬅ Recuar
-                                </button>
-                                <button 
-                                  onClick={() => updateHypothesisStatus(hyp.id, 'Validada')}
-                                  className="text-[9px] px-2 py-1 bg-emerald-950 hover:bg-emerald-900 text-[#00E676] font-extrabold rounded-lg card-transition"
-                                >
-                                  Validar ✔
-                                </button>
-                              </div>
-                            </div>
-                            <p className="text-xs text-slate-300 font-medium leading-snug">{hyp.text}</p>
-                          </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* COLUMN 3: VALIDADO */}
-                  <div className="bg-[#0b0f19] p-5 rounded-2xl border border-slate-800 space-y-4">
-                    <h3 className="text-xs font-extrabold text-emerald-400 uppercase tracking-widest border-b border-slate-800/60 pb-3 flex justify-between items-center">
-                      <span>✅ Validadas / Concluídas</span>
-                      <span className="px-2 py-0.5 bg-emerald-950/50 rounded-md text-[10px] text-emerald-400 font-mono">
-                        {hypotheses.filter(h => h.status === 'Validada' && (kanbanFilter === 'Todos' || h.category === kanbanFilter)).length}
-                      </span>
-                    </h3>
-
-                    <div className="space-y-4 max-h-[600px] overflow-y-auto pr-1">
-                      {hypotheses
-                        .filter(h => h.status === 'Validada' && (kanbanFilter === 'Todos' || h.category === kanbanFilter))
-                        .map(hyp => (
-                          <div key={hyp.id} className="p-4 bg-emerald-950/10 border border-emerald-500/30 rounded-xl space-y-3 hover:border-emerald-500/50 card-transition">
-                            <div className="flex justify-between items-center">
-                              <span className="text-[9px] font-bold text-emerald-400 font-mono uppercase bg-emerald-950/30 px-2 py-0.5 rounded">{hyp.id} - {hyp.category}</span>
-                              <button 
-                                onClick={() => updateHypothesisStatus(hyp.id, 'Em Teste')}
-                                className="text-[9px] px-2 py-1 bg-slate-900 hover:bg-slate-850 text-slate-400 rounded-lg card-transition"
-                              >
-                                Reabrir
-                              </button>
-                            </div>
-                            <p className="text-xs text-emerald-100 font-medium leading-snug">{hyp.text}</p>
-                          </div>
-                      ))}
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            )}
-
-          </main>
-
-          {/* SYSTEM FOOTER */}
-          <footer className="mt-16 border-t border-slate-800 bg-slate-950/60 px-8 py-6 text-xs text-slate-500 flex justify-between items-center">
-            <div>
-              <span>Capital Upgrade © 2026</span>
-              <span className="mx-2">|</span>
-              <span>Growth System Map V3.0</span>
-            </div>
-            <div className="text-slate-400 font-mono">
-              Designed & Redesigned by <strong>Antigravity</strong>
-            </div>
-          </footer>
-        </div>
-      );
+      // Post-its redraw
+      if (tabId === 'hipoteses') {
+        renderKanban();
+      }
     }
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
+    // Highlighting specific stage cards on full view
+    function toggleStageHighlight(stage, btnEl) {
+      const parent = document.getElementById('legend-filters');
+      
+      if (state.selectedStage === stage) {
+        // Reset highlights
+        state.selectedStage = null;
+        document.querySelectorAll('[data-stage]').forEach(card => {
+          card.style.opacity = "1";
+          card.style.transform = "scale(1)";
+          card.style.borderColor = "";
+          card.classList.remove('glow-orange', 'glow-yellow', 'glow-green', 'glow-blue', 'glow-purple', 'glow-gold', 'glow-gray', 'ring-2', 'ring-[#00E676]');
+        });
+        
+        btnEl.className = btnEl.className.replace(/border-.*bg-.*text-.*/, "border-slate-800 text-slate-400");
+      } else {
+        state.selectedStage = stage;
+        
+        // Remove styling from all buttons
+        parent.querySelectorAll('button').forEach(btn => {
+          btn.className = "flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg card-transition text-slate-400";
+        });
+        
+        // Apply active button styles
+        let borderCol = "border-orange-500 ring-2 ring-orange-500/30 bg-orange-950/20 text-orange-300";
+        if (stage === 'diagnostico') borderCol = "border-yellow-500 ring-2 ring-yellow-500/30 bg-yellow-950/20 text-yellow-300";
+        if (stage === 'gi') borderCol = "border-emerald-500 ring-2 ring-emerald-500/30 bg-emerald-950/20 text-emerald-300";
+        if (stage === 'gc') borderCol = "border-blue-500 ring-2 ring-blue-500/30 bg-blue-950/20 text-blue-300";
+        if (stage === 'secreta') borderCol = "border-purple-500 ring-2 ring-purple-500/30 bg-purple-950/20 text-purple-300";
+        if (stage === 'monetizacao') borderCol = "border-amber-500 ring-2 ring-amber-500/30 bg-amber-950/20 text-amber-300";
+        if (stage === 'recovery') borderCol = "border-gray-500 ring-2 ring-gray-500/30 bg-gray-950/20 text-gray-300";
+        
+        btnEl.className = `flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border rounded-lg card-transition ${borderCol}`;
+
+        // Set opacity of cards
+        document.querySelectorAll('[data-stage]').forEach(card => {
+          const cardStage = card.getAttribute('data-stage');
+          if (cardStage === stage) {
+            card.style.opacity = "1";
+            card.style.transform = "scale(1.02)";
+            card.classList.add(`glow-${stage === 'gi' ? 'green' : stage === 'gc' ? 'blue' : stage}`, 'ring-2', 'ring-[#00E676]');
+          } else {
+            card.style.opacity = "0.2";
+            card.style.transform = "scale(0.95)";
+            card.classList.remove('glow-orange', 'glow-yellow', 'glow-green', 'glow-blue', 'glow-purple', 'glow-gold', 'glow-gray', 'ring-2', 'ring-[#00E676]');
+          }
+        });
+      }
+    }
+
+    // Dynamic Simulator Calculations
+    function runSimulation() {
+      const subscribersVal = Number(document.getElementById('slider-subscribers').value);
+      const ascensionRateVal = Number(document.getElementById('slider-ascension').value);
+      const conversionRateVal = Number(document.getElementById('slider-conversion').value);
+      const productPrice = Number(document.getElementById('sim-product').value);
+
+      // Update Labels
+      document.getElementById('val-subscribers').textContent = subscribersVal + " leads";
+      document.getElementById('val-ascension').textContent = ascensionRateVal + "%";
+      document.getElementById('val-conversion').textContent = conversionRateVal + "%";
+
+      // Projections
+      const present = Math.round(subscribersVal * 0.50);
+      const icp = Math.round(present * 0.45);
+      const giGc = Math.round(icp * (ascensionRateVal / 100));
+      const sales = Math.round(giGc * (conversionRateVal / 100));
+      const revenue = sales * productPrice;
+      const ns = icp > 0 ? Math.round(revenue / icp) : 0;
+
+      // Update Outputs
+      document.getElementById('out-present').textContent = present + " pax";
+      document.getElementById('out-icp').textContent = icp + " pax";
+      document.getElementById('out-gigc').textContent = giGc + " pax";
+      document.getElementById('out-sales').textContent = sales + " vendas";
+      
+      document.getElementById('out-revenue').textContent = "R$ " + revenue.toLocaleString('pt-BR');
+      document.getElementById('out-ns').textContent = "R$ " + ns.toLocaleString('pt-BR');
+    }
+
+    // Kanban board render
+    function renderKanban() {
+      const board = document.getElementById('kanban-board');
+      board.innerHTML = '';
+
+      const statuses = [
+        { key: 'Pendente', title: '⏳ Aguardando / Pendentes', classColor: 'text-slate-400', border: 'border-slate-800' },
+        { key: 'Em Teste', title: '🧪 Em Validação / Teste', classColor: 'text-blue-400', border: 'border-blue-500/30' },
+        { key: 'Validada', title: '✅ Validadas / Concluídas', classColor: 'text-emerald-400', border: 'border-emerald-500/30' }
+      ];
+
+      statuses.forEach(statusCol => {
+        const colDiv = document.createElement('div');
+        colDiv.className = `bg-[#0b0f19] p-5 rounded-2xl border border-slate-800 space-y-4`;
+        
+        const colHypotheses = state.hypotheses.filter(h => h.status === statusCol.key);
+        
+        colDiv.innerHTML = `
+          <h3 class="text-xs font-extrabold ${statusCol.classColor} uppercase tracking-widest border-b border-slate-800/60 pb-3 flex justify-between items-center">
+            <span>${statusCol.title}</span>
+            <span class="px-2 py-0.5 bg-slate-900 rounded-md text-[10px] text-slate-400 font-mono">${colHypotheses.length}</span>
+          </h3>
+        `;
+
+        const cardsContainer = document.createElement('div');
+        cardsContainer.className = "space-y-4 max-h-[600px] overflow-y-auto pr-1";
+
+        colHypotheses.forEach(hyp => {
+          const card = document.createElement('div');
+          card.className = `p-4 bg-slate-950/80 border rounded-xl space-y-3 hover:border-slate-700 card-transition`;
+          
+          let actionButton = '';
+          if (hyp.status === 'Pendente') {
+            actionButton = `<button onclick="moveHypothesis('${hyp.id}', 'Em Teste')" class="text-[9px] px-2 py-1 bg-blue-950 hover:bg-blue-900 text-blue-400 font-extrabold rounded-lg card-transition">Testar ➔</button>`;
+          } else if (hyp.status === 'Em Teste') {
+            actionButton = `
+              <div class="flex gap-1.5">
+                <button onclick="moveHypothesis('${hyp.id}', 'Pendente')" class="text-[9px] px-2 py-1 bg-slate-900 hover:bg-slate-850 text-slate-400 rounded-lg card-transition">⬅ Recuar</button>
+                <button onclick="moveHypothesis('${hyp.id}', 'Validada')" class="text-[9px] px-2 py-1 bg-emerald-950 hover:bg-emerald-900 text-[#00E676] font-extrabold rounded-lg card-transition">Validar ✔</button>
+              </div>
+            `;
+          } else if (hyp.status === 'Validada') {
+            actionButton = `<button onclick="moveHypothesis('${hyp.id}', 'Em Teste')" class="text-[9px] px-2 py-1 bg-slate-900 hover:bg-slate-850 text-slate-400 rounded-lg card-transition">Reabrir</button>`;
+          }
+
+          card.innerHTML = `
+            <div class="flex justify-between items-center">
+              <span class="text-[9px] font-bold text-slate-500 font-mono uppercase bg-slate-900 px-2 py-0.5 rounded">${hyp.id} - ${hyp.category}</span>
+              ${actionButton}
+            </div>
+            <p class="text-xs text-slate-300 font-medium leading-snug">${hyp.text}</p>
+          `;
+          cardsContainer.appendChild(card);
+        });
+
+        colDiv.appendChild(cardsContainer);
+        board.appendChild(colDiv);
+      });
+    }
+
+    function moveHypothesis(id, nextStatus) {
+      const index = state.hypotheses.findIndex(h => h.id === id);
+      if (index !== -1) {
+        state.hypotheses[index].status = nextStatus;
+        renderKanban();
+      }
+    }
+
+    // Initial trigger
+    window.addEventListener('DOMContentLoaded', () => {
+      runSimulation();
+    });
   </script>
 </body>
 </html>
